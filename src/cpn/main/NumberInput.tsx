@@ -51,13 +51,16 @@ export function NumberInput({
         border-none! ring-1 ring-accent
         w-20
         disabled:opacity-50
-        disabled:hover:cursor-not-allowed`,
+        disabled:hover:cursor-not-allowed
+        text-2xl!
+        placeholder:opacity-10`,
       )}
       data-invalid={!isValid}
       onBlur={(ev) => {
         ev.target.value = insideStateValue;
         setIsValid(true);
       }}
+      autoComplete="off"
       onChange={(ev) => {
         const newValue = ev.target.value;
         const isEmptyAndAllowed = newValue === "" && allowEmpty;
