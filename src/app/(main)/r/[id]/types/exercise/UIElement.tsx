@@ -1,7 +1,7 @@
 import { CircleAlertIcon } from "lucide-react";
 import { LatexProvider, LatexText } from "@/cpn/main/Latex";
 import { NumberInput } from "@/cpn/main/NumberInput";
-import { WidgetsRegistry } from "@/cpn/widgets";
+import { type RawWidgetProps, WidgetsRegistry } from "@/cpn/widgets";
 import { type BSTNode, BSTType } from "@/lib/resources";
 import type { BSTNUIumberInputNode } from "@/lib/resources/builders/bst/nodes/number-input";
 import type { BSTUIParagraphNode } from "@/lib/resources/builders/bst/nodes/paragraph";
@@ -49,22 +49,21 @@ function UIElementRenderer({ node, big }: { node: BSTNode; big?: boolean }) {
 
 function WidgetNode({ node }: { node: BSTUIWidgetNode }) {
   const Widget = WidgetsRegistry[node.id];
+  const props = node.props as RawWidgetProps<typeof node.id>;
   return (
     <div
       className={`flex items-center justify-center
     aspect-square
     size-full`}
     >
-      <Widget {...node.props} />
+      <Widget {...props} />
     </div>
   );
 }
 
 function TextNode({ node }: { node: BSTUITextNode }) {
   const elem = <UIElementRenderer node={node.text} />;
-  return (
-    <LatexText key={node.text as string}>{elem}</LatexText>
-  );
+  return <LatexText key={node.text as string}>{elem}</LatexText>;
 }
 
 function ParagraphNode({
@@ -94,20 +93,21 @@ function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
     index,
     initExerciseInputRef,
     setCurrentExerciseInputValue,
-    currentExercise,
+    input,
+    disabled
   ] = [
       useExerciseStore((state) => state.currentIndex),
       useExerciseStore((state) => state.initExerciseInputRef),
       useExerciseStore((state) => state.setCurrentExerciseInputValue),
-      useExerciseStore((state) => state.exercises[state.currentIndex]),
+      useExerciseStore((state) => state.getCurrentExerciseInputFromID(node.id)),
+      useExerciseStore((state) => {
+        const input = state.getCurrentExerciseInputFromID(node.id)
+        return !input
+          ? false
+          : state.getCurrentExercise().state !== ExerciseState.OnGoing ||
+          (input.correction.corrected && input.correction.correct)
+      })
     ];
-
-  const input = currentExercise.inputs[node.id];
-
-  const disabled = !input
-    ? false
-    : currentExercise.state !== ExerciseState.OnGoing ||
-    (input.correction.corrected && input.correction.correct);
 
   const stateStr = !input
     ? "?"
@@ -125,9 +125,9 @@ function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
       allowEmpty
       className={`data-[state=correct]:ring-2!
         data-[state=correct]:ring-green-400/50
-        data-[state=correct]:bg-green-400/20!
+        data-[state=correct]:bg-green-400/10!
         data-[state=incorrect]:ring-red-400/50
-        data-[state=incorrect]:bg-red-400/20!
+        data-[state=incorrect]:bg-red-400/10!
        duration-75`}
       onNewValue={(newValue) => setCurrentExerciseInputValue(node.id, newValue)}
       id={`${index}-${node.id}`}
