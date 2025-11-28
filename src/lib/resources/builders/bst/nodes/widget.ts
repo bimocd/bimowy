@@ -1,4 +1,4 @@
-import type { WidgetId, WidgetProps } from "@/cpn/widgets";
+import type { RawWidgetProps, WidgetId, WidgetProps } from "@/cpn/widgets";
 import { executeBST } from "../execute";
 import type { BSTType } from "../nodes";
 import type { Scope } from "../scope";
@@ -9,6 +9,9 @@ export type BSTUIWidgetNode<Id extends WidgetId = WidgetId> = {
   props: WidgetProps<Id>;
 };
 
-export function executeWidget(node: BSTUIWidgetNode, ctx: Scope) {
-  return { ...node, props: executeBST(node.props, ctx) };
+export function executeWidget<Id extends WidgetId>(
+  node: BSTUIWidgetNode<Id>,
+  ctx: Scope,
+) {
+  return { ...node, props: executeBST(node.props, ctx) as RawWidgetProps<Id> };
 }

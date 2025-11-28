@@ -1,7 +1,9 @@
+import * as z from "zod";
 import { ExerciseResourceBuilder } from "../builders";
 import { $ } from "../builders/bst/helpers";
 
 export default new ExerciseResourceBuilder({
+  seedType: z.tuple([z.int().min(0)]),
   exampleSeed: [5],
   id: "factorial",
   name: "Factorial",

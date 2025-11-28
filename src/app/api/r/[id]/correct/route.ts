@@ -1,29 +1,52 @@
-import { type NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import * as z from "zod";
 import { ErrorResponse, SuccessResponse } from "@/app/api/helpers";
-import { resourceHandler } from "@/lib/resources";
+import { type ExerciseResourceBuilder, resourceHandler } from "@/lib/resources";
 
-export async function GET(
+export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  // await new PromiSse(r => setTimeout(r, 2000));
   const { id } = await params;
-  if (!resourceHandler.isValidId(id)) {
-    return new NextResponse("Not Found", { status: 404 });
-  }
+  // Check if [id] is valid
+  if (!resourceHandler.isValidId(id))
+    return ErrorResponse(`No resource found for "${id}"`);
   const resource = await resourceHandler.fetch(id);
+  if (resource.type !== "exercise")
+    return ErrorResponse(`Resource "${id}" is not an exercise.`);
 
-  const searchParams = req.nextUrl.searchParams;
-  const inputIDs = resource.getAllInputIds();
-  const inputValues: Record<string, any> = {};
-  for (const name of inputIDs) {
-    if (!searchParams.has(name))
-      return ErrorResponse(`Query parameter "${name}" missing`);
-    inputValues[name] = +searchParams.get(name)!;
-  }
-  const seed = searchParams.get("seed")!.split(",").map(Number);
+  // Check for request body
+  const body = await req.json().catch(() => 0);
+  if (!body) return ErrorResponse("No request body.");
 
-  const correction = resource.correct(seed, inputValues);
+  // Validate request body
+  const BodySchema = z.object({
+    seed: z.any(),
+    inputValues: z.record(z.string(), z.any()),
+  });
+  const { error, success } = BodySchema.safeParse(body);
+  if (!success) return ErrorResponse(error.issues);
 
-  return SuccessResponse({ correction });
+  // Validate options
+  const { seed, inputValues } = body;
+  const seedIssues = resource.validateSeed(seed);
+  if (seedIssues.length) return ErrorResponse(seedIssues);
+
+  // Generate resource exercise
+  const ex = resource.correct(body.seed, inputValues);
+
+  return SuccessResponse(ex);
+}
+
+type APICorrectResponse = ReturnType<ExerciseResourceBuilder["correct"]>;
+
+export async function fetchAPICorrect(
+  resource_id: string,
+  seed: any,
+  inputValues: Record<string, any>,
+): Promise<APICorrectResponse> {
+  return await fetch(`/api/r/${resource_id}/correct`, {
+    method: "POST",
+    body: JSON.stringify({ seed, inputValues }),
+  }).then((r) => r.json());
 }

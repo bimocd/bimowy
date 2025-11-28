@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 
-export function ErrorResponse(res: string | object) {
-  return NextResponse.json({ ok: false, ...formatMessage(res) });
+export function ErrorResponse(res: any) {
+  return NextResponse.json(formatMessage(res), { status: 400 });
 }
-export function SuccessResponse(res: string | object) {
-  return NextResponse.json({ ok: true, ...formatMessage(res) });
+export function SuccessResponse(res: any) {
+  return NextResponse.json(formatMessage(res), { status: 200 });
 }
-function formatMessage(res: string | object) {
-  return typeof res === "string" ? { message: res } : res;
+function formatMessage(message: any) {
+  return typeof message === "string" ? { message } : message;
 }

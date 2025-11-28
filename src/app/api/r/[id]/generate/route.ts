@@ -1,23 +1,52 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { ErrorResponse } from "@/app/api/helpers";
-import { type OptionValues, resourceHandler } from "@/lib/resources";
+import type { NextRequest } from "next/server";
+import * as z from "zod";
+import { ErrorResponse, SuccessResponse } from "@/app/api/helpers";
+import {
+  type ExerciseResourceBuilder,
+  type OptionValues,
+  resourceHandler,
+} from "@/lib/resources";
 
-export async function GET(
+export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  if (!resourceHandler.isValidId(id)) return ErrorResponse("Not Found");
-
+  // Check if [id] is valid
+  if (!resourceHandler.isValidId(id))
+    return ErrorResponse(`No resource found for "${id}"`);
   const resource = await resourceHandler.fetch(id);
 
-  const searchParams = req.nextUrl.searchParams;
+  // Check for request body
+  const body = await req.json().catch(() => 0);
+  if (!body) return ErrorResponse("No request body.");
 
-  const optionValues: OptionValues = {};
-  for (const id of Object.keys(resource.options)) {
-    if (!searchParams.has(id)) return ErrorResponse(`No option "${id}"`);
-    optionValues[id] = searchParams.get(id)?.split(",").map(Number);
-  }
-  const { ui, seed } = resource.generateExercise(optionValues);
-  return NextResponse.json({ seed, ui });
+  // Validate request body
+  const BodySchema = z.object({ options: z.object() });
+  const { error, success } = BodySchema.safeParse(body);
+  if (!success) return ErrorResponse(error.issues);
+
+  // Validate options
+  const optionsValues = body.options as OptionValues;
+  const OVIssues = resource.validateOptionValues(optionsValues);
+  if (OVIssues.length) return ErrorResponse(OVIssues);
+
+  // Generate resource exercise
+  const ex = resource.generateExercise(optionsValues);
+
+  return SuccessResponse(ex);
+}
+
+type APIGenerateResponse = ReturnType<
+  ExerciseResourceBuilder["generateExercise"]
+>;
+
+export async function fetchAPIGenerate(
+  resource_id: string,
+  options: OptionValues,
+): Promise<APIGenerateResponse> {
+  return await fetch(`/api/r/${resource_id}/generate`, {
+    method: "POST",
+    body: JSON.stringify({ options }),
+  }).then((r) => r.json());
 }

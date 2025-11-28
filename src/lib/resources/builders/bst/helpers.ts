@@ -1,3 +1,4 @@
+import * as z from "zod";
 import type { WidgetId, WidgetProps } from "@/cpn/widgets";
 import { type BSTNode, BSTType } from "./nodes";
 import type { BSTCodeFunctionCallNode, FnID } from "./nodes/functionCall";
@@ -33,6 +34,7 @@ export const $ = {
     extra?: { min?: number; max?: number },
   ): BSTOptionInterval => ({
     _bsttype: BSTType.OptionInterval,
+    _zodtype: z.tuple([z.number(), z.number()]),
     defaultValue,
     name,
     ...extra,

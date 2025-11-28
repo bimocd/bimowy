@@ -1,9 +1,11 @@
+import * as z from "zod";
 import { BaseResourceBuilder, type BaseResourceConfig } from "./base";
 import { executeBST } from "./bst/execute";
 import { type BSTNode, type BSTOptionNode, BSTType } from "./bst/nodes";
 import { Scope } from "./bst/scope";
 
 type ExerciseResourceConfig<Seed> = Omit<BaseResourceConfig, "type"> & {
+  seedType: z.ZodType<Seed>;
   exampleSeed: Seed;
   randomSeedPlan: BSTNode | BSTNode[] | BSTNode[][];
   options: Record<string, BSTOptionNode>;
@@ -14,6 +16,7 @@ type ExerciseResourceConfig<Seed> = Omit<BaseResourceConfig, "type"> & {
 export type OptionValues = Record<string, any>;
 
 export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
+  public seedType!: ExerciseResourceConfig<Seed>["seedType"];
   public exampleSeed!: Seed;
   public randomSeedPlan!: ExerciseResourceConfig<Seed>["randomSeedPlan"];
   public options!: ExerciseResourceConfig<Seed>["options"];
@@ -23,10 +26,26 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
     super({ ...config, type: "exercise" });
     Object.assign(this, config);
   }
-  getAllInputIds() {
-    return this.#extractInputsIds(this.uiPlan);
+  validateSeed(seed: unknown) {
+    return this.seedType.safeParse(seed).error?.issues ?? [];
   }
-  #extractInputsIds(node: BSTNode | BSTNode[]): string[] {
+
+  validateOptionValues(options: unknown) {
+    const OptionsSchema = Object.entries(this.options).reduce(
+      (acc, [name, node]) => {
+        acc[name] = node._zodtype;
+        return acc;
+      },
+      {} as Record<string, BSTOptionNode["_zodtype"]>,
+    );
+    const parseResult = z.object(OptionsSchema).safeParse(options);
+    return parseResult.error?.issues ?? [];
+  }
+
+  getAllInputIds() {
+    return this.extractInputsIds(this.uiPlan);
+  }
+  extractInputsIds(node: BSTNode | BSTNode[]): string[] {
     if (
       typeof node === "string" ||
       typeof node === "number" ||
@@ -35,16 +54,16 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
       return [];
 
     if (Array.isArray(node))
-      return node.flatMap((n) => this.#extractInputsIds(n));
+      return node.flatMap((n) => this.extractInputsIds(n));
 
     switch (node._bsttype) {
       case BSTType.CodeIf:
         return [
-          ...this.#extractInputsIds(node.fail),
-          ...this.#extractInputsIds(node.success),
+          ...this.extractInputsIds(node.fail),
+          ...this.extractInputsIds(node.success),
         ];
       case BSTType.UIParagraph:
-        return node.items.flatMap((n) => this.#extractInputsIds(n));
+        return node.items.flatMap((n) => this.extractInputsIds(n));
       case BSTType.UINumberInput:
         return [node.id];
     }
@@ -84,10 +103,18 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
     }
     return correctionObj;
   }
+  serializeOptions() {
+    const serialized: Record<string, any> = {};
+    for (const [name, node] of Object.entries(this.options)) {
+      serialized[name] = { ...node, _zodtype: z.toJSONSchema(node._zodtype) };
+    }
+    return serialized;
+  }
   build() {
     return {
       ...super.build(),
-      options: this.options,
+      seedType: z.toJSONSchema(this.seedType),
+      options: this.serializeOptions(),
     };
   }
 }

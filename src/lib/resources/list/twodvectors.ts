@@ -1,8 +1,10 @@
+import * as z from "zod";
 import { PlaneElementEnum } from "@/cpn/widgets/plane/util";
 import { ExerciseResourceBuilder } from "../builders";
 import { $ } from "../builders/bst/helpers";
 
 export default new ExerciseResourceBuilder({
+  seedType: z.tuple([z.int(), z.int(), z.int(), z.int()]),
   exampleSeed: [2, 1, -3, 2],
   id: "twodvectors",
   name: "Reading 2D Vectors",
@@ -37,21 +39,20 @@ export default new ExerciseResourceBuilder({
     $.prgh(["From (", $.numinp("x1"), ", ", $.numinp("y1"), ")"]),
     $.prgh(["To (", $.numinp("x2"), ", ", $.numinp("y2"), ")"]),
     $.widget("Plane", {
+      // @ts-expect-error
       elems: [
         {
           type: PlaneElementEnum.Vector,
-          // @ts-expect-error
           x1: $.i($.var("seed"), 0),
-          // @ts-expect-error
           x2: $.i($.var("seed"), 2),
-          // @ts-expect-error
           y1: $.i($.var("seed"), 1),
-          // @ts-expect-error
           y2: $.i($.var("seed"), 3),
         },
       ],
-      // @ts-expect-error
-      ranges: { x: $.var("x_interval"), y: $.var("y_interval") },
+      ranges: {
+        x: $.var("x_interval"),
+        y: $.var("y_interval"),
+      },
     }),
   ],
 });

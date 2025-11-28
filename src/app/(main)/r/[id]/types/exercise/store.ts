@@ -1,5 +1,7 @@
 import { createContext, useContext } from "react";
 import { create, useStore } from "zustand";
+import { fetchAPICorrect } from "@/app/api/r/[id]/correct/route";
+import { fetchAPIGenerate } from "@/app/api/r/[id]/generate/route";
 import type {
   BuiltExerciseResource,
   ExerciseResourceBuilder,
@@ -133,13 +135,17 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
       const exercise = state.getCurrentExercise();
       const inputs = state.getCurrentExercise().inputs;
 
-      let url = `/api/r/${state.resource.id}/correct?seed=${exercise.data.seed.join(",")}`;
-      for (const [id, input] of Object.entries(inputs)) {
-        url += `&${id}=${input.value}`;
-      }
-      const correction: Record<string, boolean> = await fetch(url)
-        .then((r) => r.json())
-        .then((d) => d.correction);
+      const inputValues = Object.entries(inputs).reduce(
+        (prev, [id, inp]) => ({ ...prev, [id]: Number(inp.value) }),
+        {},
+      );
+      const correction: Record<string, boolean> = await fetchAPICorrect(
+        state.resource.id,
+        exercise.data.seed,
+        inputValues,
+      );
+
+      console.log({ emoji: "💚", correction });
 
       const correctionObj: Record<string, InputInstance["correction"]> = {};
 
@@ -157,23 +163,20 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
       return correctionObj;
     },
     async fetchNewExercise() {
-      const options = getCurrentState().optionValues;
+      const { optionValues, resource } = getCurrentState();
 
-      let url = `/api/r/${getCurrentState().resource.id}/generate?`;
-      for (const [id, value] of Object.entries(options)) {
-        const fixedValue = Array.isArray(value) ? value.join(",") : value;
-        url += `${url.endsWith("?") ? "" : `&`}${id}=${fixedValue}`;
-      }
+      const fetchedExercise = await fetchAPIGenerate(
+        resource.id,
+        optionValues,
+      ).then((data) => ({
+        data,
+        inputs: {},
+        state: ExerciseState.OnGoing,
+      }));
 
-      return await fetch(url)
-        .then((r) => r.json())
-        .then((data) => {
-          return {
-            data,
-            inputs: {},
-            state: ExerciseState.OnGoing,
-          };
-        });
+      console.log({ emoji: "💚", fetchedExercise });
+
+      return fetchedExercise;
     },
     async correct() {
       setState((state) => {
