@@ -145,8 +145,6 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
         inputValues,
       );
 
-      console.log({ emoji: "💚", correction });
-
       const correctionObj: Record<string, InputInstance["correction"]> = {};
 
       for (const [id, inp] of Object.entries(exercise.inputs)) {
@@ -173,8 +171,6 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
         inputs: {},
         state: ExerciseState.OnGoing,
       }));
-
-      console.log({ emoji: "💚", fetchedExercise });
 
       return fetchedExercise;
     },
