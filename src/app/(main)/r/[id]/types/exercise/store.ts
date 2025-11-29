@@ -60,7 +60,7 @@ export type ExerciseStoreActions = {
 
   loadNewExercise: () => void;
 
-  setOptionValue: (id: string, value: BSTOptionNode["defaultValues"]) => void;
+  setOptionValue: (id: string, value: BSTOptionNode["defaultValue"]) => void;
   setCurrentExerciseInputValue: (
     id: string,
     newValue: number | undefined,
@@ -81,7 +81,7 @@ export type ExerciseStoreActions = {
 };
 
 export type ExerciseStoreAttributes = {
-  optionValues: Record<string, BSTOptionNode["defaultValues"]>; // Not necessarly defaultvalue, try to use _zodtype idk?
+  optionValues: Record<string, BSTOptionNode["defaultValue"]>; // Not necessarly defaultvalue, try to use _zodtype idk?
   currentIndex: number;
   time: number;
   interval?: ReturnType<typeof setInterval>;
