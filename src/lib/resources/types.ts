@@ -25,8 +25,8 @@ export const resourceTypeData = {
     color: "#fb923c",
     emoji: "💪",
     icon: BicepsFlexedIcon,
-    name: "Exercise",
-    slug: "e",
+    name: "Raw Exercises",
+    slug: "re",
   },
   journey: {
     color: "#4ade80",
