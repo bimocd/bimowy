@@ -3,10 +3,10 @@ import { create, useStore } from "zustand";
 import { fetchAPICorrect } from "@/app/api/r/[id]/correct/route";
 import { fetchAPIGenerate } from "@/app/api/r/[id]/generate/route";
 import type {
+  BSTOptionNode,
   BuiltExerciseResource,
   ExerciseResourceBuilder,
 } from "@/lib/resources";
-import type { BSTOptionInterval } from "@/lib/resources/builders/bst/nodes/interval-option";
 
 export type ExerciseStoreProps = {
   resource: BuiltExerciseResource;
@@ -60,10 +60,7 @@ export type ExerciseStoreActions = {
 
   loadNewExercise: () => void;
 
-  setOptionValue: (
-    id: string,
-    value: BSTOptionInterval["defaultValue"],
-  ) => void;
+  setOptionValue: (id: string, value: BSTOptionNode["defaultValues"]) => void;
   setCurrentExerciseInputValue: (
     id: string,
     newValue: number | undefined,
@@ -84,7 +81,7 @@ export type ExerciseStoreActions = {
 };
 
 export type ExerciseStoreAttributes = {
-  optionValues: Record<string, number[]>; // TODO, not necessarly an interval. Remove hardcodance
+  optionValues: Record<string, BSTOptionNode["defaultValues"]>; // Not necessarly defaultvalue, try to use _zodtype idk?
   currentIndex: number;
   time: number;
   interval?: ReturnType<typeof setInterval>;
@@ -325,7 +322,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
         const newInput = { ...oldInput };
 
         // update value
-        newInput.value = typeof newValue === "number" ? `${newValue}` : "";
+        newInput.value = typeof newValue === "undefined" ? "" : `${newValue}`;
 
         // reassemble
         newInputs[id] = newInput;
