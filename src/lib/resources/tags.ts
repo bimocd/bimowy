@@ -7,6 +7,7 @@ import {
   CrossIcon,
   DiffIcon,
   EarthIcon,
+  Grid2x2Icon,
   KeyRoundIcon,
   LandmarkIcon,
   SplitIcon,
@@ -99,6 +100,12 @@ export const tags = [
     icon: AtomIcon,
     id: "physics",
     name: "Physics",
+    parents: ["math"],
+  },
+  {
+    icon: Grid2x2Icon,
+    id: "linear-algebra",
+    name: "Linear Algebra",
     parents: ["math"],
   },
   {
