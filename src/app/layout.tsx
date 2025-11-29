@@ -1,8 +1,11 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import type { ReactNode } from "react";
-import "./style.css";
 import SideBarWrapper from "@/cpn/main/SidebarWrapper";
+
+import "./style.css";
 
 const outfitFont = Outfit({
   subsets: ["latin"],
@@ -19,6 +22,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${outfitFont.className} dark`}>
+        <Analytics />
+        <SpeedInsights />
         <SideBarWrapper>{children}</SideBarWrapper>
       </body>
     </html>
