@@ -10,17 +10,18 @@ export type RawArgs<ID extends FnID> = Parameters<Fn<ID>>;
 export type ReturnFn<ID extends FnID> = ReturnType<Fn<ID>>;
 export type Args<ID extends FnID> = Array<RawArgs<ID>[number] | BSTNode>;
 
-export type BSTCodeFunctionCallNode<ID extends FnID = FnID> = {
+export type BSTCodeFunctionCallNode = {
   _bsttype: BSTType.CodeFunctionCall;
-  id: ID;
-  args: Args<ID>;
+  id: BSTNode;
+  args: any;
 };
 
 export function executeFunctionCall<ID extends FnID>(
-  node: BSTCodeFunctionCallNode<ID>,
+  node: BSTCodeFunctionCallNode,
   ctx: Scope,
 ): ReturnType<Fn<ID>> {
-  const fn = ALL_FUNCTIONS[node.id] as Fn<ID>;
+  const id = executeBST(node.id, ctx) as ID;
+  const fn = ALL_FUNCTIONS[id] as Fn<ID>;
   const args = executeBST(node.args, ctx);
   // @ts-expect-error
   return fn(...args);

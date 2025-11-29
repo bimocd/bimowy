@@ -1,17 +1,32 @@
 import * as z from "zod";
 import type { WidgetId, WidgetProps } from "@/cpn/widgets";
 import { type BSTNode, BSTType } from "./nodes";
-import type { BSTCodeFunctionCallNode, FnID } from "./nodes/functionCall";
+import type { BSTCodeFunctionCallNode } from "./nodes/functionCall";
 import type { BSTOptionInterval } from "./nodes/interval-option";
 import type { BSTNUIumberInputNode } from "./nodes/number-input";
 import type { BSTCodeObjectNode } from "./nodes/object";
 import type { BSTUIParagraphNode } from "./nodes/paragraph";
 import type { BSTUITextNode } from "./nodes/text";
+import type { BSTOptionTogglables } from "./nodes/togglables-option";
 import type { BSTCodeVarGetNode } from "./nodes/varget";
 import type { BSTUIWidgetNode } from "./nodes/widget";
 
 export const $ = {
-  concat: (args: BSTNode[], extra?: BSTUITextNode["extra"]): BSTUITextNode => ({
+  togl: <const T extends string[]>(
+    name: string,
+    values: T,
+    defaultValues: T[number][] = [],
+  ): BSTOptionTogglables<T> => ({
+    _bsttype: BSTType.OptionTogglables,
+    _zodtype: z.array(z.enum(values)).min(1),
+    togglables: values,
+    name,
+    defaultValue: defaultValues,
+  }),
+  concat: (
+    args: BSTNode | BSTNode[],
+    extra?: BSTUITextNode["extra"],
+  ): BSTUITextNode => ({
     _bsttype: BSTType.UISuperText,
     extra,
     text: {
@@ -20,7 +35,7 @@ export const $ = {
       id: "concat",
     },
   }),
-  fn: <ID extends FnID>(id: ID, args: any): BSTCodeFunctionCallNode =>
+  fn: (id: BSTNode, args: any): BSTCodeFunctionCallNode =>
     ({
       _bsttype: BSTType.CodeFunctionCall,
       args,

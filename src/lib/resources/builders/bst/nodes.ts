@@ -5,6 +5,7 @@ import type { BSTNUIumberInputNode } from "./nodes/number-input";
 import type { BSTCodeObjectNode } from "./nodes/object";
 import type { BSTUIParagraphNode } from "./nodes/paragraph";
 import type { BSTUITextNode } from "./nodes/text";
+import type { BSTOptionTogglables } from "./nodes/togglables-option";
 import type { BSTCodeVarGetNode } from "./nodes/varget";
 import type { BSTUIWidgetNode } from "./nodes/widget";
 
@@ -19,6 +20,7 @@ export enum BSTType {
   UISuperText,
   TypeNumber,
   OptionInterval,
+  OptionTogglables,
 }
 
 export type BSTRawPrimitive = number | string | boolean;
@@ -38,4 +40,4 @@ export type BSTNode =
   | BSTCodeVarGetNode
   | BSTUINode;
 
-export type BSTOptionNode = BSTOptionInterval;
+export type BSTOptionNode = BSTOptionInterval | BSTOptionTogglables<string[]>;

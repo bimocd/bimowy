@@ -2,6 +2,7 @@ import { InfoIcon } from "lucide-react";
 import { NumberInput } from "@/cpn/main/NumberInput";
 import { type BSTOptionNode, BSTType } from "@/lib/resources";
 import type { BSTOptionInterval } from "@/lib/resources/builders/bst/nodes/interval-option";
+import type { BSTOptionTogglables } from "@/lib/resources/builders/bst/nodes/togglables-option";
 import { useExerciseStore } from "./store";
 
 export function OptionsPage() {
@@ -29,33 +30,76 @@ export function OptionsPage() {
 
 function OptionRenderer({ id, option }: { id: string; option: BSTOptionNode }) {
   switch (option._bsttype) {
-    case BSTType.OptionInterval: {
+    case BSTType.OptionInterval:
       return <IntervalOption {...{ id, option }} />;
-    }
+    case BSTType.OptionTogglables:
+      return <TogglablesOption {...{ id, option }} />;
     default:
       return <InfoIcon stroke="red" />;
   }
 }
 
-function IntervalOption({ id }: { id: string; option: BSTOptionInterval }) {
-  const [optionValue, setOptionValue, defaultValue] = [
-    useExerciseStore((s) => s.optionValues[id]),
+function TogglablesOption({ id, option }: {
+  id: string;
+  option: BSTOptionTogglables;
+}) {
+  const [toggledList, setOptionValue] = [
+    useExerciseStore(
+      (s) => s.optionValues[id] as BSTOptionTogglables["defaultValue"],
+    ),
     useExerciseStore((s) => s.setOptionValue),
-    useExerciseStore((s) => s.resource.options[id].defaultValue),
+  ];
+  return <div className="flex gap-3">
+    {
+      option.togglables
+        .map(t => {
+          const toggled = toggledList.includes(t)
+          return <div key={t}
+            {...(toggled ? { "data-toggled": true } : {})}
+            onClick={() => {
+              setOptionValue(id, toggled
+                ? toggledList.filter(tg => tg !== t)
+                : [...toggledList, t])
+            }}
+            className={`flex justify-center items-center
+            rounded-md bg-white/5 ring-white/10 ring-1
+            data-toggled:bg-white data-toggled:text-black
+            select-none cursor-pointer hover:opacity-90 hover:scale-95
+            px-2 py-1
+            duration-75`}>
+            {t}
+          </div>
+        })
+    }
+  </div>
+}
+
+function IntervalOption({
+  id,
+  option,
+}: {
+  id: string;
+  option: BSTOptionInterval;
+}) {
+  const [optionValue, setOptionValue] = [
+    useExerciseStore(
+      (s) => s.optionValues[id] as BSTOptionInterval["defaultValue"],
+    ),
+    useExerciseStore((s) => s.setOptionValue),
   ];
 
   return (
     <div className="flex gap-1 items-center">
       <span>[</span>
       <NumberInput
-        defaultValue={defaultValue[0]}
+        defaultValue={option.defaultValue[0]}
         onNewValue={(newValue) =>
           setOptionValue(id, [Number(newValue), optionValue[1]])
         }
       />
       <span>;</span>
       <NumberInput
-        defaultValue={defaultValue[1]}
+        defaultValue={option.defaultValue[1]}
         onNewValue={(newValue) =>
           setOptionValue(id, [optionValue[0], Number(newValue)])
         }
