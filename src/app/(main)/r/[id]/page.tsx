@@ -5,6 +5,7 @@ import {
   resourceHandler,
   resourceTypeData,
 } from "@/lib/resources";
+import { BetaPage } from "./cpn/BetaPage";
 import ExerciseResourcePage from "./types/exercise/ExercisePage";
 
 type Params = {
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function ResourcePage({ params }: Params) {
   const id = (await params).id as ResourceId;
   const resource = await resourceHandler.fetch(id);
+  if (resource.beta) return <BetaPage />;
   if (resource instanceof ExerciseResourceBuilder)
     return <ExerciseResourcePage resource={resource.build()} />;
 }
