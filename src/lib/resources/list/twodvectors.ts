@@ -8,6 +8,7 @@ export default new ExerciseResourceBuilder({
   exampleSeed: [2, 1, -3, 2],
   id: "twodvectors",
   name: "Reading 2D Vectors",
+  tags: ["2D"],
   options: {
     x_interval: $.intervaloption("X Axis", [-5, 5]),
     y_interval: $.intervaloption("Y Axis", [-5, 5]),
@@ -26,7 +27,6 @@ export default new ExerciseResourceBuilder({
     y1: $.i($.var("seed"), 1),
     y2: $.i($.var("seed"), 3),
   },
-  tags: ["2D"],
   uiPlan: [
     $.prgh([
       $.text("\\(\\vec{v}\\)", { latex: true }),

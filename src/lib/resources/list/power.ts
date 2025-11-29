@@ -7,6 +7,7 @@ export default new ExerciseResourceBuilder({
   exampleSeed: [5, 1],
   id: "power",
   name: "Power",
+  tags: ["arithmetic"],
   options: {
     base_interval: $.intervaloption("Base", [0, 6], { min: 0 }),
     exponent_interval: $.intervaloption("Exponent", [0, 6], { min: 0 }),
@@ -18,7 +19,6 @@ export default new ExerciseResourceBuilder({
   solutionPlan: {
     n: $.fn("**", $.var("seed")),
   },
-  tags: ["arithmetic"],
   uiPlan: $.prgh([
     $.concat(
       ["\\(", $.i($.var("seed"), 0), "^{", $.i($.var("seed"), 1), "}\\) ="],

@@ -8,6 +8,7 @@ export default new ExerciseResourceBuilder({
   exampleSeed: [2, 1],
   id: "twodpoints",
   name: "Reading 2D Points",
+  tags: ["2D"],
   options: {
     x_interval: $.intervaloption("X Axis", [-5, 5]),
     y_interval: $.intervaloption("Y Axis", [-5, 5]),
@@ -20,7 +21,6 @@ export default new ExerciseResourceBuilder({
     x: $.i($.var("seed"), 0),
     y: $.i($.var("seed"), 1),
   },
-  tags: ["2D"],
   uiPlan: [
     $.prgh([
       $.text("P", { latex: true }),
