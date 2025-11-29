@@ -1,12 +1,12 @@
 <div align="center" style="display:flex;">
-
+⚠️ Beta ⚠️
 </div>
 
 ![banner](https://github.com/user-attachments/assets/36dbcc37-5543-4bc3-bbfa-fa34f9b4bb09)
 
 # <img width="22" alt="icon" src="https://github.com/user-attachments/assets/c6f36d46-675a-4e8e-92c3-88f9566d42fa" /> TODO
 
-- Add options on all math exercises, variations (quiz with selected options, free & open variation)
+- Add more advancedoptions on all math exercises, variations (quiz with selected options, free & open variation)
 - Add many other math exercises (Expression simplification, Equation solving, Limits, matrix, probability etc..)
 - Add physic problems (Forces, work, energy, acceleration, velocity, displacement etc..) 
 - Add a python (and other programming languages) exercises (code fixing, optimization)
