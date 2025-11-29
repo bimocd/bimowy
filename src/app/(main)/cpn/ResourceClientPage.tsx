@@ -1,9 +1,9 @@
 "use client";
 
 import { useQueryState } from "nuqs";
-import { ResourceCard } from "@/cpn/main/ResourceCard";
-import SearchBar from "@/cpn/main/SearchBar";
 import type { ExerciseResourceBuilder } from "@/lib/resources";
+import { ResourceCard } from "./ResourceCard";
+import SearchBar from "./SearchBar";
 
 export function ResourceClientPage({
   resources,

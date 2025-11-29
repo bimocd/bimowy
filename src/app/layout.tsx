@@ -3,7 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import type { ReactNode } from "react";
-import SideBarWrapper from "@/cpn/main/SidebarWrapper";
+import SideBarWrapper from "@/app/(main)/cpn/SidebarWrapper";
 
 import "./style.css";
 

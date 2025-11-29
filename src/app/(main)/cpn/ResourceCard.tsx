@@ -29,10 +29,10 @@ export function ResourceCard({ data }: { data: BaseResourceData }) {
       style={{
         ...(isHover
           ? {
-              boxShadow: `0px 1px 5px ${color}`,
-              outlineColor: color,
-              outlineWidth: "3px",
-            }
+            boxShadow: `0px 1px 5px ${color}`,
+            outlineColor: color,
+            outlineWidth: "3px",
+          }
           : {}),
         outlineStyle: "solid",
       }}
@@ -82,7 +82,16 @@ function ResourceCardTag({ tagId }: { tagId: TagId }) {
   const Icon = tag.icon;
   return (
     <div
-      className="inline-flex items-center bg-accent rounded-lg px-1 pr-2 py-0.5 opacity-80"
+      className={`
+        inline-flex items-center
+        px-1 pr-2 py-0.5
+        ${"special" in tag && tag.special
+          ? `bg-linear-90 from-purple-800/80 to-violet-800/80
+          scale-105
+          duration-75 group-hover/card:scale-110 rounded-xl`
+          : "bg-accent opacity-70 rounded-lg"
+        }
+        `}
       key={tag.id}
     >
       <Icon className="h-[0.7lh]" />
