@@ -8,7 +8,7 @@ export default new ExerciseResourceBuilder({
   exampleSeed: [2, 1, -3, 2],
   id: "twodvectors",
   name: "Reading 2D Vectors",
-  tags: ["2D"],
+  tags: ["2D", "new"],
   options: {
     x_interval: $.intervaloption("X Axis", [-5, 5]),
     y_interval: $.intervaloption("Y Axis", [-5, 5]),

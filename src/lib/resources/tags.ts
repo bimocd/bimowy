@@ -104,7 +104,8 @@ export const tags = [
   {
     icon: WandSparklesIcon,
     id: "new",
-    name: "New",
+    name: "NEW",
+    special: true,
   },
 ] as const;
 export type TagId = (typeof tags)[number]["id"];
