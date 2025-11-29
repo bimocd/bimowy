@@ -1,14 +1,14 @@
 "use client";
 
 import { useQueryState } from "nuqs";
-import type { ExerciseResourceBuilder } from "@/lib/resources";
+import type { BaseResourceBuilder } from "@/lib/resources";
 import { ResourceCard } from "./ResourceCard";
 import SearchBar from "./SearchBar";
 
 export function ResourceClientPage({
   resources,
 }: {
-  resources: ReturnType<ExerciseResourceBuilder["build"]>[];
+  resources: ReturnType<BaseResourceBuilder["build"]>[];
 }) {
   const [query, setQuery] = useQueryState("q");
 
