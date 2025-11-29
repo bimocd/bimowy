@@ -1,5 +1,6 @@
 import {
   BicepsFlexedIcon,
+  FileTextIcon,
   GraduationCapIcon,
   type LucideIcon,
   PlayIcon,
@@ -14,6 +15,13 @@ export type ResourceType = {
   slug: string;
 };
 export const resourceTypeData = {
+  article: {
+    color: "#b88fff",
+    emoji: "📄",
+    icon: FileTextIcon,
+    name: "Article",
+    slug: "a",
+  },
   course: {
     color: "#60a5fa",
     emoji: "🎓",
