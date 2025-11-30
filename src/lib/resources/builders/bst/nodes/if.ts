@@ -6,7 +6,7 @@ export type BSTCodeIfNode = {
   _bsttype: BSTType.CodeIf;
   condition: BSTNode;
   success: BSTNode;
-  fail: BSTNode;
+  fail?: BSTNode;
 };
 
 export function executeIf(node: BSTCodeIfNode, ctx: Scope): BSTRawPrimitive {

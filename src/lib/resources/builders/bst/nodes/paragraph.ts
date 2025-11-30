@@ -4,9 +4,9 @@ import type { Scope } from "../scope";
 
 export type BSTUIParagraphNode = {
   _bsttype: BSTType.UIParagraph;
-  items: BSTNode[];
+  items: BSTNode | BSTNode[];
 };
 
 export function executeParagraph(node: BSTUIParagraphNode, ctx: Scope) {
-  return { ...node, items: node.items.map((item) => executeBST(item, ctx)) };
+  return { ...node, items: executeBST(node.items, ctx) };
 }

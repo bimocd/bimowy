@@ -2,6 +2,7 @@ import * as z from "zod";
 import type { WidgetId, WidgetProps } from "@/cpn/widgets";
 import { type BSTNode, BSTType } from "./nodes";
 import type { BSTCodeFunctionCallNode } from "./nodes/functionCall";
+import type { BSTCodeIfNode } from "./nodes/if";
 import type { BSTOptionInterval } from "./nodes/interval-option";
 import type { BSTNUIumberInputNode } from "./nodes/number-input";
 import type { BSTCodeObjectNode } from "./nodes/object";
@@ -12,6 +13,16 @@ import type { BSTCodeVarGetNode } from "./nodes/varget";
 import type { BSTUIWidgetNode } from "./nodes/widget";
 
 export const $ = {
+  if: (
+    condition: BSTNode,
+    success: BSTNode,
+    fail?: BSTNode,
+  ): BSTCodeIfNode => ({
+    _bsttype: BSTType.CodeIf,
+    condition,
+    success,
+    fail,
+  }),
   togl: <const T extends string[]>(
     name: string,
     values: T,
@@ -62,9 +73,9 @@ export const $ = {
     _bsttype: BSTType.CodeObject,
     value: obj,
   }),
-  prgh: (items: BSTNode[]): BSTUIParagraphNode => ({
+  prgh: (items: BSTNode | BSTNode[]): BSTUIParagraphNode => ({
     _bsttype: BSTType.UIParagraph,
-    items: items,
+    items,
   }),
   text: (text: BSTNode, extra?: BSTUITextNode["extra"]): BSTUITextNode => ({
     _bsttype: BSTType.UISuperText,

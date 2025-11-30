@@ -2,6 +2,7 @@ import * as z from "zod";
 import { BaseResourceBuilder, type BaseResourceConfig } from "./base";
 import { executeBST } from "./bst/execute";
 import { type BSTNode, type BSTOptionNode, BSTType } from "./bst/nodes";
+import type { BSTUIParagraphNode } from "./bst/nodes/paragraph";
 import { Scope } from "./bst/scope";
 
 type ExerciseResourceConfig<Seed> = Omit<BaseResourceConfig, "type"> & {
@@ -45,8 +46,9 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
   getAllInputIds() {
     return this.extractInputsIds(this.uiPlan);
   }
-  extractInputsIds(node: BSTNode | BSTNode[]): string[] {
+  extractInputsIds(node: any): string[] {
     if (
+      !node ||
       typeof node === "string" ||
       typeof node === "number" ||
       typeof node === "boolean"
@@ -63,7 +65,7 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
           ...this.extractInputsIds(node.success),
         ];
       case BSTType.UIParagraph:
-        return node.items.flatMap((n) => this.extractInputsIds(n));
+        return this.extractInputsIds((node as BSTUIParagraphNode).items);
       case BSTType.UINumberInput:
         return [node.id];
     }

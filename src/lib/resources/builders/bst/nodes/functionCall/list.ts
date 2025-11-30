@@ -20,8 +20,6 @@ export const ALL_FUNCTIONS = {
   getIndex: (...[arr, i]: [number[], number]) => arr[i],
   randomInt: (...[min, max]: [number, number]) =>
     Math.floor(Math.random() * (max - min + 1)) + min,
-  randomFromList: <T>(...[list]: [T[]]) => {
-    const index = Math.floor(Math.random() * list.length);
-    return list[index];
-  },
+  randomFromList: <T>(...[list]: [T[]]) =>
+    list[Math.floor(Math.random() * list.length)],
 } as const;
