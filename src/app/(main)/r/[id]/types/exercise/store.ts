@@ -308,23 +308,13 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
       setState((state) => {
         const newExercises = [...state.exercises];
 
-        // clone the specific exercise object
         const exIndex = state.currentIndex;
-        const oldEx = newExercises[exIndex];
-        const newEx = { ...oldEx };
+        const newEx = { ...newExercises[exIndex] };
+        const newInputs = { ...newEx.inputs };
+        const newInput = { ...newInputs[id] };
 
-        // clone inputs object
-        const oldInputs = newEx.inputs || {};
-        const newInputs = { ...oldInputs };
-
-        // clone the specific input
-        const oldInput = newInputs[id] || {};
-        const newInput = { ...oldInput };
-
-        // update value
         newInput.value = typeof newValue === "undefined" ? "" : `${newValue}`;
 
-        // reassemble
         newInputs[id] = newInput;
         newEx.inputs = newInputs;
         newExercises[exIndex] = newEx;
@@ -357,6 +347,6 @@ export function useExerciseStore<T>(
   selector: (state: ExerciseStoreData) => T,
 ): T {
   const store = useContext(ExerciseContext);
-  if (!store) throw new Error("Missing BearContext.Provider in the tree");
+  if (!store) throw new Error("Missing ExerciseContext.Provider in the tree");
   return useStore(store, selector);
 }
