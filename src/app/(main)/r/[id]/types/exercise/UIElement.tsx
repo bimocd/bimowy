@@ -91,12 +91,14 @@ function ParagraphNode({
 function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
   const [
     index,
+    correct,
     initExerciseInputRef,
     setCurrentExerciseInputValue,
     input,
     disabled
   ] = [
       useExerciseStore((state) => state.currentIndex),
+      useExerciseStore((state) => state.correct),
       useExerciseStore((state) => state.initExerciseInputRef),
       useExerciseStore((state) => state.setCurrentExerciseInputValue),
       useExerciseStore((state) => state.getCurrentExerciseInputFromID(node.id)),
@@ -129,6 +131,7 @@ function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
         data-[state=incorrect]:ring-red-400/50
         data-[state=incorrect]:bg-red-400/10!
        duration-75`}
+      onKeyDown={(e) => e.key === 'Enter' ? correct() : 0}
       onNewValue={(newValue) => setCurrentExerciseInputValue(node.id, newValue)}
       id={`${index}-${node.id}`}
       key={`${index}-${node.id}`}
