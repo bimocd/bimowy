@@ -2,7 +2,7 @@ import * as z from "zod";
 import { ExerciseResourceBuilder } from "../builders";
 import { $ } from "../builders/bst/helpers";
 
-const binaryOperations = ["+", "-", "*"];
+const binaryOperations = ["+", "-", "*", "**"];
 
 export default new ExerciseResourceBuilder({
   seedType: z.tuple([z.int(), z.enum(binaryOperations), z.int()]),
@@ -17,7 +17,7 @@ export default new ExerciseResourceBuilder({
   },
   randomSeedPlan: [
     $.fn("randomInt", $.var("interval_a")),
-    $.fn("randomFromList", $.var("allowed_operations")),
+    $.fn("randomFromList", [$.var("allowed_operations")]),
     $.fn("randomInt", $.var("interval_b")),
   ],
   solutionPlan: {
@@ -26,15 +26,25 @@ export default new ExerciseResourceBuilder({
       $.i($.var("seed"), 2),
     ]),
   },
-  uiPlan: $.prgh([
-    $.concat([
-      $.i($.var("seed"), 0),
-      " ",
-      $.i($.var("seed"), 1),
-      " ",
-      $.i($.var("seed"), 2),
+  uiPlan: $.if(
+    $.fn("=", ["**", $.i($.var("seed"), 1)]),
+    $.prgh([
+      $.concat(
+        ["\\(", $.i($.var("seed"), 0), "^{", $.i($.var("seed"), 2), "}\\) ="],
+        { latex: true },
+      ),
+      $.numinp("n"),
     ]),
-    " = ",
-    $.numinp("n"),
-  ]),
+    $.prgh([
+      $.concat([
+        $.i($.var("seed"), 0),
+        " ",
+        $.i($.var("seed"), 1),
+        " ",
+        $.i($.var("seed"), 2),
+      ]),
+      " = ",
+      $.numinp("n"),
+    ]),
+  ),
 });
