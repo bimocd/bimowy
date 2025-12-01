@@ -1,6 +1,6 @@
 import { InfoIcon } from "lucide-react";
 import { NumberInput } from "@/cpn/main/NumberInput";
-import { type BSTOptionNode, BSTType } from "@/lib/resources";
+import { type BSTOptionNodeSerialized, BSTType } from "@/lib/resources";
 import type { BSTOptionInterval } from "@/lib/resources/builders/bst/nodes/interval-option";
 import type { BSTOptionTogglables } from "@/lib/resources/builders/bst/nodes/togglables-option";
 import { useExerciseStore } from "./store";
@@ -28,20 +28,39 @@ export function OptionsPage() {
   );
 }
 
-function OptionRenderer({ id, option }: { id: string; option: BSTOptionNode }) {
+function OptionRenderer({
+  id,
+  option,
+}: {
+  id: string;
+  option: BSTOptionNodeSerialized;
+}) {
   switch (option._bsttype) {
     case BSTType.OptionInterval:
-      return <IntervalOption {...{ id, option }} />;
+      return (
+        <IntervalOption
+          {...{ id }}
+          option={option as BSTOptionNodeSerialized<BSTOptionInterval>}
+        />
+      );
     case BSTType.OptionTogglables:
-      return <TogglablesOption {...{ id, option }} />;
+      return (
+        <TogglablesOption
+          {...{ id }}
+          option={option as BSTOptionNodeSerialized<BSTOptionTogglables>}
+        />
+      );
     default:
       return <InfoIcon stroke="red" />;
   }
 }
 
-function TogglablesOption({ id, option }: {
+function TogglablesOption({
+  id,
+  option,
+}: {
   id: string;
-  option: BSTOptionTogglables;
+  option: BSTOptionNodeSerialized<BSTOptionTogglables>;
 }) {
   const [toggledList, setOptionValue] = [
     useExerciseStore(
@@ -49,29 +68,35 @@ function TogglablesOption({ id, option }: {
     ),
     useExerciseStore((s) => s.setOptionValue),
   ];
-  return <div className="flex gap-3">
-    {
-      option.togglables
-        .map(t => {
-          const toggled = toggledList.includes(t)
-          return <div key={t}
+  return (
+    <div className="flex gap-3">
+      {option.togglables.map((t) => {
+        const toggled = toggledList.includes(t);
+        return (
+          <div
+            key={t}
             {...(toggled ? { "data-toggled": true } : {})}
             onClick={() => {
-              setOptionValue(id, toggled
-                ? toggledList.filter(tg => tg !== t)
-                : [...toggledList, t])
+              setOptionValue(
+                id,
+                toggled
+                  ? toggledList.filter((tg) => tg !== t)
+                  : [...toggledList, t],
+              );
             }}
             className={`flex justify-center items-center
             rounded-md bg-white/5 ring-white/10 ring-1
             data-toggled:bg-white data-toggled:text-black
             select-none cursor-pointer hover:opacity-90 hover:scale-95
             px-2 py-1
-            duration-75`}>
+            duration-75`}
+          >
             {t}
           </div>
-        })
-    }
-  </div>
+        );
+      })}
+    </div>
+  );
 }
 
 function IntervalOption({
@@ -79,7 +104,7 @@ function IntervalOption({
   option,
 }: {
   id: string;
-  option: BSTOptionInterval;
+  option: BSTOptionNodeSerialized<BSTOptionInterval>;
 }) {
   const [optionValue, setOptionValue] = [
     useExerciseStore(

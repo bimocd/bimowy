@@ -1,3 +1,4 @@
+import type z from "zod";
 import type { BSTCodeFunctionCallNode } from "./nodes/functionCall";
 import type { BSTCodeIfNode } from "./nodes/if";
 import type { BSTOptionInterval } from "./nodes/interval-option";
@@ -41,3 +42,6 @@ export type BSTNode =
   | BSTUINode;
 
 export type BSTOptionNode = BSTOptionInterval | BSTOptionTogglables<string[]>;
+
+export type BSTOptionNodeSerialized<O extends BSTOptionNode = BSTOptionNode> =
+  Omit<O, "_zodtype"> & { _zodtype: z.core.JSONSchema.BaseSchema };

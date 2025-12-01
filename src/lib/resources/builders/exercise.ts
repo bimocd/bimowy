@@ -1,7 +1,12 @@
 import * as z from "zod";
 import { BaseResourceBuilder, type BaseResourceConfig } from "./base";
 import { executeBST } from "./bst/execute";
-import { type BSTNode, type BSTOptionNode, BSTType } from "./bst/nodes";
+import {
+  type BSTNode,
+  type BSTOptionNode,
+  type BSTOptionNodeSerialized,
+  BSTType,
+} from "./bst/nodes";
 import type { BSTUIParagraphNode } from "./bst/nodes/paragraph";
 import { Scope } from "./bst/scope";
 
@@ -106,7 +111,7 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
     return correctionObj;
   }
   serializeOptions() {
-    const serialized: Record<string, any> = {};
+    const serialized: Record<string, BSTOptionNodeSerialized> = {};
     for (const [name, node] of Object.entries(this.options)) {
       serialized[name] = { ...node, _zodtype: z.toJSONSchema(node._zodtype) };
     }
