@@ -134,22 +134,22 @@ function RightBottomBar() {
     loadNewExercise,
     end,
   ] = [
-    useExerciseStore((state) => state.pageState),
-    useExerciseStore((state) => state.exercises),
-    useExerciseStore((state) => state.getCurrentExercise()?.state),
-    useExerciseStore((state) => state.getIsCurrentExerciseFullyCorrect()),
-    useExerciseStore(
-      (state) => state.currentIndex === state.exercises.length - 1,
-    ),
-    useExerciseStore((state) => state.currentIndex === 0),
-    useExerciseStore((state) => state.start),
-    useExerciseStore((state) => state.correct),
-    useExerciseStore((state) => state.previous),
-    useExerciseStore((state) => state.next),
-    useExerciseStore((state) => state.retry),
-    useExerciseStore((state) => state.loadNewExercise),
-    useExerciseStore((state) => state.end),
-  ];
+      useExerciseStore((state) => state.pageState),
+      useExerciseStore((state) => state.exercises),
+      useExerciseStore((state) => state.getCurrentExercise()?.state),
+      useExerciseStore((state) => state.getIsCurrentExerciseFullyCorrect()),
+      useExerciseStore(
+        (state) => state.currentIndex === state.exercises.length - 1,
+      ),
+      useExerciseStore((state) => state.currentIndex === 0),
+      useExerciseStore((state) => state.start),
+      useExerciseStore((state) => state.correct),
+      useExerciseStore((state) => state.previous),
+      useExerciseStore((state) => state.next),
+      useExerciseStore((state) => state.retry),
+      useExerciseStore((state) => state.loadNewExercise),
+      useExerciseStore((state) => state.end),
+    ];
 
   type ButtonData = {
     id: string;

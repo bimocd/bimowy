@@ -2,105 +2,15 @@ import { createContext, useContext } from "react";
 import { create, useStore } from "zustand";
 import { fetchAPICorrect } from "@/app/api/r/[id]/correct/route";
 import { fetchAPIGenerate } from "@/app/api/r/[id]/generate/route";
-import type {
-  BSTOptionNode,
-  BuiltExerciseResource,
-  ExerciseResourceBuilder,
-} from "@/lib/resources";
+import {
+  ExerciseState,
+  type ExerciseStoreData,
+  type ExerciseStoreProps,
+  type InputInstance,
+  PageState,
+} from "./types";
 
-export type ExerciseStoreProps = {
-  resource: BuiltExerciseResource;
-};
-
-export enum ExerciseState {
-  OnGoing, // Student is working on it
-  Correcting, // API is getting called to correct
-  Corrected, // API has answered and UI is waiting for user to click on "Retry" or "Next"
-}
-export enum PageState {
-  Options,
-  Loading,
-  OnGoing,
-  End,
-}
-
-export type InputInstance = {
-  ref: HTMLInputElement | null;
-  value: string;
-  correction:
-    | {
-        corrected: false;
-      }
-    | {
-        tries: number;
-        corrected: true;
-        correct: boolean;
-        correctOnFirstTry: boolean;
-      };
-};
-
-export type ExerciseInstance = {
-  data: ReturnType<ExerciseResourceBuilder["generateExercise"]>;
-  inputs: Record<string, InputInstance>;
-  state: ExerciseState;
-};
-
-export type ExerciseStoreActions = {
-  start: () => void;
-  correct: () => void;
-  retry: () => void;
-  next: () => void;
-  previous: () => void;
-  end: () => void;
-
-  setCurrentExerciseIndex(i: number): void;
-
-  fetchCorrection(): Promise<Record<string, InputInstance["correction"]>>;
-  fetchNewExercise(): Promise<ExerciseInstance>;
-
-  loadNewExercise: () => void;
-
-  setOptionValue: (id: string, value: BSTOptionNode["defaultValue"]) => void;
-  setCurrentExerciseInputValue: (
-    id: string,
-    newValue: number | undefined,
-  ) => void;
-
-  initExerciseInputRef: (id: string, ref: HTMLInputElement | null) => void;
-
-  startTimeInterval: () => void;
-  stopTimeInterval: () => void;
-
-  getCurrentExercise: () => ExerciseInstance;
-  getCurrentExerciseInputFromID: (id: string) => InputInstance;
-  getInputCorrection: (id: string) => InputInstance["correction"];
-  getIsCurrentExerciseFullyCorrect(): boolean;
-  getFormattedTime(): string | undefined;
-
-  hasCurrentExerciseBeenCorrectedOnce(): boolean;
-};
-
-export type ExerciseStoreAttributes = {
-  optionValues: Record<string, BSTOptionNode["defaultValue"]>; // Not necessarly defaultvalue, try to use _zodtype idk?
-  currentIndex: number;
-  time: number;
-  interval?: ReturnType<typeof setInterval>;
-} & (
-  | {
-      atLeastOneFetched: false;
-      exercises: [];
-      pageState: PageState.Options | PageState.Loading;
-    }
-  | {
-      atLeastOneFetched: true;
-      exercises: ExerciseInstance[];
-      pageState: PageState.End | PageState.Loading | PageState.OnGoing;
-    }
-);
-
-export type ExerciseStoreData = ExerciseStoreProps &
-  ExerciseStoreActions &
-  ExerciseStoreAttributes;
+export * from "./types";
 
 export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
   create<ExerciseStoreData>()((setState, getCurrentState) => ({
@@ -215,8 +125,8 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
       setState({ pageState: PageState.End });
     },
     getCurrentExercise() {
-      const state = getCurrentState();
-      return state.exercises[state.currentIndex];
+      const { exercises, currentIndex } = getCurrentState();
+      return exercises[currentIndex];
     },
     getCurrentExerciseInputFromID(id) {
       return getCurrentState().getCurrentExercise().inputs[id];
@@ -251,22 +161,19 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
         if (!state.atLeastOneFetched) throw Error();
         const newExercises = [...state.exercises];
         const currentInputs = { ...newExercises[state.currentIndex!].inputs };
-        if (currentInputs[id]) {
-          // Update only the ref, keep other properties
-          currentInputs[id] = {
-            ...currentInputs[id],
-            ref,
-          };
-        } else {
-          // Create new input entry
-          currentInputs[id] = {
-            correction: {
-              corrected: false,
-            },
-            ref,
-            value: "",
-          };
-        }
+        currentInputs[id] = {
+          ...(currentInputs[id]
+            ? {
+                ...currentInputs[id],
+              }
+            : {
+                correction: {
+                  corrected: false,
+                },
+                value: "",
+              }),
+          ref,
+        };
         newExercises[state.currentIndex!].inputs = currentInputs;
         return { exercises: newExercises };
       });
