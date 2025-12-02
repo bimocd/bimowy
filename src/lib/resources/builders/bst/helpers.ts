@@ -94,4 +94,11 @@ export const $ = {
     id,
     props,
   }),
+  matrix: (
+    arr: BSTNode[][],
+    suffix: "b" | "p" | "" | "B" | "v" | "V" = "b",
+  ) => {
+    const content = arr.map((n) => n.join(" & ")).join("\\\\");
+    return `\\(\\begin{${suffix}matrix}\n${content}\n\\end{${suffix}matrix}\\)`;
+  },
 };
