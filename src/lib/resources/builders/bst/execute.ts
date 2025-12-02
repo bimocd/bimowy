@@ -12,6 +12,7 @@ import type { Scope } from "./scope";
 export function executeBST(node: any, ctx: Scope): any {
   if (Array.isArray(node)) return node.map((n) => executeBST(n, ctx));
   if (
+    typeof node === "undefined" ||
     typeof node === "number" ||
     typeof node === "string" ||
     typeof node === "boolean"

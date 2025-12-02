@@ -8,5 +8,6 @@ export type BSTUIParagraphNode = {
 };
 
 export function executeParagraph(node: BSTUIParagraphNode, ctx: Scope) {
-  return { ...node, items: executeBST(node.items, ctx) };
+  const items = executeBST(node.items, ctx);
+  return { ...node, items: Array.isArray(items) ? items : [items] };
 }

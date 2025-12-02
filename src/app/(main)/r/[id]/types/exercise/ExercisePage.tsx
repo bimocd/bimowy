@@ -19,16 +19,20 @@ export default function ExerciseResourcePage({
 }) {
   return (
     <StoreProvider {...{ resource }}>
-      <div className="flex flex-col h-full gap-2">
-        <div className="w-full h-full p-1 flex flex-col">
-          <MetaBar />
-          <div className="h-full w-full">
-            <MainLayout />
-          </div>
-        </div>
-      </div>
+      <MainLayout />
     </StoreProvider>
   );
+}
+function MainLayout() {
+  const state = useExerciseStore(s => s.pageState)
+  return <div className={`flex flex-col h-full gap-2 ${state === PageState.Loading && "cursor-wait"}`}>
+    <div className="w-full h-full p-1 flex flex-col">
+      <MetaBar />
+      <div className="h-full w-full">
+        <PageContent />
+      </div>
+    </div>
+  </div>
 }
 
 function StoreProvider({
@@ -51,7 +55,7 @@ function StoreProvider({
   );
 }
 
-function MainLayout() {
+function PageContent() {
   const [pageState, atLeastOneFetched] = [
     useExerciseStore((state) => state.pageState),
     useExerciseStore((state) => state.atLeastOneFetched),

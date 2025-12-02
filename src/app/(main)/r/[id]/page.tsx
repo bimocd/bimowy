@@ -31,6 +31,7 @@ export default async function ResourcePage({ params }: Params) {
   if (resource instanceof ExerciseResourceBuilder)
     return <ExerciseResourcePage resource={resource.build()} />;
   else if (resource instanceof ArticleResourceBuilder) {
-    return <ArticleResourcePage resource={resource.build()} />;
+    const ui = resource.generateUI();
+    return <ArticleResourcePage resource={resource.build()} {...{ ui }} />;
   }
 }

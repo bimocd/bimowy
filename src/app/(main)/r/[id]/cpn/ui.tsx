@@ -21,8 +21,10 @@ export function WidgetNode({ node }: { node: BSTUIWidgetNode }) {
 }
 
 export function TextNode({ node }: { node: BSTUITextNode }) {
-  const elem = <UIElementRenderer node={node.text} />;
-  return <LatexText key={node.text as string}>{elem}</LatexText>;
+  const text = node.text as string;
+  return <LatexText key={text}>
+    <UIElementRenderer node={text} />
+  </LatexText>;
 }
 
 export function ParagraphNode({ node }: { node: BSTUIParagraphNode }) {
