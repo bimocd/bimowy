@@ -10,3 +10,5 @@ export class ArticleResourceBuilder extends BaseResourceBuilder {
     super({ ...config, type: "article" });
   }
 }
+
+export type BuiltArticleResource = ReturnType<ArticleResourceBuilder["build"]>;

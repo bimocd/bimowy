@@ -1,7 +1,7 @@
 import {
-  BicepsFlexedIcon,
   FileTextIcon,
   GraduationCapIcon,
+  InfinityIcon,
   type LucideIcon,
   PlayIcon,
   RouteIcon,
@@ -32,8 +32,9 @@ export const resourceTypeData = {
   exercise: {
     color: "#fb923c",
     emoji: "💪",
-    icon: BicepsFlexedIcon,
-    name: "Raw Exercises",
+    icon: InfinityIcon,
+    // icon: BicepsFlexedIcon,
+    name: "Exercise Template",
     slug: "re",
   },
   journey: {
