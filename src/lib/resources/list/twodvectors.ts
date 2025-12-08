@@ -1,10 +1,10 @@
 import * as z from "zod";
 import { PlaneElementEnum } from "@/cpn/widgets/plane/util";
-import { ExerciseResourceBuilder } from "../builders";
 import { $ } from "../builders/bst/helpers";
+import { ExerciseTemplateResourceBuilder } from "../builders/exercise";
 
-export default new ExerciseResourceBuilder({
-  seedType: z.tuple([z.int(), z.int(), z.int(), z.int()]),
+export default new ExerciseTemplateResourceBuilder({
+  seedType: z.array(z.int()).length(4),
   exampleSeed: [2, 1, -3, 2],
   id: "twodvectors",
   name: "Reading 2D Vectors",
@@ -21,38 +21,76 @@ export default new ExerciseResourceBuilder({
   ],
   solutionPlan: {
     x: $.fn("-", [$.i($.var("seed"), 2), $.i($.var("seed"), 0)]), // x2 - x1
-    x1: $.i($.var("seed"), 0),
-    x2: $.i($.var("seed"), 2),
     y: $.fn("-", [$.i($.var("seed"), 3), $.i($.var("seed"), 1)]), // y2 - y1
+    x1: $.i($.var("seed"), 0),
     y1: $.i($.var("seed"), 1),
+    x2: $.i($.var("seed"), 2),
     y2: $.i($.var("seed"), 3),
   },
   uiPlan: [
-    $.prgh([
-      $.text("\\(\\vec{v}\\)", { latex: true }),
-      " = (",
-      $.numinp("x"),
-      ", ",
-      $.numinp("y"),
-      ")",
-    ]),
-    $.prgh(["From (", $.numinp("x1"), ", ", $.numinp("y1"), ")"]),
-    $.prgh(["To (", $.numinp("x2"), ", ", $.numinp("y2"), ")"]),
-    $.widget("Plane", {
-      // @ts-expect-error
-      elems: [
-        {
-          type: PlaneElementEnum.Vector,
-          x1: $.i($.var("seed"), 0),
-          x2: $.i($.var("seed"), 2),
-          y1: $.i($.var("seed"), 1),
-          y2: $.i($.var("seed"), 3),
+    $.layout([
+      $.widget("Plane", {
+        // @ts-expect-error
+        elems: [
+          {
+            type: PlaneElementEnum.Vector,
+            x1: $.i($.var("seed"), 0),
+            x2: $.i($.var("seed"), 2),
+            y1: $.i($.var("seed"), 1),
+            y2: $.i($.var("seed"), 3),
+          },
+        ],
+        ranges: {
+          x: $.var("x_interval"),
+          y: $.var("y_interval"),
         },
-      ],
-      ranges: {
-        x: $.var("x_interval"),
-        y: $.var("y_interval"),
-      },
-    }),
+      }),
+      $.textBloc([
+        $.prgh([
+          $.text("The vector "),
+          $.text("\\(\\vec{v}\\)", true),
+          $.text(" = ("),
+          $.numinp("x"),
+          $.text(","),
+          $.numinp("y"),
+          // Temperary bc inline text problem in the UI i have to
+          // split both of them
+          $.text(")"),
+          $.text(" starts at "),
+          $.text("("),
+          $.numinp("x1"),
+          $.text(","),
+          $.numinp("y1"),
+          $.text(")"),
+          $.text(" & ends at ("),
+          $.numinp("x2"),
+          $.text(", "),
+          $.numinp("y2"),
+          $.text(")"),
+        ]),
+        // $.prgh([
+        //   $.text("\\(\\vec{v}\\)", true),
+        //   $.text(" = ("),
+        //   $.numinp("x"),
+        //   $.text(", "),
+        //   $.numinp("y"),
+        //   $.text(")"),
+        // ]),
+        // $.prgh([
+        //   $.text("From ("),
+        //   $.numinp("x1"),
+        //   $.text(", "),
+        //   $.numinp("y1"),
+        //   $.text(")"),
+        // ]),
+        // $.prgh([
+        //   $.text("To ("),
+        //   $.numinp("x2"),
+        //   $.text(", "),
+        //   $.numinp("y2"),
+        //   $.text(")"),
+        // ]),
+      ]),
+    ]),
   ],
 });

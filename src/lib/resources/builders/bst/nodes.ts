@@ -1,47 +1,45 @@
-import type z from "zod";
-import type { BSTCodeFunctionCallNode } from "./nodes/functionCall";
-import type { BSTCodeIfNode } from "./nodes/if";
-import type { BSTOptionInterval } from "./nodes/interval-option";
-import type { BSTNUIumberInputNode } from "./nodes/number-input";
-import type { BSTCodeObjectNode } from "./nodes/object";
-import type { BSTUIParagraphNode } from "./nodes/paragraph";
-import type { BSTUITextNode } from "./nodes/text";
-import type { BSTOptionTogglables } from "./nodes/togglables-option";
-import type { BSTCodeVarGetNode } from "./nodes/varget";
-import type { BSTUIWidgetNode } from "./nodes/widget";
+import type { BSTIfNode, BSTVarGetNode } from "./nodes/code";
+import type { BSTFunctionCallNode } from "./nodes/functions";
+import type {
+  BSTUIBlockNode,
+  BSTUILayoutNode,
+  BSTUIParagraphItemNode,
+} from "./nodes/ui";
 
 export enum BSTType {
-  CodeObject,
-  CodeIf,
-  CodeFunctionCall,
-  CodeVarGet,
-  UIWidget,
-  UIParagraph,
-  UINumberInput,
-  UISuperText,
-  TypeNumber,
-  OptionInterval,
-  OptionTogglables,
+  // Code
+  If,
+  FunctionCall,
+  VarGet,
+
+  // UI
+  Layout,
+  // > UI Blocks
+  WidgetBlock,
+  TextBlock,
+  // > UI Text Block Nodes
+  Paragraph,
+  // > > UI Text Block Paragraph Inline Nodes
+  Text,
+  NumberInput,
+
+  // Option
+  IntervalOption,
+  TogglablesOption,
 }
 
-export type BSTRawPrimitive = number | string | boolean;
+// R = ReturnType
+export type BSTCodeNode<R = any> =
+  | BSTIfNode<R>
+  | BSTVarGetNode<R>
+  | BSTFunctionCallNode<R>
+  | R;
 
 export type BSTUINode =
-  | BSTUITextNode
-  | BSTUIParagraphNode
-  | BSTNUIumberInputNode
-  | BSTRawPrimitive
-  | BSTUIWidgetNode;
+  | BSTUILayoutNode
+  | BSTUIBlockNode
+  | BSTUIParagraphItemNode;
 
-export type BSTNode =
-  | BSTCodeFunctionCallNode
-  | BSTCodeIfNode
-  | BSTRawPrimitive
-  | BSTCodeObjectNode
-  | BSTCodeVarGetNode
-  | BSTUINode;
-
-export type BSTOptionNode = BSTOptionInterval | BSTOptionTogglables<string[]>;
-
-export type BSTOptionNodeSerialized<O extends BSTOptionNode = BSTOptionNode> =
-  Omit<O, "_zodtype"> & { _zodtype: z.core.JSONSchema.BaseSchema };
+export type RawPrimitive = number | string | boolean;
+export type Primitive = RawPrimitive | Primitive[];
+export type BSTNode<R = any> = BSTCodeNode<R> | BSTUINode;

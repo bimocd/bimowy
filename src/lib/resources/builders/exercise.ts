@@ -1,28 +1,26 @@
 import * as z from "zod";
 import { BaseResourceBuilder, type BaseResourceConfig } from "./base";
 import { executeBST } from "./bst/execute";
-import {
-  type BSTNode,
-  type BSTOptionNode,
-  type BSTOptionNodeSerialized,
-  BSTType,
-} from "./bst/nodes";
-import type { BSTUIParagraphNode } from "./bst/nodes/paragraph";
-import { Scope } from "./bst/scope";
+import { type BSTNode, BSTType } from "./bst/nodes";
+import type { BSTOptionNode, SerializedOptionNode } from "./bst/nodes/option";
+import type { BSTUILayoutNode } from "./bst/nodes/ui";
+import { type AllowedVariableValues, Scope } from "./bst/scope";
 
 type ExerciseResourceConfig<Seed> = Omit<BaseResourceConfig, "type"> & {
   seedType: z.ZodType<Seed>;
   exampleSeed: Seed;
-  randomSeedPlan: BSTNode | BSTNode[] | BSTNode[][];
+  randomSeedPlan: BSTNode<Seed>;
   options: Record<string, BSTOptionNode>;
-  solutionPlan: Record<string, BSTNode>;
-  uiPlan: BSTNode | BSTNode[];
+  solutionPlan: Record<string, BSTNode<any>>;
+  uiPlan: BSTUILayoutNode[];
 };
 
 export type OptionValues = Record<string, any>;
 
-export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
-  public seedType!: ExerciseResourceConfig<Seed>["seedType"];
+export class ExerciseTemplateResourceBuilder<
+  Seed = any,
+> extends BaseResourceBuilder {
+  public seedType!: z.ZodType<Seed>;
   public exampleSeed!: Seed;
   public randomSeedPlan!: ExerciseResourceConfig<Seed>["randomSeedPlan"];
   public options!: ExerciseResourceConfig<Seed>["options"];
@@ -64,14 +62,16 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
       return node.flatMap((n) => this.extractInputsIds(n));
 
     switch (node._bsttype) {
-      case BSTType.CodeIf:
+      case BSTType.If:
         return [
           ...this.extractInputsIds(node.fail),
           ...this.extractInputsIds(node.success),
         ];
-      case BSTType.UIParagraph:
-        return this.extractInputsIds((node as BSTUIParagraphNode).items);
-      case BSTType.UINumberInput:
+      case BSTType.Paragraph:
+      case BSTType.Layout:
+      case BSTType.TextBlock:
+        return this.extractInputsIds(node.items);
+      case BSTType.NumberInput:
         return [node.id];
     }
     return [];
@@ -98,11 +98,11 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
       ui,
     };
   }
-  solve(seed: unknown, inputValues: Record<string, any>) {
+  solve(seed: AllowedVariableValues, inputValues: Record<string, any>) {
     const ctx = new Scope({ ...inputValues, seed });
     return executeBST(this.solutionPlan, ctx);
   }
-  correct(seed: unknown, inputs: Record<string, any>) {
+  correct(seed: AllowedVariableValues, inputs: Record<string, any>) {
     const res = this.solve(seed, inputs);
     const correctionObj: Record<string, boolean> = {};
     for (const [inputId, inputValue] of Object.entries(res)) {
@@ -111,7 +111,7 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
     return correctionObj;
   }
   serializeOptions() {
-    const serialized: Record<string, BSTOptionNodeSerialized> = {};
+    const serialized: Record<string, SerializedOptionNode> = {};
     for (const [name, node] of Object.entries(this.options)) {
       serialized[name] = { ...node, _zodtype: z.toJSONSchema(node._zodtype) };
     }
@@ -126,6 +126,6 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
   }
 }
 
-export type BuiltExerciseResource = ReturnType<
-  ExerciseResourceBuilder["build"]
+export type BuiltExerciseTemplateResource = ReturnType<
+  ExerciseTemplateResourceBuilder<any>["build"]
 >;

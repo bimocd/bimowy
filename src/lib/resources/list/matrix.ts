@@ -1,5 +1,5 @@
-import { $ } from "../builders";
 import { ArticleResourceBuilder } from "../builders/article";
+import { $ } from "../builders/bst/helpers";
 
 export default new ArticleResourceBuilder({
   id: "matrix",
@@ -7,18 +7,14 @@ export default new ArticleResourceBuilder({
   tags: ["linear-algebra"],
   beta: true,
   uiPlan: [
-    $.prgh(
-      `A matrix is a 2D grid of values (most of the time numbers). We use matrices a lot:`,
-    ),
-    $.prgh(
-      $.text(`\t- Point coordinates: ${$.matrix([["3", "1"]], "p")}`, {
-        latex: true,
-      }),
-    ),
-    $.prgh(
-      $.text(`- Vector coordinates: ${$.matrix([["-2"], ["1"]], "p")}`, {
-        latex: true,
-      }),
-    ),
+    $.layout([
+      $.textBloc([
+        $.prgh([
+          $.text(
+            `A matrix is a 2D grid of values (most of the time numbers). We use matrices a lot:`,
+          ),
+        ]),
+      ]),
+    ]),
   ],
 });

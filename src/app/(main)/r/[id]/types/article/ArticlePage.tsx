@@ -1,6 +1,10 @@
 "use client";
-import { type BSTNode, BSTType, type BSTUINode } from "@/lib/resources";
 import type { BuiltArticleResource } from "@/lib/resources/builders/article";
+import {
+  type BSTNode,
+  BSTType,
+  type BSTUINode,
+} from "@/lib/resources/builders/bst/nodes";
 import { UINode } from "../../cpn/ui";
 
 export default function ArticleResourcePage({
@@ -37,10 +41,11 @@ function UIElement({ node }: { node: BSTNode }) {
   if (Array.isArray(node))
     return node.map((node, i) => <UIElement key={i} {...{ node }} />);
   switch (node._bsttype) {
-    case BSTType.UIWidget:
-    case BSTType.UIParagraph:
-    case BSTType.UISuperText:
-      return <UINode {...{ node }} />
+    case BSTType.WidgetBlock:
+    case BSTType.Paragraph:
+    case BSTType.Layout:
+    case BSTType.Text:
+      return <UINode {...{ node }} />;
     default:
       return "?";
   }

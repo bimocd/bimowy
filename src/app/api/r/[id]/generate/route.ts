@@ -2,10 +2,10 @@ import type { NextRequest } from "next/server";
 import * as z from "zod";
 import { ErrorResponse, SuccessResponse } from "@/app/api/helpers";
 import {
-  ExerciseResourceBuilder,
+  ExerciseTemplateResourceBuilder,
   type OptionValues,
-  resourceHandler,
-} from "@/lib/resources";
+} from "@/lib/resources/builders/exercise";
+import { resourceHandler } from "@/lib/resources/builders/handler";
 
 export async function POST(
   req: NextRequest,
@@ -16,7 +16,7 @@ export async function POST(
   if (!resourceHandler.isValidId(id))
     return ErrorResponse(`No resource found for "${id}"`);
   const resource = await resourceHandler.fetch(id);
-  if (!(resource instanceof ExerciseResourceBuilder))
+  if (!(resource instanceof ExerciseTemplateResourceBuilder))
     return ErrorResponse(`Resource "${id}" is not an exercise.`);
   // Check for request body
   const body = await req.json().catch(() => 0);
@@ -39,7 +39,7 @@ export async function POST(
 }
 
 type APIGenerateResponse = ReturnType<
-  ExerciseResourceBuilder["generateExercise"]
+  ExerciseTemplateResourceBuilder["generateExercise"]
 >;
 
 export async function fetchAPIGenerate(

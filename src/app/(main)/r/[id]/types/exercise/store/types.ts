@@ -1,11 +1,11 @@
+import type { BSTOptionNode } from "@/lib/resources/builders/bst/nodes/option";
 import type {
-  BSTOptionNode,
-  BuiltExerciseResource,
-  ExerciseResourceBuilder,
-} from "@/lib/resources";
+  BuiltExerciseTemplateResource,
+  ExerciseTemplateResourceBuilder,
+} from "@/lib/resources/builders/exercise";
 
 export type ExerciseStoreProps = {
-  resource: BuiltExerciseResource;
+  resource: BuiltExerciseTemplateResource;
 };
 
 export enum ExerciseState {
@@ -36,7 +36,7 @@ export type InputInstance = {
 };
 
 export type ExerciseInstance = {
-  data: ReturnType<ExerciseResourceBuilder["generateExercise"]>;
+  data: ReturnType<ExerciseTemplateResourceBuilder["generateExercise"]>;
   inputs: Record<string, InputInstance>;
   state: ExerciseState;
 };

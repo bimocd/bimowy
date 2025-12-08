@@ -1,8 +1,8 @@
 import * as z from "zod";
-import { ExerciseResourceBuilder } from "../builders";
 import { $ } from "../builders/bst/helpers";
+import { ExerciseTemplateResourceBuilder } from "../builders/exercise";
 
-export default new ExerciseResourceBuilder({
+export default new ExerciseTemplateResourceBuilder({
   seedType: z.tuple([z.int().min(0)]),
   exampleSeed: [5],
   id: "factorial",
@@ -15,5 +15,11 @@ export default new ExerciseResourceBuilder({
   solutionPlan: {
     n: $.fn("factorial", [$.i($.var("seed"), 0)]),
   },
-  uiPlan: $.prgh([$.concat([$.i($.var("seed"), 0), "! = "]), $.numinp("n")]),
+  uiPlan: [
+    $.layout([
+      $.textBloc([
+        $.prgh([$.concat([$.i($.var("seed"), 0), "! = "]), $.numinp("n")]),
+      ]),
+    ]),
+  ],
 });

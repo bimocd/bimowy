@@ -17,7 +17,7 @@ import {
   WormIcon,
 } from "lucide-react";
 
-export const tags = [
+export const ALL_TAGS = [
   {
     icon: CalculatorIcon,
     id: "math",
@@ -115,4 +115,4 @@ export const tags = [
     special: true,
   },
 ] as const;
-export type TagId = (typeof tags)[number]["id"];
+export type TagId = (typeof ALL_TAGS)[number]["id"];

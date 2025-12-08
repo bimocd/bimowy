@@ -1,7 +1,8 @@
 import type { NextRequest } from "next/server";
 import * as z from "zod";
 import { ErrorResponse, SuccessResponse } from "@/app/api/helpers";
-import { ExerciseResourceBuilder, resourceHandler } from "@/lib/resources";
+import { ExerciseTemplateResourceBuilder } from "@/lib/resources/builders/exercise";
+import { resourceHandler } from "@/lib/resources/builders/handler";
 
 export async function POST(
   req: NextRequest,
@@ -12,7 +13,7 @@ export async function POST(
   if (!resourceHandler.isValidId(id))
     return ErrorResponse(`No resource found for "${id}"`);
   const resource = await resourceHandler.fetch(id);
-  if (!(resource instanceof ExerciseResourceBuilder))
+  if (!(resource instanceof ExerciseTemplateResourceBuilder))
     return ErrorResponse(`Resource "${id}" is not an exercise.`);
 
   // Check for request body
@@ -38,12 +39,14 @@ export async function POST(
   return SuccessResponse(ex);
 }
 
-type APICorrectResponse = ReturnType<ExerciseResourceBuilder["correct"]>;
+type APICorrectResponse = ReturnType<
+  ExerciseTemplateResourceBuilder["correct"]
+>;
 
 export async function fetchAPICorrect(
   resource_id: string,
   seed: any,
-  inputValues: Record<string, any>,
+  inputValues: Record<string, any>, // TODO more specific record values
 ): Promise<APICorrectResponse> {
   return await fetch(`/api/r/${resource_id}/correct`, {
     method: "POST",

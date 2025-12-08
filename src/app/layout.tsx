@@ -22,9 +22,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${outfitFont.className} dark`}>
-        <Analytics />
-        <SpeedInsights />
-        <SideBarWrapper>{children}</SideBarWrapper>
+        {
+          process.env.NODE_ENV === "production" && <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        }<SideBarWrapper>{children}</SideBarWrapper>
       </body>
     </html>
   );

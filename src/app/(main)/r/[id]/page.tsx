@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import { ArticleResourceBuilder } from "@/lib/resources/builders/article";
+import { ExerciseTemplateResourceBuilder } from "@/lib/resources/builders/exercise";
 import {
-  ExerciseResourceBuilder,
   type ResourceId,
   resourceHandler,
-  resourceTypeData,
-} from "@/lib/resources";
-import { ArticleResourceBuilder } from "@/lib/resources/builders/article";
+} from "@/lib/resources/builders/handler";
+import { resourceTypeData } from "@/lib/resources/types";
 import { BetaPage } from "./cpn/BetaPage";
 import ArticleResourcePage from "./types/article/ArticlePage";
 import ExerciseResourcePage from "./types/exercise/ExercisePage";
@@ -28,7 +28,7 @@ export default async function ResourcePage({ params }: Params) {
   const id = (await params).id as ResourceId;
   const resource = await resourceHandler.fetch(id);
   if (resource.beta) return <BetaPage />;
-  if (resource instanceof ExerciseResourceBuilder)
+  if (resource instanceof ExerciseTemplateResourceBuilder)
     return <ExerciseResourcePage resource={resource.build()} />;
   else if (resource instanceof ArticleResourceBuilder) {
     const ui = resource.generateUI();

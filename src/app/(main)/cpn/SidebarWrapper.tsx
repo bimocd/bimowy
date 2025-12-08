@@ -1,6 +1,6 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
+import { type LucideIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
@@ -46,7 +46,20 @@ export const data: SidebarData = {
     subtitle: "BETA",
     title: "Bimowy",
   },
-  nav: [],
+  nav: [
+    {
+      id: "meta",
+      name: "",
+      items: [
+        {
+          name: "Create a resource",
+          id: "create",
+          href: "/create",
+          icon: PlusIcon,
+        },
+      ],
+    },
+  ],
 } as const;
 
 export default function SideBarWrapper({ children }: { children: ReactNode }) {
@@ -105,8 +118,8 @@ function MainNavButtons() {
       {n.name && <SidebarGroupLabel>{n.name}</SidebarGroupLabel>}
       <SidebarGroupContent>
         <SidebarMenu>
-          {n.items.map((item) => (
-            <SidebarMenuItem key={item.id}>
+          {n.items.map((item) => {
+            return <SidebarMenuItem key={item.id}>
               <SidebarMenuButton asChild disabled={item.disabled}>
                 <Link href={item.disabled ? "/" : item.href}>
                   <item.icon />
@@ -114,7 +127,7 @@ function MainNavButtons() {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          ))}
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

@@ -1,6 +1,6 @@
 "use client";
 import { type ReactNode, useEffect, useRef } from "react";
-import type { ExerciseResourceBuilder } from "@/lib/resources";
+import type { ExerciseTemplateResourceBuilder } from "@/lib/resources/builders/exercise";
 import { EndPage } from "./EndPage";
 import { MetaBar } from "./MetaBar";
 import { OptionsPage } from "./OptionsPage";
@@ -15,7 +15,7 @@ import { UIElements } from "./UIElement";
 export default function ExerciseResourcePage({
   resource,
 }: {
-  resource: ReturnType<ExerciseResourceBuilder["build"]>;
+  resource: ReturnType<ExerciseTemplateResourceBuilder["build"]>;
 }) {
   return (
     <StoreProvider {...{ resource }}>
@@ -23,16 +23,25 @@ export default function ExerciseResourcePage({
     </StoreProvider>
   );
 }
+
+// TODO: Should prevent errors
 function MainLayout() {
-  const state = useExerciseStore(s => s.pageState)
-  return <div className={`flex flex-col h-full gap-2 ${state === PageState.Loading && "cursor-wait"}`}>
-    <div className="w-full h-full p-1 flex flex-col">
-      <MetaBar />
-      <div className="h-full w-full">
+  const state = useExerciseStore((s) => s.pageState);
+  return (
+    <div
+      className={`w-full flex flex-row h-full gap-5 
+  ${state === PageState.Loading && "cursor-wait"}`}
+    >
+      <div
+        className={`flex flex-col
+          bg-white/5 rounded-md outline p-5
+          size-full overflow-y-auto`}
+      >
         <PageContent />
       </div>
+      <MetaBar />
     </div>
-  </div>
+  );
 }
 
 function StoreProvider({
@@ -40,7 +49,7 @@ function StoreProvider({
   resource,
 }: {
   children: ReactNode;
-  resource: ReturnType<ExerciseResourceBuilder["build"]>;
+  resource: ReturnType<ExerciseTemplateResourceBuilder["build"]>;
 }) {
   const store = useRef(createExerciseStore({ resource })).current;
 

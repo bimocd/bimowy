@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryState } from "nuqs";
-import type { BaseResourceBuilder } from "@/lib/resources";
+import type { BaseResourceBuilder } from "@/lib/resources/builders/base";
 import { ResourceCard } from "./ResourceCard";
 import SearchBar from "./SearchBar";
 

@@ -1,10 +1,11 @@
 import { BaseResourceBuilder, type BaseResourceConfig } from "./base";
 import { executeBST } from "./bst/execute";
 import type { BSTUINode } from "./bst/nodes";
+import type { BSTUILayoutNode } from "./bst/nodes/ui";
 import { Scope } from "./bst/scope";
 
 type ArticleResourceConfig = Omit<BaseResourceConfig, "type"> & {
-  uiPlan: BSTUINode | BSTUINode[];
+  uiPlan: BSTUILayoutNode[];
 };
 export class ArticleResourceBuilder extends BaseResourceBuilder {
   public uiPlan!: BSTUINode;

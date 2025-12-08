@@ -1,38 +1,44 @@
 import { LatexProvider, LatexText } from "@/cpn/main/Latex";
 import { type RawWidgetProps, WidgetsRegistry } from "@/cpn/widgets";
-import { type BSTNode, BSTType } from "@/lib/resources";
-import type { BSTUIParagraphNode } from "@/lib/resources/builders/bst/nodes/paragraph";
-import type { BSTUITextNode } from "@/lib/resources/builders/bst/nodes/text";
-import type { BSTUIWidgetNode } from "@/lib/resources/builders/bst/nodes/widget";
+import { BSTType } from "@/lib/resources/builders/bst/nodes";
+import type {
+  BSTUILayoutNode,
+  BSTUIParagraphNode,
+  BSTUITextNode,
+  BSTUIWidgetBlockNode,
+} from "@/lib/resources/builders/bst/nodes/ui";
 import { UIElementRenderer } from "../types/exercise/UIElement";
 
-export function WidgetNode({ node }: { node: BSTUIWidgetNode }) {
+export function WidgetNodeRenderer({ node }: { node: BSTUIWidgetBlockNode }) {
   const Widget = WidgetsRegistry[node.id];
   const props = node.props as RawWidgetProps<typeof node.id>;
   return (
-    <div
-      className={`flex items-center justify-center
-    aspect-square
-    size-full`}
-    >
+    <div className={`size-full`}>
       <Widget {...props} />
     </div>
   );
 }
 
-export function TextNode({ node }: { node: BSTUITextNode }) {
+export function TextNodeRenderer({ node }: { node: BSTUITextNode }) {
   const text = node.text as string;
-  return <LatexText key={text}>
-    <UIElementRenderer node={text} />
-  </LatexText>;
+  return (
+    <LatexText key={text}>
+      <UIElementRenderer node={text} />
+    </LatexText>
+  );
 }
 
-export function ParagraphNode({ node }: { node: BSTUIParagraphNode }) {
-  const items = node.items as BSTNode[];
+export function ParagraphNodeRenderer({ node }: { node: BSTUIParagraphNode }) {
   return (
     <LatexProvider>
-      <div className={`p-2 flex gap-2 flex-wrap items-center text-2xl`}>
-        {items.map((node, i) => (
+      {/* When I do inline-flex or flex, they act like blocks,
+      but when I remove gap-2 and flex-wrap and text-wrap and everything
+      and just do "inline" it works */}
+      {/*
+     // TODO: fix the text blocks being considered as individual blocks and not wrapping 
+      */}
+      <div className={`inline-flex flex-wrap text-wrap items-baseline gap-2 text-2xl`}>
+        {node.items.map((node, i) => (
           <UIElementRenderer key={i} {...{ node }} />
         ))}
       </div>
@@ -43,14 +49,28 @@ export function ParagraphNode({ node }: { node: BSTUIParagraphNode }) {
 export function UINode({
   node,
 }: {
-  node: BSTUIParagraphNode | BSTUITextNode | BSTUIWidgetNode;
+  node: BSTUIParagraphNode | BSTUITextNode | BSTUIWidgetBlockNode | BSTUILayoutNode;
 }) {
   switch (node._bsttype) {
-    case BSTType.UIParagraph:
-      return <ParagraphNode {...{ node }} />;
-    case BSTType.UISuperText:
-      return <TextNode {...{ node }} />;
-    case BSTType.UIWidget:
-      return <WidgetNode {...{ node }} />;
+    case BSTType.Paragraph:
+      return <ParagraphNodeRenderer {...{ node }} />;
+    case BSTType.Text:
+      return <TextNodeRenderer {...{ node }} />;
+    case BSTType.WidgetBlock:
+      return <WidgetNodeRenderer {...{ node }} />;
+    case BSTType.Layout:
+      return <LayoutNodeRenderer {...{ node }} />
   }
+}
+
+
+export function LayoutNodeRenderer({ node }: { node: BSTUILayoutNode }) {
+  return (
+    <div className={`flex gap-5
+    flex-col-reverse sm:flex-row`}>
+      {node.items.map((node, i) => (
+        <UIElementRenderer key={i} {...{ node }} />
+      ))}
+    </div>
+  );
 }

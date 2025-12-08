@@ -1,13 +1,18 @@
 import { CircleAlertIcon } from "lucide-react";
 import { NumberInput } from "@/cpn/main/NumberInput";
-import { type BSTNode, BSTType } from "@/lib/resources";
-import type { BSTNUIumberInputNode } from "@/lib/resources/builders/bst/nodes/number-input";
-import { ParagraphNode, TextNode, WidgetNode } from "../../cpn/ui";
+import { type BSTNode, BSTType } from "@/lib/resources/builders/bst/nodes";
+import type { BSTUINumberInputNode, BSTUITextBlockNode } from "@/lib/resources/builders/bst/nodes/ui";
+import {
+  LayoutNodeRenderer,
+  ParagraphNodeRenderer,
+  TextNodeRenderer,
+  WidgetNodeRenderer,
+} from "../../cpn/ui";
 import { ExerciseState, useExerciseStore } from "./store";
 
 export function UIElements() {
   const node = useExerciseStore((state) => state.getCurrentExercise().data.ui);
-  return <UIElementRenderer {...{ node }} />;
+  return <UIElementRenderer {...{ node }} />
 }
 
 export function UIElementRenderer({ node }: { node: BSTNode }) {
@@ -23,27 +28,32 @@ export function UIElementRenderer({ node }: { node: BSTNode }) {
     return <div>Invalid node</div>;
   }
   switch (node._bsttype) {
-    case BSTType.CodeObject:
-      return;
-    case BSTType.UISuperText:
-      return <TextNode {...{ node }} />;
-    case BSTType.UIParagraph:
-      return <ParagraphNode {...{ node }} />;
-    case BSTType.UIWidget:
-      return <WidgetNode {...{ node }} />;
-    case BSTType.UINumberInput:
-      return <NumberInputNode {...{ node }} />;
+    case BSTType.Text:
+      return <TextNodeRenderer {...{ node }} />;
+    case BSTType.Paragraph:
+      return <ParagraphNodeRenderer {...{ node }} />;
+    case BSTType.WidgetBlock:
+      return <WidgetNodeRenderer {...{ node }} />;
+    case BSTType.NumberInput:
+      return <NumberInputNodeRenderer {...{ node }} />;
+    case BSTType.Layout:
+      return <LayoutNodeRenderer {...{ node }} />;
+    case BSTType.TextBlock:
+      return <TextBlockNodeRenderer {...{ node }} />
     default:
-      return (
-        <CircleAlertIcon
-          className="h-[0.9rem] text-shadow-md text-shadow-red-500"
-          stroke="red"
-        />
-      );
+      return <CircleAlertIcon
+        className="h-4 text-shadow-md text-shadow-red-500"
+        stroke="red"
+      />
   }
 }
+export function TextBlockNodeRenderer({ node }: { node: BSTUITextBlockNode }) {
+  return <div className="w-full">
+    <UIElementRenderer node={node.items} />
+  </div>
+}
 
-function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
+function NumberInputNodeRenderer({ node }: { node: BSTUINumberInputNode }) {
   const [
     index,
     correct,

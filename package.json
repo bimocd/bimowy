@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
-    "check": "npx tsc --noEmit"
+    "check": "npx tsc --noEmit",
+    "play": "npx tsx ./test/playground.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
@@ -25,7 +26,7 @@
     "better-react-mathjax": "^2.3.0",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.553.0",
-    "next": "16.0.3",
+    "next": "^16.0.7",
     "nuqs": "^2.7.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",

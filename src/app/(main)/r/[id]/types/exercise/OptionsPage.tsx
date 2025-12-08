@@ -1,8 +1,11 @@
 import { InfoIcon } from "lucide-react";
 import { NumberInput } from "@/cpn/main/NumberInput";
-import { type BSTOptionNodeSerialized, BSTType } from "@/lib/resources";
-import type { BSTOptionInterval } from "@/lib/resources/builders/bst/nodes/interval-option";
-import type { BSTOptionTogglables } from "@/lib/resources/builders/bst/nodes/togglables-option";
+import { BSTType } from "@/lib/resources/builders/bst/nodes";
+import type {
+  BSTIntervalOption,
+  BSTTogglablesOption,
+  SerializedOptionNode,
+} from "@/lib/resources/builders/bst/nodes/option";
 import { useExerciseStore } from "./store";
 
 export function OptionsPage() {
@@ -33,21 +36,21 @@ function OptionRenderer({
   option,
 }: {
   id: string;
-  option: BSTOptionNodeSerialized;
+  option: SerializedOptionNode;
 }) {
   switch (option._bsttype) {
-    case BSTType.OptionInterval:
+    case BSTType.IntervalOption:
       return (
         <IntervalOption
           {...{ id }}
-          option={option as BSTOptionNodeSerialized<BSTOptionInterval>}
+          option={option as SerializedOptionNode<BSTIntervalOption>}
         />
       );
-    case BSTType.OptionTogglables:
+    case BSTType.TogglablesOption:
       return (
         <TogglablesOption
           {...{ id }}
-          option={option as BSTOptionNodeSerialized<BSTOptionTogglables>}
+          option={option as SerializedOptionNode<BSTTogglablesOption>}
         />
       );
     default:
@@ -60,11 +63,11 @@ function TogglablesOption({
   option,
 }: {
   id: string;
-  option: BSTOptionNodeSerialized<BSTOptionTogglables>;
+  option: SerializedOptionNode<BSTTogglablesOption>;
 }) {
   const [toggledList, setOptionValue] = [
     useExerciseStore(
-      (s) => s.optionValues[id] as BSTOptionTogglables["defaultValue"],
+      (s) => s.optionValues[id] as BSTTogglablesOption["defaultValue"],
     ),
     useExerciseStore((s) => s.setOptionValue),
   ];
@@ -104,11 +107,11 @@ function IntervalOption({
   option,
 }: {
   id: string;
-  option: BSTOptionNodeSerialized<BSTOptionInterval>;
+  option: SerializedOptionNode<BSTIntervalOption>;
 }) {
   const [optionValue, setOptionValue] = [
     useExerciseStore(
-      (s) => s.optionValues[id] as BSTOptionInterval["defaultValue"],
+      (s) => s.optionValues[id] as BSTIntervalOption["defaultValue"],
     ),
     useExerciseStore((s) => s.setOptionValue),
   ];

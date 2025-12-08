@@ -1,10 +1,24 @@
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-import type { ReactNode } from "react";
+import {
+  MathJax,
+  MathJaxContext,
+  type MathJaxContextProps,
+} from "better-react-mathjax";
+import type { HTMLAttributes, ReactNode } from "react";
 
-export function LatexText({ children }: { children: ReactNode }) {
-  return <MathJax>{children}</MathJax>;
+export function LatexText({
+  children,
+  ...props
+}: HTMLAttributes<HTMLSpanElement> & { children: ReactNode }) {
+  return (
+    <MathJax inline {...props}>
+      {children}
+    </MathJax>
+  );
 }
 
-export function LatexProvider({ children }: { children: ReactNode }) {
-  return <MathJaxContext>{children}</MathJaxContext>;
+export function LatexProvider({
+  children,
+  ...props
+}: MathJaxContextProps & { children: ReactNode }) {
+  return <MathJaxContext {...props}>{children}</MathJaxContext>;
 }

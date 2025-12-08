@@ -1,6 +1,6 @@
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
-import { resourceHandler } from "@/lib/resources";
+import { resourceHandler } from "@/lib/resources/builders/handler";
 import { ResourceClientPage } from "./cpn/ResourceClientPage";
 
 export default async function Home() {

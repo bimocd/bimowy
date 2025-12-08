@@ -26,7 +26,8 @@ const strokeWidth = 3;
 
 export function MetaBar() {
   return (
-    <div className="py-1 flex items-center justify-between flex-wrap gap-3">
+    <div className="py-1 flex flex-col items-end justify-between gap-3
+    overflow-y-auto">
       <LeftBottomBar />
       <RightBottomBar />
     </div>
@@ -45,14 +46,33 @@ function LeftBottomBar() {
   return !exercisesLength ? (
     <></>
   ) : (
-    <div className="flex gap-2 bg-white/5 rounded-md px-3 py-2">
+    <div className="flex flex-col gap-2 justify-center items-end 
+    bg-white/5 rounded-md p-2 ring-1 ring-ring/30">
       <Box className="font-mono">{time}</Box>
       {pageState !== PageState.End && (
         <>
           <Box className="font-mono">
             {currentIndex + 1}/{exercises.length}
           </Box>
-          <div className="flex gap-0.5">
+          <div className="flex gap-0.5 flex-row sm:flex-col overflow-auto">
+            {exercises.map((exercise, i) => (
+              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
+            ))}
+            {exercises.map((exercise, i) => (
+              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
+            ))}
+            {exercises.map((exercise, i) => (
+              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
+            ))}
+            {exercises.map((exercise, i) => (
+              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
+            ))}
+            {exercises.map((exercise, i) => (
+              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
+            ))}
+            {exercises.map((exercise, i) => (
+              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
+            ))}
             {exercises.map((exercise, i) => (
               <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
             ))}
@@ -253,8 +273,10 @@ function RightBottomBar() {
 
   return (
     <div
-      className={`flex gap-3 ${areAllButtonsLocked ? "cursor-progress" : ""}`}
+      className={`flex flex-col-reverse
+        gap-3 ${areAllButtonsLocked ? "cursor-progress" : ""}`}
     >
+      {buttonsData.main && <BottomButton {...buttonsData.main} />}
       {buttonsData.secondary.map((b) => (
         <BottomButton
           {...b}
@@ -263,7 +285,6 @@ function RightBottomBar() {
           variant="secondary"
         />
       ))}
-      {buttonsData.main && <BottomButton {...buttonsData.main} />}
     </div>
   );
 }

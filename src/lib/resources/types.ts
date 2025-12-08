@@ -34,8 +34,8 @@ export const resourceTypeData = {
     emoji: "💪",
     icon: InfinityIcon,
     // icon: BicepsFlexedIcon,
-    name: "Exercise Template",
-    slug: "re",
+    name: "Template Exercise",
+    slug: "te",
   },
   journey: {
     color: "#4ade80",

@@ -1,7 +1,11 @@
+type RawAllowedVariableValues = number | string | boolean;
+export type AllowedVariableValues =
+  | RawAllowedVariableValues
+  | RawAllowedVariableValues[];
 export class Scope {
   private variables = new Map();
   constructor(
-    private vars: Record<string, any> = {},
+    private vars: Record<string, AllowedVariableValues> = {},
     private parent?: Scope,
   ) {
     for (const [varId, varValue] of Object.entries(this.vars)) {
