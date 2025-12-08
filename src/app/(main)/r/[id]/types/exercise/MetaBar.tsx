@@ -58,24 +58,6 @@ function LeftBottomBar() {
             {exercises.map((exercise, i) => (
               <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
             ))}
-            {exercises.map((exercise, i) => (
-              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
-            ))}
-            {exercises.map((exercise, i) => (
-              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
-            ))}
-            {exercises.map((exercise, i) => (
-              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
-            ))}
-            {exercises.map((exercise, i) => (
-              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
-            ))}
-            {exercises.map((exercise, i) => (
-              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
-            ))}
-            {exercises.map((exercise, i) => (
-              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
-            ))}
           </div>
         </>
       )}
