@@ -29,22 +29,6 @@ export default new ExerciseTemplateResourceBuilder({
   },
   uiPlan: [
     $.layout([
-      $.widget("Plane", {
-        // @ts-expect-error
-        elems: [
-          {
-            type: PlaneElementEnum.Vector,
-            x1: $.i($.var("seed"), 0),
-            x2: $.i($.var("seed"), 2),
-            y1: $.i($.var("seed"), 1),
-            y2: $.i($.var("seed"), 3),
-          },
-        ],
-        ranges: {
-          x: $.var("x_interval"),
-          y: $.var("y_interval"),
-        },
-      }),
       $.textBloc([
         $.prgh([
           $.text("The vector "),
@@ -68,29 +52,46 @@ export default new ExerciseTemplateResourceBuilder({
           $.numinp("y2"),
           $.text(")"),
         ]),
-        // $.prgh([
-        //   $.text("\\(\\vec{v}\\)", true),
-        //   $.text(" = ("),
-        //   $.numinp("x"),
-        //   $.text(", "),
-        //   $.numinp("y"),
-        //   $.text(")"),
-        // ]),
-        // $.prgh([
-        //   $.text("From ("),
-        //   $.numinp("x1"),
-        //   $.text(", "),
-        //   $.numinp("y1"),
-        //   $.text(")"),
-        // ]),
-        // $.prgh([
-        //   $.text("To ("),
-        //   $.numinp("x2"),
-        //   $.text(", "),
-        //   $.numinp("y2"),
-        //   $.text(")"),
-        // ]),
       ]),
+      $.widget("Plane", {
+        // @ts-expect-error
+        elems: [
+          {
+            type: PlaneElementEnum.Vector,
+            x1: $.i($.var("seed"), 0),
+            x2: $.i($.var("seed"), 2),
+            y1: $.i($.var("seed"), 1),
+            y2: $.i($.var("seed"), 3),
+          },
+        ],
+        ranges: {
+          x: $.var("x_interval"),
+          y: $.var("y_interval"),
+        },
+      }),
     ]),
   ],
 });
+
+// $.prgh([
+//   $.text("\\(\\vec{v}\\)", true),
+//   $.text(" = ("),
+//   $.numinp("x"),
+//   $.text(", "),
+//   $.numinp("y"),
+//   $.text(")"),
+// ]),
+// $.prgh([
+//   $.text("From ("),
+//   $.numinp("x1"),
+//   $.text(", "),
+//   $.numinp("y1"),
+//   $.text(")"),
+// ]),
+// $.prgh([
+//   $.text("To ("),
+//   $.numinp("x2"),
+//   $.text(", "),
+//   $.numinp("y2"),
+//   $.text(")"),
+// ]),
