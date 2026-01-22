@@ -52,6 +52,7 @@ export const data: SidebarData = {
       name: "",
       items: [
         {
+          disabled: true,
           name: "Create a resource",
           id: "create",
           href: "/create",
@@ -120,8 +121,11 @@ function MainNavButtons() {
         <SidebarMenu>
           {n.items.map((item) => {
             return <SidebarMenuItem key={item.id}>
-              <SidebarMenuButton asChild disabled={item.disabled}>
-                <Link href={item.disabled ? "/" : item.href}>
+              <SidebarMenuButton asChild disabled={item.disabled}
+                aria-disabled={item.disabled}>
+                <Link href={item.disabled ? "/" : item.href}
+                  aria-disabled={item.disabled}
+                  className="aria-disabled:opacity-20!">
                   <item.icon />
                   {item.name}
                 </Link>

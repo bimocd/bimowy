@@ -26,8 +26,7 @@ const strokeWidth = 3;
 
 export function MetaBar() {
   return (
-    <div className="py-1 flex flex-col items-end justify-between gap-3
-    overflow-y-auto">
+    <div className={`py-1 flex flex-col items-end justify-between gap-3`}>
       <LeftBottomBar />
       <RightBottomBar />
     </div>
