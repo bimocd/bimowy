@@ -7,12 +7,12 @@ import {
 	marginOffset,
 	opacity,
 	type Ranges,
-	strokeWidth,
+	strokeWidth
 } from "../util";
 
 export default function PlaneBackground({
 	ranges,
-	excluded,
+	excluded
 }: {
 	ranges: Ranges;
 	excluded: Excludables[];

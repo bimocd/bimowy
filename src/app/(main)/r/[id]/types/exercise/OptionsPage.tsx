@@ -4,7 +4,7 @@ import { BSTType } from "@/lib/resources/builders/bst/nodes";
 import type {
 	BSTIntervalOption,
 	BSTTogglablesOption,
-	SerializedOptionNode,
+	SerializedOptionNode
 } from "@/lib/resources/builders/bst/nodes/option";
 import { useExerciseStore } from "./store";
 
@@ -51,14 +51,14 @@ function OptionRenderer({ id, option }: { id: string; option: SerializedOptionNo
 
 function TogglablesOption({
 	id,
-	option,
+	option
 }: {
 	id: string;
 	option: SerializedOptionNode<BSTTogglablesOption>;
 }) {
 	const [toggledList, setOptionValue] = [
 		useExerciseStore((s) => s.optionValues[id] as BSTTogglablesOption["defaultValue"]),
-		useExerciseStore((s) => s.setOptionValue),
+		useExerciseStore((s) => s.setOptionValue)
 	];
 	return (
 		<div className="flex gap-3">
@@ -71,7 +71,7 @@ function TogglablesOption({
 						onClick={() => {
 							setOptionValue(
 								id,
-								toggled ? toggledList.filter((tg) => tg !== t) : [...toggledList, t],
+								toggled ? toggledList.filter((tg) => tg !== t) : [...toggledList, t]
 							);
 						}}
 						className={`flex justify-center items-center
@@ -91,14 +91,14 @@ function TogglablesOption({
 
 function IntervalOption({
 	id,
-	option,
+	option
 }: {
 	id: string;
 	option: SerializedOptionNode<BSTIntervalOption>;
 }) {
 	const [optionValue, setOptionValue] = [
 		useExerciseStore((s) => s.optionValues[id] as BSTIntervalOption["defaultValue"]),
-		useExerciseStore((s) => s.setOptionValue),
+		useExerciseStore((s) => s.setOptionValue)
 	];
 
 	return (

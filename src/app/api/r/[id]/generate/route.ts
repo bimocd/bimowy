@@ -3,7 +3,7 @@ import * as z from "zod";
 import { ErrorResponse, SuccessResponse } from "@/app/api/helpers";
 import {
 	ExerciseTemplateResourceBuilder,
-	type OptionValues,
+	type OptionValues
 } from "@/lib/resources/builders/exercise";
 import { resourceHandler } from "@/lib/resources/builders/handler";
 
@@ -38,10 +38,10 @@ type APIGenerateResponse = ReturnType<ExerciseTemplateResourceBuilder["generateE
 
 export async function fetchAPIGenerate(
 	resource_id: string,
-	options: OptionValues,
+	options: OptionValues
 ): Promise<APIGenerateResponse> {
 	return await fetch(`/api/r/${resource_id}/generate`, {
 		method: "POST",
-		body: JSON.stringify({ options }),
+		body: JSON.stringify({ options })
 	}).then((r) => r.json());
 }

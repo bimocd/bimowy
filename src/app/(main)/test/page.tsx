@@ -8,7 +8,7 @@ export default function TestPage() {
 	useEffect(() => {
 		setText("____");
 		fetchAPICorrect("factorial", [3], {
-			n: 6,
+			n: 6
 		}).then((r) => setText(inspect(r, { depth: 3 })));
 	}, []);
 	return <>{text}</>;

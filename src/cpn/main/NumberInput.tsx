@@ -51,7 +51,7 @@ export function NumberInput({
         disabled:opacity-50
         disabled:hover:cursor-not-allowed
         text-2xl!
-        placeholder:opacity-10`,
+        placeholder:opacity-10`
 			)}
 			data-invalid={!isValid}
 			onBlur={(ev) => {

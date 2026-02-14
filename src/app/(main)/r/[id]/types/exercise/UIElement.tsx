@@ -3,13 +3,13 @@ import { NumberInput } from "@/cpn/main/NumberInput";
 import { type BSTNode, BSTType } from "@/lib/resources/builders/bst/nodes";
 import type {
 	BSTUINumberInputNode,
-	BSTUITextBlockNode,
+	BSTUITextBlockNode
 } from "@/lib/resources/builders/bst/nodes/ui";
 import {
 	LayoutNodeRenderer,
 	ParagraphNodeRenderer,
 	TextNodeRenderer,
-	WidgetNodeRenderer,
+	WidgetNodeRenderer
 } from "../../cpn/ui";
 import { ExerciseState, useExerciseStore } from "./store";
 
@@ -64,7 +64,7 @@ function NumberInputNodeRenderer({ node }: { node: BSTUINumberInputNode }) {
 				? false
 				: state.getCurrentExercise().state !== ExerciseState.OnGoing ||
 						(input.correction.corrected && input.correction.correct);
-		}),
+		})
 	];
 
 	const stateStr = !input

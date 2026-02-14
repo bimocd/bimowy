@@ -27,29 +27,29 @@ const TogglablesOptionHelpers = {
 	togl: <const T extends string[]>(
 		name: string,
 		values: T,
-		defaultValues: T[number][] = [],
+		defaultValues: T[number][] = []
 	): BSTTogglablesOption<T> => ({
 		_bsttype: BSTType.TogglablesOption,
 		_zodtype: z.array(z.enum(values)).min(1),
 		togglables: values,
 		name,
-		defaultValue: defaultValues,
-	}),
+		defaultValue: defaultValues
+	})
 };
 const IntervalOptionHelpers = {
 	intervaloption: (
 		name: string,
 		defaultValue: [number, number],
-		extra?: { min?: number; max?: number },
+		extra?: { min?: number; max?: number }
 	): BSTIntervalOption => ({
 		_bsttype: BSTType.IntervalOption,
 		_zodtype: z.tuple([z.number(), z.number()]),
 		defaultValue,
 		name,
-		...extra,
-	}),
+		...extra
+	})
 };
 export const OptionHelpers = {
 	...TogglablesOptionHelpers,
-	...IntervalOptionHelpers,
+	...IntervalOptionHelpers
 };

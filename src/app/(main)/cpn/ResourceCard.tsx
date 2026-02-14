@@ -21,10 +21,10 @@ export function ResourceCard({ data }: { data: BaseResourceData }) {
 					? {
 							boxShadow: `0px 1px 5px ${color}`,
 							outlineColor: color,
-							outlineWidth: "3px",
+							outlineWidth: "3px"
 						}
 					: {}),
-				outlineStyle: "solid",
+				outlineStyle: "solid"
 			}}
 		>
 			<ResourceCardAbsoluteNote {...{ isHover, type }} />
@@ -124,7 +124,7 @@ export function ResourceCardContainer({
       outline-1 group/card`,
 				disabled && "opacity-25 grayscale-50 scale-90 blur-[1.2px]",
 				randomClassNames,
-				className,
+				className
 			)}
 			onMouseEnter={() => setIsHover(true)}
 			onMouseLeave={() => setIsHover(false)}

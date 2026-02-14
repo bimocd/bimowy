@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 	const resourceType = resourceTypeData[resource.type];
 
 	return {
-		title: `${resourceType.emoji} ${resource.name}`,
+		title: `${resourceType.emoji} ${resource.name}`
 	};
 }
 

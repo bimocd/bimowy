@@ -8,8 +8,8 @@
 		"start": "next start",
 		"lint": "biome check",
 		"format": "biome format --write",
-		"check": "npx tsc --noEmit",
-		"play": "npx tsx ./test/playground.ts"
+		"check": "tsc --noEmit",
+		"play": "tsx watch ./test/playground.ts"
 	},
 	"dependencies": {
 		"@radix-ui/react-avatar": "^1.1.11",

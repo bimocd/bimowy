@@ -11,10 +11,10 @@ export default new ArticleResourceBuilder({
 			$.textBloc([
 				$.prgh([
 					$.text(
-						`A matrix is a 2D grid of values (most of the time numbers). We use matrices a lot:`,
-					),
-				]),
-			]),
-		]),
-	],
+						`A matrix is a 2D grid of values (most of the time numbers). We use matrices a lot:`
+					)
+				])
+			])
+		])
+	]
 });

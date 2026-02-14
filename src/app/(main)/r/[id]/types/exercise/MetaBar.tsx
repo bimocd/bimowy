@@ -4,10 +4,11 @@ import {
 	CheckCheckIcon,
 	FlagIcon,
 	LogOutIcon,
+	type LucideIcon,
 	PlayIcon,
 	PlusIcon,
 	RotateCcwIcon,
-	UndoIcon,
+	UndoIcon
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { HTMLAttributes, ReactNode } from "react";
@@ -19,7 +20,7 @@ import {
 	ExerciseState,
 	type InputInstance,
 	PageState,
-	useExerciseStore,
+	useExerciseStore
 } from "./store";
 
 const strokeWidth = 3;
@@ -39,7 +40,7 @@ function LeftBottomBar() {
 		useExerciseStore((state) => state.exercises),
 		useExerciseStore((state) => state.exercises.length),
 		useExerciseStore((state) => state.currentIndex),
-		useExerciseStore((state) => state.pageState),
+		useExerciseStore((state) => state.pageState)
 	];
 
 	return !exercisesLength ? (
@@ -70,7 +71,7 @@ function LeftBottomExerciseButton({ exercise, i }: { i: number; exercise: Exerci
 	const [currentIndex, pageState, setCurrentExerciseIndex] = [
 		useExerciseStore((state) => state.currentIndex),
 		useExerciseStore((state) => state.pageState),
-		useExerciseStore((state) => state.setCurrentExerciseIndex),
+		useExerciseStore((state) => state.setCurrentExerciseIndex)
 	];
 	const isCurrent = i === currentIndex;
 
@@ -96,7 +97,7 @@ function LeftBottomExerciseButton({ exercise, i }: { i: number; exercise: Exerci
 function LeftBottomExerciseButtonEmoji({
 	exercise,
 	inputs,
-	isCurrent,
+	isCurrent
 }: {
 	exercise: ExerciseInstance;
 	inputs: InputInstance[];
@@ -110,6 +111,17 @@ function LeftBottomExerciseButtonEmoji({
 	if (isAllCorrect) return isCurrent ? "🟩" : "🟢";
 	return isCurrent ? "🟥" : "🔴";
 }
+
+type ButtonIcon = typeof Spinner | LucideIcon;
+type ButtonData = {
+	id: string;
+	variant?: Parameters<typeof Button>[0]["variant"];
+	disabled?: boolean;
+	icon: ButtonIcon;
+	text?: string;
+	onClick?: () => void;
+} & ({ disabled: true } | { onClick?: () => void });
+
 function RightBottomBar() {
 	const [
 		pageState,
@@ -124,7 +136,7 @@ function RightBottomBar() {
 		next,
 		retry,
 		loadNewExercise,
-		end,
+		end
 	] = [
 		useExerciseStore((state) => state.pageState),
 		useExerciseStore((state) => state.exercises),
@@ -138,24 +150,15 @@ function RightBottomBar() {
 		useExerciseStore((state) => state.next),
 		useExerciseStore((state) => state.retry),
 		useExerciseStore((state) => state.loadNewExercise),
-		useExerciseStore((state) => state.end),
+		useExerciseStore((state) => state.end)
 	];
-
-	type ButtonData = {
-		id: string;
-		variant?: Parameters<typeof Button>[0]["variant"];
-		disabled?: boolean;
-		icon: any; // TODO fix
-		text?: string;
-		onClick?: () => any | Promise<any>;
-	} & ({ disabled: true } | { onClick?: () => void });
 
 	const buttonsData: {
 		main: ButtonData | null;
 		secondary: ButtonData[];
 	} = {
 		main: null,
-		secondary: [],
+		secondary: []
 	};
 
 	let areAllButtonsLocked = false;
@@ -167,28 +170,28 @@ function RightBottomBar() {
 			icon: RotateCcwIcon,
 			id: "redo",
 			onClick: () => location.reload(),
-			text: "Redo",
+			text: "Redo"
 		};
 		buttonsData.secondary = [
 			{
 				icon: LogOutIcon,
 				id: "quit",
 				onClick: () => router.back(),
-				text: "Quit",
-			},
+				text: "Quit"
+			}
 		];
 	} else if (pageState === PageState.Options) {
 		buttonsData.main = {
 			icon: PlayIcon,
 			id: "start",
 			onClick: () => start(),
-			text: "Start",
+			text: "Start"
 		};
 	} else if (pageState === PageState.Loading || exerciseState === ExerciseState.Correcting) {
 		buttonsData.main = {
 			disabled: true,
 			icon: Spinner,
-			id: "loading",
+			id: "loading"
 		};
 		areAllButtonsLocked = true;
 	} else if (exerciseState === ExerciseState.Corrected && isLastExercise) {
@@ -197,14 +200,14 @@ function RightBottomBar() {
 				icon: PlusIcon,
 				id: "add",
 				onClick: () => loadNewExercise(),
-				text: "Add",
+				text: "Add"
 			};
 		} else {
 			buttonsData.main = {
 				icon: UndoIcon,
 				id: "try-again",
 				onClick: () => retry(),
-				text: "Try again",
+				text: "Try again"
 			};
 		}
 	} else if (exerciseState === ExerciseState.OnGoing) {
@@ -212,7 +215,7 @@ function RightBottomBar() {
 			icon: CheckCheckIcon,
 			id: "correct",
 			onClick: () => correct(),
-			text: "Correct",
+			text: "Correct"
 		};
 	}
 	if (exercises.length && pageState !== PageState.End) {
@@ -220,19 +223,19 @@ function RightBottomBar() {
 			icon: FlagIcon,
 			id: "end",
 			onClick: () => end(),
-			text: "End",
+			text: "End"
 		});
 		buttonsData.secondary.push({
 			disabled: isFirstExercise,
 			icon: ArrowLeftIcon,
 			id: "previous",
-			onClick: () => previous(),
+			onClick: () => previous()
 		});
 		const nextButton = {
 			disabled: isLastExercise,
 			icon: ArrowRightIcon,
 			id: "next",
-			onClick: () => next(),
+			onClick: () => next()
 		};
 		if (!buttonsData.main) buttonsData.main = nextButton;
 		else buttonsData.secondary.push(nextButton);
@@ -256,21 +259,7 @@ function RightBottomBar() {
 	);
 }
 
-function BottomButton({
-	id,
-	variant,
-	disabled,
-	onClick,
-	icon: Icon,
-	text,
-}: {
-	id: string;
-	variant?: Parameters<typeof Button>[0]["variant"];
-	disabled?: boolean;
-	onClick?: () => void;
-	icon: any;
-	text?: string;
-}) {
+function BottomButton({ id, variant, disabled, onClick, icon: Icon, text }: ButtonData) {
 	return (
 		<Button
 			{...{ disabled, variant }}
@@ -301,7 +290,7 @@ export function Box({
 				className,
 				`border-border border
         leading-none
-        p-1.5 px-2 rounded-sm bg-white/5`,
+        p-1.5 px-2 rounded-sm bg-white/5`
 			)}
 			{...props}
 		>

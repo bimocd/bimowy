@@ -3,7 +3,7 @@ import type { Dispatch } from "react";
 
 export default function SearchBar({
 	query,
-	setQuery,
+	setQuery
 }: {
 	query: string | null;
 	setQuery: Dispatch<string | null>;

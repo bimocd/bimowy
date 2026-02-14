@@ -5,7 +5,7 @@ import {
 	opacity,
 	type PlaneElementEnum,
 	type PlaneElementProps,
-	strokeWidth,
+	strokeWidth
 } from "../util";
 
 export default function Circle({
@@ -13,7 +13,7 @@ export default function Circle({
 	y,
 	r,
 	ranges,
-	color,
+	color
 }: PlaneElementProps<PlaneElementEnum.Circle>) {
 	return (
 		<g filter="url(#shadow)" opacity={opacity.main}>

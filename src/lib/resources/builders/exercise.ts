@@ -38,7 +38,7 @@ export class ExerciseTemplateResourceBuilder<Seed = any> extends BaseResourceBui
 				acc[name] = node._zodtype;
 				return acc;
 			},
-			{} as Record<string, BSTOptionNode["_zodtype"]>,
+			{} as Record<string, BSTOptionNode["_zodtype"]>
 		);
 		const parseResult = z.object(OptionsSchema).safeParse(options);
 		return parseResult.error?.issues ?? [];
@@ -84,7 +84,7 @@ export class ExerciseTemplateResourceBuilder<Seed = any> extends BaseResourceBui
 		const ui = this.generateUI(ctx);
 		return {
 			seed,
-			ui,
+			ui
 		};
 	}
 	solve(seed: AllowedVariableValues, inputValues: Record<string, any>) {
@@ -110,7 +110,7 @@ export class ExerciseTemplateResourceBuilder<Seed = any> extends BaseResourceBui
 		return {
 			...super.build(),
 			seedType: z.toJSONSchema(this.seedType),
-			options: this.serializeOptions(),
+			options: this.serializeOptions()
 		};
 	}
 }

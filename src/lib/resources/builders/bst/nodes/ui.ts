@@ -32,7 +32,7 @@ export type BSTUINumberInputNode = {
 
 export const executeNumberInput = (
 	node: BSTUINumberInputNode,
-	ctx: Scope,
+	ctx: Scope
 ): BSTUINumberInputNode => {
 	return { ...node, id: executeBST(node.id, ctx) };
 };
@@ -57,7 +57,7 @@ export function executeText(node: BSTUITextNode, ctx: Scope): BSTUITextNode {
 	return {
 		...node,
 		latex: executeBST(node.latex, ctx),
-		text: executeBST(node.text, ctx),
+		text: executeBST(node.text, ctx)
 	};
 }
 
@@ -74,40 +74,40 @@ export function executeWidget<Id extends WidgetId>(node: BSTUIWidgetBlockNode<Id
 export const UIHelpers = {
 	widget: <ID extends WidgetId>(
 		id: ID,
-		props: BSTUIWidgetBlockNode<ID>["props"],
+		props: BSTUIWidgetBlockNode<ID>["props"]
 	): BSTUIWidgetBlockNode<ID> => ({
 		_bsttype: BSTType.WidgetBlock,
 		id,
-		props,
+		props
 	}),
 	concat: (
 		// TODO: why tf does this need recursively nest node i should put it in dstnode or smt
 		strings: RecursivelyNestNode<(string | number)[]>,
-		latex: BSTUITextNode["latex"] = false,
+		latex: BSTUITextNode["latex"] = false
 	): BSTUITextNode => ({
 		_bsttype: BSTType.Text,
 		latex,
-		text: FunctionHelpers.fn("concat", [strings]),
+		text: FunctionHelpers.fn("concat", [strings])
 	}),
 	textBloc: (items: BSTNode<BSTUITextBlockItemNode[]>): BSTUITextBlockNode => ({
 		_bsttype: BSTType.TextBlock,
-		items,
+		items
 	}),
 	text: (text: BSTUITextNode["text"], latex: BSTUITextNode["latex"] = false): BSTUITextNode => ({
 		_bsttype: BSTType.Text,
 		latex,
-		text,
+		text
 	}),
 	numinp: (id: string): BSTUINumberInputNode => ({
 		_bsttype: BSTType.NumberInput,
-		id,
+		id
 	}),
 	layout: (items: BSTUILayoutNode["items"]): BSTUILayoutNode => ({
 		_bsttype: BSTType.Layout,
-		items,
+		items
 	}),
 	prgh: (items: BSTUIParagraphNode["items"]): BSTUIParagraphNode => ({
 		_bsttype: BSTType.Paragraph,
-		items,
-	}),
+		items
+	})
 };

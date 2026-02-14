@@ -13,7 +13,7 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-	SidebarProvider,
+	SidebarProvider
 } from "@/cpn/ui/sidebar";
 import { MascotIcon } from "./MascotIcon";
 
@@ -44,7 +44,7 @@ export const data: SidebarData = {
 		href: "/",
 		icon: MascotIcon,
 		subtitle: "BETA",
-		title: "Bimowy",
+		title: "Bimowy"
 	},
 	nav: [
 		{
@@ -56,11 +56,11 @@ export const data: SidebarData = {
 					name: "Create a resource",
 					id: "create",
 					href: "/create",
-					icon: PlusIcon,
-				},
-			],
-		},
-	],
+					icon: PlusIcon
+				}
+			]
+		}
+	]
 } as const;
 
 export default function SideBarWrapper({ children }: { children: ReactNode }) {

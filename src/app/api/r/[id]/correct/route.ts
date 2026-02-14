@@ -19,7 +19,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 	// Validate request body
 	const BodySchema = z.object({
 		seed: z.any(),
-		inputValues: z.record(z.string(), z.any()),
+		inputValues: z.record(z.string(), z.any())
 	});
 	const { error, success } = BodySchema.safeParse(body);
 	if (!success) return ErrorResponse(error.issues);
@@ -40,10 +40,10 @@ type APICorrectResponse = ReturnType<ExerciseTemplateResourceBuilder["correct"]>
 export async function fetchAPICorrect(
 	resource_id: string,
 	seed: any,
-	inputValues: Record<string, any>, // TODO more specific record values
+	inputValues: Record<string, any> // TODO more specific record values
 ): Promise<APICorrectResponse> {
 	return await fetch(`/api/r/${resource_id}/correct`, {
 		method: "POST",
-		body: JSON.stringify({ seed, inputValues }),
+		body: JSON.stringify({ seed, inputValues })
 	}).then((r) => r.json());
 }

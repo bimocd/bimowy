@@ -1,7 +1,7 @@
 import type { BSTOptionNode } from "@/lib/resources/builders/bst/nodes/option";
 import type {
 	BuiltExerciseTemplateResource,
-	ExerciseTemplateResourceBuilder,
+	ExerciseTemplateResourceBuilder
 } from "@/lib/resources/builders/exercise";
 
 export type ExerciseStoreProps = {
@@ -11,13 +11,13 @@ export type ExerciseStoreProps = {
 export enum ExerciseState {
 	OnGoing, // Student is working on it
 	Correcting, // API is getting called to correct
-	Corrected, // API has answered and UI is waiting for user to click on "Retry" or "Next"
+	Corrected // API has answered and UI is waiting for user to click on "Retry" or "Next"
 }
 export enum PageState {
 	Options,
 	Loading,
 	OnGoing,
-	End,
+	End
 }
 
 export type InputInstance = {

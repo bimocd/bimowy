@@ -12,7 +12,7 @@ export enum PlaneElementEnum {
 	Vector = "vector",
 	ScalarFunction = "scalar-function",
 	VectorFunction = "vector-function",
-	Circle = "circle",
+	Circle = "circle"
 }
 
 type PositionExtra = { x: number; y: number };
@@ -75,7 +75,7 @@ export const angles: {
 		percentage: { abs: 0, value: "0" },
 		rad: { value: "0π" },
 		sin: { abs: 0, value: ["\\sqrt{0}", "2"] },
-		type: 0,
+		type: 0
 	},
 	{
 		cos: { abs: Math.sqrt(3) / 2, value: ["\\sqrt{3}", "2"] },
@@ -84,7 +84,7 @@ export const angles: {
 		percentage: { abs: 1 / 12, value: "1/12" },
 		rad: { abs: Math.PI / 6, value: "π/6" },
 		sin: { abs: 0.5, value: ["\\sqrt{1}", "2"] },
-		type: 2,
+		type: 2
 	},
 	{
 		cos: { abs: Math.sqrt(2) / 2, value: ["\\sqrt{2}", "2"] },
@@ -93,7 +93,7 @@ export const angles: {
 		percentage: { abs: 1 / 8, value: "1/8" },
 		rad: { abs: Math.PI / 4, value: "π/4" },
 		sin: { abs: Math.sqrt(2) / 2, value: ["\\sqrt{2}", "2"] },
-		type: 1,
+		type: 1
 	},
 	{
 		cos: { abs: 0.5, value: ["\\sqrt{1}", "2"] },
@@ -102,7 +102,7 @@ export const angles: {
 		percentage: { abs: 1 / 6, value: "1/6" },
 		rad: { abs: Math.PI / 3, value: "π/3" },
 		sin: { abs: Math.sqrt(3) / 2, value: ["\\sqrt{3}", "2"] },
-		type: 2,
+		type: 2
 	},
 	{
 		cos: { abs: 0, value: ["\\sqrt{0}", "2"] },
@@ -111,7 +111,7 @@ export const angles: {
 		percentage: { abs: 1 / 4, value: "1/4" },
 		rad: { abs: Math.PI / 2, value: "π/2" },
 		sin: { abs: 1, value: ["\\sqrt{4}", "2"] },
-		type: 1,
+		type: 1
 	},
 	{
 		cos: { abs: -0.5, value: ["-\\sqrt{1}", "2"] },
@@ -120,7 +120,7 @@ export const angles: {
 		percentage: { abs: 1 / 3, value: "1/3" },
 		rad: { abs: (2 / 3) * Math.PI, value: "2π/3" },
 		sin: { abs: Math.sqrt(3) / 2, value: ["\\sqrt{3}", "2"] },
-		type: 2,
+		type: 2
 	},
 	{
 		cos: { abs: -Math.sqrt(2) / 2, value: ["-\\sqrt{2}", "2"] },
@@ -129,7 +129,7 @@ export const angles: {
 		percentage: { abs: 3 / 8, value: "3/8" },
 		rad: { abs: (3 / 4) * Math.PI, value: "3π/4" },
 		sin: { abs: Math.sqrt(2) / 2, value: ["\\sqrt{2}", "2"] },
-		type: 1,
+		type: 1
 	},
 	{
 		cos: { abs: -1, value: ["-\\sqrt{4}", "2"] },
@@ -138,7 +138,7 @@ export const angles: {
 		percentage: { abs: 1 / 2, value: "1/2" },
 		rad: { abs: Math.PI, value: "π" },
 		sin: { abs: 0, value: ["\\sqrt{0}", "2"] },
-		type: 1,
+		type: 1
 	},
 	{
 		cos: { abs: -0.5, value: ["-\\sqrt{1}", "2"] },
@@ -147,7 +147,7 @@ export const angles: {
 		percentage: { abs: 2 / 3, value: "2/3" },
 		rad: { abs: (4 / 3) * Math.PI, value: "4π/3" },
 		sin: { abs: -Math.sqrt(3) / 2, value: ["-\\sqrt{3}", "2"] },
-		type: 2,
+		type: 2
 	},
 	{
 		cos: { abs: 1, value: ["\\sqrt{4}", "2"] },
@@ -156,29 +156,29 @@ export const angles: {
 		percentage: { abs: 1, value: "1" },
 		rad: { abs: 2 * Math.PI, value: "2π" },
 		sin: { abs: 0, value: ["\\sqrt{0}", "2"] },
-		type: 0,
-	},
+		type: 0
+	}
 ];
 
 import type { SVGAttributes } from "react";
 // SVG
 export const defaultStrokeProps: SVGAttributes<SVGElement> = {
 	strokeLinecap: "round",
-	strokeLinejoin: "round",
+	strokeLinejoin: "round"
 };
 export const defaultTextProps: SVGAttributes<SVGTextElement> = {
-	fill: "white",
+	fill: "white"
 };
 export const strokeWidth = {
 	min: 0.1,
-	normal: 0.2,
+	normal: 0.2
 };
 export const marginOffset = 0.8;
 export const opacity = {
 	bg: 1 / 10,
 	main: 9 / 10,
 	mainHidden: 6 / 10,
-	side: 5 / 10,
+	side: 5 / 10
 };
 
 // Simplicity
@@ -186,7 +186,7 @@ export const stepBreakpoints = {
 	11: 5,
 	30: 10,
 	45: 15,
-	60: 20,
+	60: 20
 } as const;
 
 // Random

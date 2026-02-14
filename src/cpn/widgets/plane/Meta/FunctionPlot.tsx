@@ -8,7 +8,7 @@ import {
 	opacity,
 	type Range,
 	type Ranges,
-	strokeWidth,
+	strokeWidth
 } from "../util";
 
 type VectorFunction = (t: number) => Range;
@@ -42,7 +42,7 @@ export default function FunctionPlot({
 	ranges,
 	f,
 	interval,
-	color,
+	color
 }: {
 	ranges: Ranges;
 	f: VectorFunction;

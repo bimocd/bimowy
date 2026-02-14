@@ -9,14 +9,14 @@ import {
 	getYCoor,
 	marginOffset,
 	opacity,
-	strokeWidth,
+	strokeWidth
 } from "../util";
 import Arrow from "./Arrow";
 
 export default function Axis({
 	ranges,
 	type,
-	excluded,
+	excluded
 }: {
 	type: AxisOption;
 	ranges: Ranges;
@@ -34,13 +34,13 @@ export default function Axis({
 								x1: ranges.x[0] - (2 * marginOffset) / 3,
 								x2: ranges.x[1] + (2 * marginOffset) / 3,
 								y1: 0,
-								y2: 0,
+								y2: 0
 							}
 						: {
 								x1: 0,
 								x2: 0,
 								y1: ranges.y[0] - (2 * marginOffset) / 3,
-								y2: ranges.y[1] + (2 * marginOffset) / 3,
+								y2: ranges.y[1] + (2 * marginOffset) / 3
 							})}
 				/>
 			)}
@@ -64,13 +64,13 @@ export default function Axis({
 											x1: coor,
 											x2: coor,
 											y1: middle - markerWidth,
-											y2: middle + markerWidth,
+											y2: middle + markerWidth
 										}
 									: {
 											x1: middle - markerWidth,
 											x2: middle + markerWidth,
 											y1: coor,
-											y2: coor,
+											y2: coor
 										})}
 							/>
 							<text
@@ -80,12 +80,12 @@ export default function Axis({
 									? {
 											textAnchor: "middle",
 											x: coor,
-											y: middle + fontSize * 1.4,
+											y: middle + fontSize * 1.4
 										}
 									: {
 											textAnchor: "end",
 											x: middle - fontSize / 1.4,
-											y: coor + fontSize / 3,
+											y: coor + fontSize / 3
 										})}
 							>
 								{n}

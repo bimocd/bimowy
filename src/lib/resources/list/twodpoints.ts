@@ -14,11 +14,11 @@ export default new ExerciseTemplateResourceBuilder({
 	// --
 	options: {
 		x_interval: $.intervaloption("X Axis", [-5, 5]),
-		y_interval: $.intervaloption("Y Axis", [-5, 5]),
+		y_interval: $.intervaloption("Y Axis", [-5, 5])
 	},
 	solutionPlan: {
 		x: $.i($.var("seed"), 0),
-		y: $.i($.var("seed"), 1),
+		y: $.i($.var("seed"), 1)
 	},
 	uiPlan: [
 		$.layout([
@@ -29,8 +29,8 @@ export default new ExerciseTemplateResourceBuilder({
 					$.numinp("x"),
 					$.text(", "),
 					$.numinp("y"),
-					$.text(")"),
-				]),
+					$.text(")")
+				])
 			]),
 			$.widget("Plane", {
 				// @ts-expect-error TODO: fix ts
@@ -38,13 +38,13 @@ export default new ExerciseTemplateResourceBuilder({
 					{
 						type: PlaneElementEnum.Point,
 						x: $.i($.var("seed"), 0),
-						y: $.i($.var("seed"), 1),
-					},
+						y: $.i($.var("seed"), 1)
+					}
 				],
-				ranges: { x: $.var("x_interval"), y: $.var("y_interval") },
-			}),
-		]),
-	],
+				ranges: { x: $.var("x_interval"), y: $.var("y_interval") }
+			})
+		])
+	]
 });
 
 /**

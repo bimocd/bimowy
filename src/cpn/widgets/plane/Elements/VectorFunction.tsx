@@ -5,7 +5,7 @@ export default function VectorFunction({
 	ranges,
 	f,
 	interval,
-	color,
+	color
 }: PlaneElementProps<PlaneElementEnum.VectorFunction>) {
 	return <FunctionPlot {...{ color, f, interval, ranges }} />;
 }

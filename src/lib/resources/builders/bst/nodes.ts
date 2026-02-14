@@ -21,7 +21,7 @@ export enum BSTType {
 
 	// Option
 	IntervalOption,
-	TogglablesOption,
+	TogglablesOption
 }
 
 // R = ReturnType

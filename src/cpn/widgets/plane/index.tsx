@@ -6,7 +6,7 @@ import { defaultRange, getViewBox, type PartialPlaneProps } from "./util";
 export default function Plane({
 	ranges = defaultRange,
 	elems = {},
-	excluded = [],
+	excluded = []
 }: PartialPlaneProps) {
 	const [xDiff, yDiff] = getViewBox(ranges).slice(2);
 	return (

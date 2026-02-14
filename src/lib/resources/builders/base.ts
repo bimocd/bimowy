@@ -37,7 +37,7 @@ export class BaseResourceBuilder {
 			name: this.name,
 			nicknames: this.nicknames,
 			tags: this.tags,
-			type: this.type,
+			type: this.type
 		};
 	}
 }

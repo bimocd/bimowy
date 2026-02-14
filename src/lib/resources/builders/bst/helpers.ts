@@ -8,5 +8,5 @@ export const $ = {
 	...UIHelpers,
 	...CodeHelpers,
 	...OptionHelpers,
-	...FunctionHelpers,
+	...FunctionHelpers
 };

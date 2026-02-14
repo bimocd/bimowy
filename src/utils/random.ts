@@ -5,13 +5,13 @@ const randomClassNames = [
 		"hover:translate-y-0.5",
 		"hover:-translate-y-0.5",
 		"hover:-translate-y-1",
-		"hover:-translate-y-1.5",
+		"hover:-translate-y-1.5"
 	],
 	[
 		"hover:translate-x-1",
 		"hover:translate-x-0.5",
 		"hover:-translate-x-0.5",
-		"hover:-translate-x-1",
+		"hover:-translate-x-1"
 	],
 	[
 		"hover:-rotate-2",
@@ -19,8 +19,8 @@ const randomClassNames = [
 		"hover:-rotate-0.5",
 		"hover:rotate-0.5",
 		"hover:rotate-1",
-		"hover:rotate-2",
-	],
+		"hover:rotate-2"
+	]
 ];
 
 export function getPseudoRandomClassName(id: string) {

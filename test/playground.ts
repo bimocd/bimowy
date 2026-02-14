@@ -4,10 +4,10 @@ import factorial from "@/lib/resources/list/factorial";
 console.log(
 	inspect(
 		factorial.generateExercise({
-			interval: [0, 4],
+			interval: [0, 4]
 		}),
 		false,
 		10,
-		true,
-	),
+		true
+	)
 );

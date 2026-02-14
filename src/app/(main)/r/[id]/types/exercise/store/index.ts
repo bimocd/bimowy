@@ -7,7 +7,7 @@ import {
 	type ExerciseStoreData,
 	type ExerciseStoreProps,
 	type InputInstance,
-	PageState,
+	PageState
 } from "./types";
 
 export * from "./types";
@@ -21,7 +21,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 		resource,
 		optionValues: Object.entries(resource.options).reduce(
 			(prev, [id, opt]) => ({ ...prev, [id]: opt.defaultValue }),
-			{},
+			{}
 		),
 
 		time: 0,
@@ -44,12 +44,12 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 
 			const inputValues = Object.entries(inputs).reduce(
 				(prev, [id, inp]) => ({ ...prev, [id]: Number(inp.value) }),
-				{},
+				{}
 			);
 			const correction: Record<string, boolean> = await fetchAPICorrect(
 				state.resource.id,
 				exercise.data.seed,
-				inputValues,
+				inputValues
 			);
 
 			const correctionObj: Record<string, InputInstance["correction"]> = {};
@@ -62,7 +62,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 					correctOnFirstTry: inp.correction.corrected
 						? inp.correction.correctOnFirstTry
 						: isCorrect,
-					tries: 1 + (inp.correction.corrected ? inp.correction.tries : 0),
+					tries: 1 + (inp.correction.corrected ? inp.correction.tries : 0)
 				};
 			}
 			return correctionObj;
@@ -73,7 +73,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 			const fetchedExercise = await fetchAPIGenerate(resource.id, optionValues).then((data) => ({
 				data,
 				inputs: {},
-				state: ExerciseState.OnGoing,
+				state: ExerciseState.OnGoing
 			}));
 
 			return fetchedExercise;
@@ -84,7 +84,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 				const newExercises = [...state.exercises];
 				newExercises[state.currentIndex!] = {
 					...newExercises[state.currentIndex!],
-					state: ExerciseState.Correcting,
+					state: ExerciseState.Correcting
 				};
 				return { exercises: newExercises };
 			});
@@ -100,15 +100,15 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 						...prev,
 						[id]: {
 							...input,
-							correction: correction[id],
-						},
+							correction: correction[id]
+						}
 					};
 				}, {});
 
 				newExercises[state.currentIndex!] = {
 					...currentExercise,
 					inputs: newInputs,
-					state: ExerciseState.Corrected,
+					state: ExerciseState.Corrected
 				};
 
 				return { exercises: newExercises };
@@ -158,15 +158,15 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 				currentInputs[id] = {
 					...(currentInputs[id]
 						? {
-								...currentInputs[id],
+								...currentInputs[id]
 							}
 						: {
 								correction: {
-									corrected: false,
+									corrected: false
 								},
-								value: "",
+								value: ""
 							}),
-					ref,
+					ref
 				};
 				newExercises[state.currentIndex!].inputs = currentInputs;
 				return { exercises: newExercises };
@@ -225,7 +225,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 		},
 		setOptionValue(id, value) {
 			setState((state) => ({
-				optionValues: { ...state.optionValues, [id]: value },
+				optionValues: { ...state.optionValues, [id]: value }
 			}));
 		},
 		async start() {
@@ -236,9 +236,9 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 			return setState({
 				atLeastOneFetched: true,
 				exercises: [ex],
-				pageState: PageState.OnGoing,
+				pageState: PageState.OnGoing
 			});
-		},
+		}
 	}));
 
 export type ExerciseStore = ReturnType<typeof createExerciseStore>;

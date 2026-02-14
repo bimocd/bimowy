@@ -5,7 +5,7 @@ import type {
 	BSTUILayoutNode,
 	BSTUIParagraphNode,
 	BSTUITextNode,
-	BSTUIWidgetBlockNode,
+	BSTUIWidgetBlockNode
 } from "@/lib/resources/builders/bst/nodes/ui";
 import { UIElementRenderer } from "../types/exercise/UIElement";
 
@@ -47,7 +47,7 @@ export function ParagraphNodeRenderer({ node }: { node: BSTUIParagraphNode }) {
 }
 
 export function UINode({
-	node,
+	node
 }: {
 	node: BSTUIParagraphNode | BSTUITextNode | BSTUIWidgetBlockNode | BSTUILayoutNode;
 }) {

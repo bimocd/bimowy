@@ -9,7 +9,7 @@ export default function Arrow({
 	color = "white",
 	glow,
 	fixOffset,
-	shadow,
+	shadow
 }: {
 	ranges: Ranges;
 	color?: string;
@@ -25,14 +25,14 @@ export default function Arrow({
 		x1 === x2 ? 0 : x1 < x2 ? offset : -offset,
 		y1 === y2 ? 0 : y1 < y2 ? -offset : offset,
 		x1 === x2 ? 0 : x1 < x2 ? -offset : offset,
-		y1 === y2 ? 0 : y1 < y2 ? offset : -offset,
+		y1 === y2 ? 0 : y1 < y2 ? offset : -offset
 	];
 
 	const [x1Coor, x2Coor, y1Coor, y2Coor] = [
 		getXCoor(ranges, x1 + offsetx1),
 		getXCoor(ranges, x2 + offsetx2),
 		getYCoor(ranges, y1 - offsety1),
-		getYCoor(ranges, y2 - offsety2),
+		getYCoor(ranges, y2 - offsety2)
 	];
 
 	const angleScreen = Math.atan2(y2Coor - y1Coor, x2Coor - x1Coor);
@@ -56,7 +56,7 @@ export default function Arrow({
 		[x2Coor, y2Coor],
 		[rightCoorX, rightCoorY],
 		[middleCoorX, middleCoorY],
-		[x1Coor, y1Coor],
+		[x1Coor, y1Coor]
 	]
 		.map((grps) => grps.join(","))
 		.join(" ");

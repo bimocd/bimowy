@@ -14,6 +14,11 @@
 		"ignoreUnknown": true,
 		"includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
 	},
+	"javascript": {
+		"formatter": {
+			"trailingCommas": "none"
+		}
+	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",

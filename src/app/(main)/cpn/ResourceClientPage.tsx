@@ -6,7 +6,7 @@ import { ResourceCard } from "./ResourceCard";
 import SearchBar from "./SearchBar";
 
 export function ResourceClientPage({
-	resources,
+	resources
 }: {
 	resources: ReturnType<BaseResourceBuilder["build"]>[];
 }) {

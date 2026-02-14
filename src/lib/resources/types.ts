@@ -5,7 +5,7 @@ import {
 	type LucideIcon,
 	PlayIcon,
 	RouteIcon,
-	TelescopeIcon,
+	TelescopeIcon
 } from "lucide-react";
 
 export type ResourceType = {
@@ -20,14 +20,14 @@ export const resourceTypeData = {
 		emoji: "📄",
 		icon: FileTextIcon,
 		name: "Article",
-		slug: "a",
+		slug: "a"
 	},
 	course: {
 		color: "#60a5fa",
 		emoji: "🎓",
 		icon: GraduationCapIcon,
 		name: "Course",
-		slug: "c",
+		slug: "c"
 	},
 	exercise: {
 		color: "#fb923c",
@@ -35,29 +35,29 @@ export const resourceTypeData = {
 		icon: InfinityIcon,
 		// icon: BicepsFlexedIcon,
 		name: "Template Exercise",
-		slug: "te",
+		slug: "te"
 	},
 	journey: {
 		color: "#4ade80",
 		emoji: "🗺️",
 		icon: RouteIcon,
 		name: "Journey",
-		slug: "s",
+		slug: "s"
 	},
 	tool: {
 		color: "#a78bfa",
 		emoji: "🔭",
 		icon: TelescopeIcon,
 		name: "Tool",
-		slug: "t",
+		slug: "t"
 	},
 	video: {
 		color: "#f87171",
 		emoji: "▶️",
 		icon: PlayIcon,
 		name: "Video",
-		slug: "v",
-	},
+		slug: "v"
+	}
 } as const;
 
 export type ResourceTypeId = keyof typeof resourceTypeData;

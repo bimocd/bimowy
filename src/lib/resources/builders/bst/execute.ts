@@ -7,7 +7,7 @@ import {
 	executeParagraph,
 	executeText,
 	executeTextBlock,
-	executeWidget,
+	executeWidget
 } from "./nodes/ui";
 import { Scope } from "./scope";
 
@@ -21,9 +21,9 @@ export function executeBST(node: BSTNode<any>, ctx: Scope = new Scope()): any {
 		return Object.entries(node).reduce(
 			(prev, curr) => ({
 				...prev,
-				[curr[0]]: executeBST(curr[1], ctx),
+				[curr[0]]: executeBST(curr[1], ctx)
 			}),
-			{},
+			{}
 		);
 	}
 	// TODO: figure out how to make this less ugly (typescript is too dumb to keep up with loops of an array of tuples [BSTTYPE, funciton :/])

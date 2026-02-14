@@ -23,7 +23,7 @@ export const ALL_FUNCTIONS = {
 	factorial: (n: number): number => (n <= 0 ? 1 : n * ALL_FUNCTIONS.factorial(n - 1)),
 	getIndex: (arr: number[], i: number): number => arr[i],
 	randomInt: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min,
-	randomFromList: <T>(list: T[]) => list[Math.floor(Math.random() * list.length)],
+	randomFromList: <T>(list: T[]) => list[Math.floor(Math.random() * list.length)]
 } as const;
 
 export type RecursivelyNestNode<U> =
@@ -60,7 +60,7 @@ export type FnIDsThatReturn<R> = {
 
 export type BSTFunctionCallNode<
 	R extends ReturnFn<FnID>,
-	ID extends FnIDsThatReturn<R> = FnIDsThatReturn<R>,
+	ID extends FnIDsThatReturn<R> = FnIDsThatReturn<R>
 > = {
 	_bsttype: BSTType.FunctionCall;
 	id: ID; // TODO: Make this can be a DSTNode<ID> and not necessarly directly a string yk
@@ -69,7 +69,7 @@ export type BSTFunctionCallNode<
 
 export function executeFunctionCall<R extends ReturnFn<FnID>>(
 	node: BSTFunctionCallNode<R, FnIDsThatReturn<R>>,
-	ctx: Scope,
+	ctx: Scope
 ): R {
 	const id = executeBST(node.id, ctx);
 	const f = ALL_FUNCTIONS[id];
@@ -82,14 +82,14 @@ export function executeFunctionCall<R extends ReturnFn<FnID>>(
 export const FunctionHelpers = {
 	fn: <R extends ReturnFn<FnID>, FnID extends FnIDsThatReturn<R> = FnIDsThatReturn<R>>(
 		id: FnID,
-		args: NodeArgsFn<FnID>,
+		args: NodeArgsFn<FnID>
 	): BSTFunctionCallNode<R, FnID> =>
 		({
 			_bsttype: BSTType.FunctionCall,
 			id,
-			args,
+			args
 		}) as const,
 	i: (arr: NodeArgsFnI<"getIndex", 0>, index: NodeArgsFnI<"getIndex", 1>) => {
 		return FunctionHelpers.fn("getIndex", [arr, index]);
-	},
+	}
 };

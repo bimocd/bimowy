@@ -5,7 +5,7 @@ import { UINode } from "../../cpn/ui";
 
 export default function ArticleResourcePage({
 	resource,
-	ui,
+	ui
 }: {
 	resource: BuiltArticleResource;
 	ui: BSTUINode;

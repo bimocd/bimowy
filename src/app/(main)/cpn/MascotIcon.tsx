@@ -17,13 +17,13 @@ export function MascotIcon(props?: SVGProps<SVGSVGElement>) {
 					<stop
 						offset={isHover ? 0.5 : 0}
 						style={{
-							stopColor: "#ff5685",
+							stopColor: "#ff5685"
 						}}
 					/>
 					<stop
 						offset={0.867}
 						style={{
-							stopColor: "#ff9133",
+							stopColor: "#ff9133"
 						}}
 					/>
 				</linearGradient>
@@ -45,7 +45,7 @@ export function MascotIcon(props?: SVGProps<SVGSVGElement>) {
 					strokeLinejoin: "round",
 					strokeWidth: 6,
 					transformBox: "fill-box",
-					transformOrigin: "50% 50%",
+					transformOrigin: "50% 50%"
 				}}
 				transform="rotate(25.349 62.145 -17.659) skewX(-.102)"
 			>
@@ -56,7 +56,7 @@ export function MascotIcon(props?: SVGProps<SVGSVGElement>) {
 				cy={226.322}
 				r={151.69}
 				style={{
-					fill: "#d8d8d8",
+					fill: "#d8d8d8"
 				}}
 			>
 				<title>{"Eye"}</title>
@@ -69,7 +69,7 @@ export function MascotIcon(props?: SVGProps<SVGSVGElement>) {
 					d="M328.329 102.035c43.113 0 78.062 39.507 78.062 88.241v42.333c0 48.733-34.949 88.24-78.062 88.24s-78.064-39.507-78.064-88.24v-42.333c0-48.734 34.951-88.241 78.064-88.241Z"
 					style={{
 						fill: "#292929",
-						transformOrigin: "328.62px 212.581px",
+						transformOrigin: "328.62px 212.581px"
 					}}
 					transform="rotate(3.648 0 0)"
 				/>
@@ -79,7 +79,7 @@ export function MascotIcon(props?: SVGProps<SVGSVGElement>) {
 					ry={37.902}
 					style={{
 						fill: "#292929",
-						transformOrigin: "520.384px 187.297px",
+						transformOrigin: "520.384px 187.297px"
 					}}
 					transform="rotate(3.066 -568.39 -3570.987)"
 					width={155.784}

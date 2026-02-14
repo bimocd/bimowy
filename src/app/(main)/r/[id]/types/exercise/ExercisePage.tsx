@@ -8,7 +8,7 @@ import { createExerciseStore, ExerciseContext, PageState, useExerciseStore } fro
 import { UIElements } from "./UIElement";
 
 export default function ExerciseResourcePage({
-	resource,
+	resource
 }: {
 	resource: ReturnType<ExerciseTemplateResourceBuilder["build"]>;
 }) {
@@ -41,7 +41,7 @@ function MainLayout() {
 
 function StoreProvider({
 	children,
-	resource,
+	resource
 }: {
 	children: ReactNode;
 	resource: ReturnType<ExerciseTemplateResourceBuilder["build"]>;
@@ -49,6 +49,7 @@ function StoreProvider({
 	const store = useRef(createExerciseStore({ resource })).current;
 
 	useEffect(() => {
+		// biome-ignore lint/suspicious/noExplicitAny: Couldn't find something that worked
 		(window as any).store = store;
 	}, []);
 
@@ -58,7 +59,7 @@ function StoreProvider({
 function PageContent() {
 	const [pageState, atLeastOneFetched] = [
 		useExerciseStore((state) => state.pageState),
-		useExerciseStore((state) => state.atLeastOneFetched),
+		useExerciseStore((state) => state.atLeastOneFetched)
 	];
 
 	if (!atLeastOneFetched) return <OptionsPage />;

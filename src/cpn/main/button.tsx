@@ -7,7 +7,7 @@ export function Button({
 	disabled,
 	children,
 	className,
-	variant = "default",
+	variant = "default"
 }: Parameters<typeof ShadcnButton>[0]) {
 	return (
 		<ShadcnButton
@@ -16,7 +16,7 @@ export function Button({
 				`font-semibold cursor-pointer
     hover:scale-105 active:scale-95
     disabled:opacity-50 disabled:cursor-not-allowed`,
-				className,
+				className
 			)}
 		>
 			{children}

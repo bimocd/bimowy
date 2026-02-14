@@ -4,7 +4,7 @@ export class Scope {
 	private variables = new Map();
 	constructor(
 		private vars: Record<string, AllowedVariableValues> = {},
-		private parent?: Scope,
+		private parent?: Scope
 	) {
 		for (const [varId, varValue] of Object.entries(this.vars)) {
 			this.variables.set(varId, varValue);

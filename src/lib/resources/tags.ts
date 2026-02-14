@@ -14,105 +14,105 @@ import {
 	SquareIcon,
 	ThumbsUpIcon,
 	WandSparklesIcon,
-	WormIcon,
+	WormIcon
 } from "lucide-react";
 
 export const ALL_TAGS = [
 	{
 		icon: CalculatorIcon,
 		id: "math",
-		name: "Math",
+		name: "Math"
 	},
 	{
 		icon: DiffIcon,
 		id: "arithmetic",
 		name: "Arithmetic",
-		parents: ["math"],
+		parents: ["math"]
 	},
 	{
 		icon: SplitIcon,
 		id: "logic",
 		name: "Logic",
-		parents: ["math"],
+		parents: ["math"]
 	},
 	{
 		icon: CpuIcon,
 		id: "cs",
 		name: "Computer Science",
-		nick: "CS",
+		nick: "CS"
 	},
 	{
 		icon: BracesIcon,
 		id: "oop",
 		name: "Object-Oriented Programming",
 		nick: "OOP",
-		parents: ["cs"],
+		parents: ["cs"]
 	},
 	{
 		icon: WormIcon,
 		id: "python",
 		name: "Python",
-		parents: ["cs"],
+		parents: ["cs"]
 	},
 	{
 		icon: KeyRoundIcon,
 		id: "crypto",
 		name: "Cryptography",
-		parents: ["cs", "math"],
+		parents: ["cs", "math"]
 	},
 	{
 		icon: SquareIcon,
 		id: "2D",
 		name: "Plane",
 		nick: "2D",
-		parents: ["math"],
+		parents: ["math"]
 	},
 	{
 		icon: BoxIcon,
 		id: "3D",
 		name: "Space",
 		nick: "3D",
-		parents: ["2d"],
+		parents: ["2d"]
 	},
 	{
 		icon: EarthIcon,
 		id: "politics",
-		name: "Politics",
+		name: "Politics"
 	},
 	{
 		icon: LandmarkIcon,
 		id: "us",
 		name: "United States",
-		nick: "US",
+		nick: "US"
 	},
 	{
 		icon: ThumbsUpIcon,
 		id: "morality",
 		name: "Morality",
-		parents: ["ethics"],
+		parents: ["ethics"]
 	},
 	{
 		icon: CrossIcon,
 		id: "health",
-		name: "Health",
+		name: "Health"
 	},
 	{
 		icon: AtomIcon,
 		id: "physics",
 		name: "Physics",
-		parents: ["math"],
+		parents: ["math"]
 	},
 	{
 		icon: Grid2x2Icon,
 		id: "linear-algebra",
 		name: "Linear Algebra",
-		parents: ["math"],
+		parents: ["math"]
 	},
 	{
 		icon: WandSparklesIcon,
 		id: "new",
 		name: "NEW",
-		special: true,
-	},
+		special: true
+	}
 ] as const;
 export type TagId = (typeof ALL_TAGS)[number]["id"];
