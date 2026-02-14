@@ -4,9 +4,9 @@ import { OptionHelpers } from "./nodes/option";
 import { UIHelpers } from "./nodes/ui";
 
 export const $ = {
-  // UI
-  ...UIHelpers,
-  ...CodeHelpers,
-  ...OptionHelpers,
-  ...FunctionHelpers,
+	// UI
+	...UIHelpers,
+	...CodeHelpers,
+	...OptionHelpers,
+	...FunctionHelpers,
 };

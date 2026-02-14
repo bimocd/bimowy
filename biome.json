@@ -1,75 +1,69 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": "on",
-        "useSortedAttributes": "off",
-        "useSortedKeys": "off",
-        "useSortedProperties": "on"
-      }
-    }
-  },
-  "files": {
-    "ignoreUnknown": true,
-    "includes": [
-      "**",
-      "!node_modules",
-      "!.next",
-      "!dist",
-      "!build"
-    ]
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2
-  },
-  "linter": {
-    "domains": {
-      "next": "recommended",
-      "react": "recommended"
-    },
-    "enabled": true,
-    "rules": {
-      "a11y": {
-        "useKeyWithClickEvents": "off",
-        "noStaticElementInteractions": "off",
-        "useValidAnchor": "off"
-      },
-      "complexity": {
-        "noUselessFragments": "off",
-        "noBannedTypes": "off",
-        "useLiteralKeys": "off"
-      },
-      "correctness": {
-        "noUnusedImports": {
-          "fix": "safe",
-          "level": "on",
-          "options": {}
-        },
-        "useExhaustiveDependencies": "off",
-        "useHookAtTopLevel": "off"
-      },
-      "performance": {
-        "noAccumulatingSpread": "off",
-        "noDynamicNamespaceImportAccess": "off"
-      },
-      "recommended": true,
-      "style": {
-        "noNonNullAssertion": "off"
-      },
-      "suspicious": {
-        "noArrayIndexKey": "off",
-        "noDocumentCookie": "off",
-        "noExplicitAny": "off",
-        "noUnknownAtRules": "off"
-      }
-    }
-  },
-  "vcs": {
-    "clientKind": "git",
-    "enabled": true,
-    "useIgnoreFile": true
-  }
+	"$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on",
+				"useSortedAttributes": "off",
+				"useSortedKeys": "off",
+				"useSortedProperties": "on"
+			}
+		}
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 100
+	},
+	"linter": {
+		"domains": {
+			"next": "recommended",
+			"react": "recommended"
+		},
+		"enabled": true,
+		"rules": {
+			"a11y": {
+				"useKeyWithClickEvents": "off",
+				"noStaticElementInteractions": "off",
+				"useValidAnchor": "off"
+			},
+			"complexity": {
+				"noUselessFragments": "off",
+				"noBannedTypes": "off",
+				"useLiteralKeys": "off"
+			},
+			"correctness": {
+				"noUnusedImports": {
+					"fix": "safe",
+					"level": "on",
+					"options": {}
+				},
+				"useExhaustiveDependencies": "off"
+			},
+			"performance": {
+				"noAccumulatingSpread": "off",
+				"noDynamicNamespaceImportAccess": "off"
+			},
+			"recommended": true,
+			"style": {
+				"noNonNullAssertion": "warn"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "off",
+				"noDocumentCookie": "off",
+				"noExplicitAny": "warn",
+				"noUnknownAtRules": "off"
+			}
+		}
+	},
+	"vcs": {
+		"clientKind": "git",
+		"enabled": true,
+		"useIgnoreFile": true
+	}
 }
