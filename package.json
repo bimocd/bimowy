@@ -8,7 +8,8 @@
 		"start": "next start",
 		"format": "biome format --write",
 		"check": "tsc --noEmit",
-		"db": "prisma migrate dev --name cmd && prisma generate"
+		"db": "prisma migrate dev --name cmd && prisma generate",
+		"play": "tsx watch src/play"
 	},
 	"dependencies": {
 		"@prisma/adapter-pg": "^7.4.0",
