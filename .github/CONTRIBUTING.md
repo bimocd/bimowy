@@ -14,6 +14,7 @@ If you wish to contribute, please name your commits like so for consistency.
 - `🐛` Fix bug or outdated code
 - `✨` New feature, functionality, concept
 - `💩` Random chores that no one cares abt
+- `⬆️` = Update dependency with the necessary changes
 
 # !
 Be careful what emoji to use (i.e if you're creating a new feature but it's completely about databases. Consider using 🗃️ instead of ✨ as it's more niche, therefore clearer. Or if you're implementing a new general UI component, consider using 🎨 instead of ✨ too. )
