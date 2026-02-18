@@ -9,7 +9,9 @@
 		"format": "biome format --write",
 		"check": "tsc --noEmit",
 		"db": "prisma migrate dev --name cmd && prisma generate",
-		"play": "tsx watch src/play"
+		"play": "tsx watch src/play",
+		"test": "tsx src/test/index.test.ts",
+		"test:w": "tsx watch src/test/index.test.ts"
 	},
 	"dependencies": {
 		"@prisma/adapter-pg": "^7.4.0",
