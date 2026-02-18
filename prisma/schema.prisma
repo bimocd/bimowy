@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/db/prisma-generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Resource {
+  id String @id @default(uuid())
+
+  handle String
+  name   String
+  desc   String?
+  data   Json
+  type   ResourceType
+  tags   Tag[]
+
+  beta       Boolean        @default(true)
+  deleted    Boolean        @default(false)
+  visibility ResourceStatus @default(PUBLIC)
+
+  @@unique([handle, type])
+}
+
+enum ResourceType {
+  TEMPLATE_EXERCISE
+  ARTICLE
+  COURSE
+}
+
+enum ResourceStatus {
+  PUBLIC
+  LINKONLY
+  PRIVATE
+}
+
+model Tag {
+  id       String  @id
+  name     String  @unique
+  nickName String?
+
+  resources Resource[]
+}
