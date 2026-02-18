@@ -14,7 +14,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarProvider
-} from "@/cpn/ui/sidebar";
+} from "@/shadcn/ui/sidebar";
 import { MascotIcon } from "./MascotIcon";
 
 type NavGroup = {

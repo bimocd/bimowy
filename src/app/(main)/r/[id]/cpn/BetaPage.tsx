@@ -3,7 +3,7 @@ import { UndoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/cpn/main/button";
-import { Spinner } from "@/cpn/ui/spinner";
+import { Spinner } from "@/shadcn/ui/spinner";
 
 export function BetaPage() {
 	const router = useRouter();

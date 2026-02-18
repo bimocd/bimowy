@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { Button as ShadcnButton } from "../ui/button";
+import { Button as ShadcnButton } from "@/shadcn/ui/button";
 
 export function Button({
 	id,

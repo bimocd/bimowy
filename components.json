@@ -1,11 +1,11 @@
 {
 	"$schema": "https://ui.shadcn.com/schema.json",
 	"aliases": {
-		"components": "@/cpn",
-		"hooks": "@/hooks",
-		"lib": "@/lib/ui",
-		"ui": "@/cpn/ui",
-		"utils": "@/lib/ui/utils"
+		"components": "@/shadcn/cpn",
+		"hooks": "@/shadcn/hooks",
+		"lib": "@/shadcn/lib",
+		"ui": "@/shadcn/ui",
+		"utils": "@/shadcn/utils"
 	},
 	"iconLibrary": "lucide",
 	"registries": {},

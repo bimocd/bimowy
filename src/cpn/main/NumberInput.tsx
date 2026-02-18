@@ -2,7 +2,7 @@
 import { useState } from "react";
 import type { JSX } from "react/jsx-dev-runtime";
 import { twMerge } from "tailwind-merge";
-import { Input } from "../ui/input";
+import { Input } from "@/shadcn/ui/input";
 
 const isValidNumber = (str: string) => str && !Number.isNaN(Number(str));
 

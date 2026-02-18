@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import type { HTMLAttributes, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import { Button } from "@/cpn/main/button";
-import { Spinner } from "@/cpn/ui/spinner";
+import { Spinner } from "@/shadcn/ui/spinner";
 import {
 	type ExerciseInstance,
 	ExerciseState,
