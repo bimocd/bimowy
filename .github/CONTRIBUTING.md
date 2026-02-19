@@ -7,7 +7,8 @@ If you wish to contribute, please name your commits like so for consistency.
 - `🚚 move:` = Re-organize files/folders/components
 - `🚨 lint:` = To do with linters & formatters
 - `🎨 ui:` = UI/UX design improvement
-- `✏️ doc:` = Documentation
+- `✏️ doc:` = Documentation/
+- `⚙️ config:` = .gitignore, .tsconfig, config.json, biome.json etc..
 
 # General
 ### For when there is no specific emoji to use
