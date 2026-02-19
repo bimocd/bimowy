@@ -2,19 +2,20 @@ If you wish to contribute, please name your commits like so for consistency.
 
 # Specific
 ### Use these whenever you can
-- `♻️` = Refactoring
-- `🗃️` = Changes to how the database works
-- `🚚` = Re-organize files/folders
-- `🚨` = To do with linters & formatters
-- `🎨` = UI design
-- `✏️` = Documentation
+- `♻️ re:` = Refactoring
+- `🗃️ db:` = Changes to how the database works
+- `🚚 move:` = Re-organize files/folders/components
+- `🚨 lint:` = To do with linters & formatters
+- `🎨 ui:` = UI/UX design improvement
+- `✏️ doc:` = Documentation
 
 # General
 ### For when there is no specific emoji to use
-- `🐛` Fix bug or outdated code
-- `✨` New feature, functionality, concept
-- `💩` Random chores that no one cares abt
-- `⬆️` = Update dependency with the necessary changes
+- `🐛 fix:` Fix bug or outdated code
+- `✨ feat:` New feature, functionality, concept
+- `💩 chore:` Random chores that no one cares abt
+- `⬆️ updt:` = Update dependency with the necessary changes
 
 # !
 Be careful what emoji to use (i.e if you're creating a new feature but it's completely about databases. Consider using 🗃️ instead of ✨ as it's more niche, therefore clearer. Or if you're implementing a new general UI component, consider using 🎨 instead of ✨ too. )
+> These are just best practices, I understand that everyone is human obviously and can't get used to this so quickly. 
