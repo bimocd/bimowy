@@ -19,3 +19,10 @@ If you wish to contribute, please name your commits like so for consistency.
 # !
 Be careful what emoji to use (i.e if you're creating a new feature but it's completely about databases. Consider using 🗃️ instead of ✨ as it's more niche, therefore clearer. Or if you're implementing a new general UI component, consider using 🎨 instead of ✨ too. )
 > These are just best practices, I understand that everyone is human obviously and can't get used to this so quickly. 
+
+# Examples:
+- `✨ feat: Added If node with tests`
+- `♻️ re: Simplified `
+- `🚨 lint: Added Biome experimental organizeImports`
+- `🐛 fix: Bug when calling nested If Nodes`
+- `⬆️ updt: Migration of TailwindCSS to v4`
