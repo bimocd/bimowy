@@ -1,5 +1,5 @@
 import type z from "zod";
-import { NSIfNodeSchema, NSListNodeSchema, type NSNode, NSPrimitiveNodeSchema } from "./nodes";
+import { NSCompositeNodeSchemas, NSNode } from "./nodes";
 
 // Parser
 const $ = <Schema extends z.ZodType>({
@@ -12,16 +12,16 @@ const $ = <Schema extends z.ZodType>({
 
 const parserRegistry = [
 	$({
-		schemas: [NSListNodeSchema],
+		schemas: [NSCompositeNodeSchemas.NSListNodeSchema],
 		execute: (nodes) => nodes.map((node) => executeNS(node))
 	}),
 	$({
-		schemas: [NSPrimitiveNodeSchema],
+		schemas: [NSCompositeNodeSchemas.NSPrimitiveNodeSchema],
 		execute: (node) => node
 	}),
 	$({
-		schemas: [NSIfNodeSchema],
-		execute: node => executeNS(node.if) ? executeNS(node.yes) : executeNS(node.no)
+		schemas: [NSCompositeNodeSchemas.NSIfNodeSchema],
+		execute: (node) => (executeNS(node.if) ? executeNS(node.yes) : executeNS(node.no))
 	})
 ] as const;
 

@@ -24,19 +24,26 @@ suite("Node System", () => {
 			assert.deepEqual(executed, primitive);
 		}
 	});
-	test("IfNode", () =>{
+	test("IfNode", () => {
 		const ifNodes = [
 			{ _nstype: "if", if: false, yes: 0, no: 1 },
 			{ _nstype: "if", if: true, yes: 1, no: 0 },
-			{ _nstype: "if", if: true, no: 0,
+			{
+				_nstype: "if",
+				if: true,
+				no: 0,
 				yes: {
-				_nstype: "if", if: false, yes: 0, no: 1 
-			} }
+					_nstype: "if",
+					if: false,
+					yes: 0,
+					no: 1
+				}
+			}
 		] as NSIfNode[];
 
-		for(const ifNode of ifNodes){
-			const res = executeNS(ifNode)
-			assert.deepEqual(res,1)
+		for (const ifNode of ifNodes) {
+			const res = executeNS(ifNode);
+			assert.deepEqual(res, 1);
 		}
-	})
+	});
 });
