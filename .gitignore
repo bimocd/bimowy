@@ -48,4 +48,4 @@ prisma/migrations
 src/db/prisma-generated
 
 # personal notes
-**/.NOTES
+**/NOTES.md
