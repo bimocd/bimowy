@@ -26,17 +26,23 @@ export function $<NSType extends string, NSProp extends string>(
 export type NSPrimitiveNode = string | number | boolean | null;
 export type NSListNode = NSNode[];
 export type NSIfNode = NSBaseCompositeNode<"if"> & NSCompositeNodeProps<"if" | "yes" | "no">;
+export type NSVarGetNode = NSBaseCompositeNode<"var-get"> & NSCompositeNodeProps<"id">;
+export type NSVarSetNode = NSBaseCompositeNode<"var-set"> & NSCompositeNodeProps<"id" | "value">;
 
 export const NSCompositeNodeSchemas = {
 	NSPrimitiveNodeSchema: z.union([z.string(), z.number(), z.boolean(), z.null()]),
 	NSListNodeSchema: z.array(z.lazy(() => NSNodeSchema)) as z.ZodType<NSListNode>,
-	NSIfNodeSchema: $("if", ["if", "yes", "no"]) as z.ZodType<NSIfNode>
+	NSIfNodeSchema: $("if", ["if", "yes", "no"]),
+	NSVarGetNodeSchema: $("var-get", ["id"]),
+	NSVarSetNodeSchema: $("var-set", ["id", "value"])
 };
 
-export type NSNode = NSPrimitiveNode | NSListNode | NSIfNode;
+export type NSNode = NSPrimitiveNode | NSListNode | NSIfNode | NSVarGetNode | NSVarSetNode;
 
 export const NSNodeSchema: z.ZodType<NSNode> = z.union([
 	NSCompositeNodeSchemas.NSPrimitiveNodeSchema,
 	NSCompositeNodeSchemas.NSListNodeSchema,
-	NSCompositeNodeSchemas.NSIfNodeSchema
+	NSCompositeNodeSchemas.NSIfNodeSchema,
+	NSCompositeNodeSchemas.NSVarGetNodeSchema,
+	NSCompositeNodeSchemas.NSVarSetNodeSchema
 ]);

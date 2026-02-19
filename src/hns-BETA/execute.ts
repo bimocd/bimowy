@@ -1,5 +1,6 @@
 import type z from "zod";
-import { NSCompositeNodeSchemas, NSNode } from "./nodes";
+import { Context } from "./context";
+import { NSCompositeNodeSchemas as NSCNS, type NSNode } from "./nodes";
 
 // Parser
 const $ = <Schema extends z.ZodType>({
@@ -7,31 +8,41 @@ const $ = <Schema extends z.ZodType>({
 	execute
 }: {
 	schemas: Schema[];
-	execute: (node: z.infer<Schema>) => unknown;
+	execute: (node: z.infer<Schema>, ctx: Context) => unknown;
 }) => ({ schemas, execute });
 
 const parserRegistry = [
 	$({
-		schemas: [NSCompositeNodeSchemas.NSListNodeSchema],
-		execute: (nodes) => nodes.map((node) => executeNS(node))
+		schemas: [NSCNS.NSListNodeSchema],
+		execute: (nodes, ctx) => nodes.map((node) => executeNS(node, ctx))
 	}),
 	$({
-		schemas: [NSCompositeNodeSchemas.NSPrimitiveNodeSchema],
+		schemas: [NSCNS.NSPrimitiveNodeSchema],
 		execute: (node) => node
 	}),
 	$({
-		schemas: [NSCompositeNodeSchemas.NSIfNodeSchema],
-		execute: (node) => (executeNS(node.if) ? executeNS(node.yes) : executeNS(node.no))
+		schemas: [NSCNS.NSIfNodeSchema],
+		execute: (node, ctx) =>
+			executeNS(node.if, ctx) ? executeNS(node.yes, ctx) : executeNS(node.no, ctx)
+	}),
+	$({
+		schemas: [NSCNS.NSVarGetNodeSchema],
+		execute: (node, ctx) => ctx.getVar(executeNS(node.id, ctx) as string)
+	}),
+	$({
+		schemas: [NSCNS.NSVarSetNodeSchema],
+		execute: (node, ctx) =>
+			ctx.setVar(executeNS(node.id, ctx) as string, executeNS(node.value, ctx))
 	})
 ] as const;
 
-export function executeNS(node: NSNode): unknown {
+export function executeNS(node: NSNode, ctx = new Context()): unknown {
 	for (const parser of parserRegistry) {
 		for (const schema of parser.schemas) {
 			const result = schema.safeParse(node);
 			if (!result.success) continue;
 			// @ts-expect-error
-			return parser.execute(result.data);
+			return parser.execute(result.data, ctx);
 		}
 	}
 }

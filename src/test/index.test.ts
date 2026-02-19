@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test, { suite } from "node:test";
 import { executeNS } from "@/hns-BETA/execute";
-import { NSIfNode } from "@/hns-BETA/nodes";
+import type { NSIfNode } from "@/hns-BETA/nodes";
 
 suite("Node System", () => {
 	test("PrimitiveNode & ListNode", () => {
