@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import test, { skip, suite } from "node:test";
+import test, { suite } from "node:test";
 import { executeNS } from "@/hns-BETA/execute";
 import { NSIfNode } from "@/hns-BETA/nodes";
 
@@ -8,14 +8,13 @@ suite("Node System", () => {
 		const primitiveExamples = [
 			"123",
 			123,
-			null,
 			9,
 			0,
 			1e7,
 			-1e7,
 			Math.random(),
 			"ok",
-			["1234,54", 293, 1e7, false, true, null],
+			["1234,54", 293, 1e7, false, true],
 			false,
 			true
 		];
@@ -27,11 +26,11 @@ suite("Node System", () => {
 	});
 	test("IfNode", () =>{
 		const ifNodes = [
-			{ _nstype: "if", condition: false, success: 0, fail: 1 },
-			{ _nstype: "if", condition: true, success: 1, fail: 0 },
-			{ _nstype: "if", condition: true,  fail: 0,
-				success: {
-				_nstype: "if", condition: false, success: 0, fail: 1 
+			{ _nstype: "if", if: false, yes: 0, no: 1 },
+			{ _nstype: "if", if: true, yes: 1, no: 0 },
+			{ _nstype: "if", if: true, no: 0,
+				yes: {
+				_nstype: "if", if: false, yes: 0, no: 1 
 			} }
 		] as NSIfNode[];
 

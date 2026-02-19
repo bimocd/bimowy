@@ -21,7 +21,7 @@ const parserRegistry = [
 	}),
 	$({
 		schemas: [NSIfNodeSchema],
-		execute: node => executeNS(node.condition) ? executeNS(node.success) : executeNS(node.fail)
+		execute: node => executeNS(node.if) ? executeNS(node.yes) : executeNS(node.no)
 	})
 ] as const;
 
