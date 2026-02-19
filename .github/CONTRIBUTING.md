@@ -22,7 +22,8 @@ Be careful what emoji to use (i.e if you're creating a new feature but it's comp
 
 # Examples:
 - `✨ feat: Added If node with tests`
-- `♻️ re: Simplified `
+- `♻️ re: Simplified xxx`
+- `♻️ re: Added helper types for xxx`
 - `🚨 lint: Added Biome experimental organizeImports`
 - `🐛 fix: Bug when calling nested If Nodes`
 - `⬆️ updt: Migration of TailwindCSS to v4`
