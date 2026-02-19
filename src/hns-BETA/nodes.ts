@@ -9,20 +9,27 @@ import z from "zod";
  */
 
 export type NSBaseCompositeNode<NSType extends string> = { _nstype: NSType }
-export type BSCompositeNodeProps<NSKey extends string> = { [key in NSKey]: NSNode}
+export type NSCompositeNodeProps<NSKey extends string> = { [key in NSKey]: NSNode}
+
+// Composite node schema creator
+export function $
+<NSType extends string, NSProp extends string>
+(nstype: NSType, props: NSProp[])
+: z.ZodType<NSBaseCompositeNode<NSType> & NSCompositeNodeProps<NSProp>> {
+	// @ts-expect-error
+  return z.object({
+		_nstype: z.literal(nstype),
+		...(props.reduce((acc,prop) => ({ ...acc, [prop]: z.lazy(() => NSNodeSchema)}),{}))
+	})
+}
 
 export type NSPrimitiveNode = z.infer<typeof NSPrimitiveNodeSchema>;
 export type NSListNode = NSNode[];
-export type NSIfNode = NSBaseCompositeNode<"if"> & BSCompositeNodeProps<"if" | "yes" | "no">
+export type NSIfNode = NSBaseCompositeNode<"if"> & NSCompositeNodeProps<"if" | "yes" | "no">
 
 export const NSPrimitiveNodeSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
 export const NSListNodeSchema: z.ZodType<NSListNode> = z.array(z.lazy(() => NSNodeSchema));
-export const NSIfNodeSchema: z.ZodType<NSIfNode> = z.object({
-	_nstype: z.literal("if"),
-	get if(){ return NSNodeSchema },
-	get yes(){ return NSNodeSchema },
-	get no(){ return NSNodeSchema }
-})
+export const NSIfNodeSchema: z.ZodType<NSIfNode> = $("if",["if","yes","no"]);
 
 export type NSNode = NSPrimitiveNode | NSListNode | NSIfNode;
 
