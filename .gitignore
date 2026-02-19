@@ -49,3 +49,5 @@ src/db/prisma-generated
 
 # personal notes
 **/NOTES.md
+
+/src/play/
