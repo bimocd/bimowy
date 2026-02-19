@@ -1,7 +1,8 @@
 import type z from "zod";
-import { NSListNodeSchema, type NSNode, NSPrimitiveNodeSchema } from "./nodes";
+import { NSIfNodeSchema, NSListNodeSchema, type NSNode, NSPrimitiveNodeSchema } from "./nodes";
 
-const $parser = <Schema extends z.ZodType>({
+// Parser
+const $ = <Schema extends z.ZodType>({
 	schemas,
 	execute
 }: {
@@ -10,13 +11,17 @@ const $parser = <Schema extends z.ZodType>({
 }) => ({ schemas, execute });
 
 const parserRegistry = [
-	$parser({
+	$({
 		schemas: [NSListNodeSchema],
 		execute: (nodes) => nodes.map((node) => executeNS(node))
 	}),
-	$parser({
+	$({
 		schemas: [NSPrimitiveNodeSchema],
 		execute: (node) => node
+	}),
+	$({
+		schemas: [NSIfNodeSchema],
+		execute: node => executeNS(node.condition) ? executeNS(node.success) : executeNS(node.fail)
 	})
 ] as const;
 
