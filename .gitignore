@@ -47,8 +47,7 @@ private
 prisma/migrations
 src/db/prisma-generated
 
-# personal notes
+# personal
 **/TODO.md
-
-
 src/playground/
+src/app/test/
