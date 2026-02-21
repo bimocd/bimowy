@@ -3,9 +3,7 @@ import { BSTType } from "../nodes";
 
 export type BSTOptionNode = BSTTogglablesOption | BSTIntervalOption;
 
-export type SerializedOptionNode<O extends BSTOptionNode = BSTOptionNode> = Omit<O, "_zodtype"> & {
-	_zodtype: z.core.JSONSchema.BaseSchema;
-};
+export type SerializedOptionNode<O extends BSTOptionNode = BSTOptionNode> = Omit<O, "_zodtype">;
 
 export type BSTTogglablesOption<T extends string[] = string[]> = {
 	_bsttype: BSTType.TogglablesOption;

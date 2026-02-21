@@ -102,14 +102,16 @@ export class ExerciseTemplateResourceBuilder<Seed = any> extends BaseResourceBui
 	serializeOptions() {
 		const serialized: Record<string, SerializedOptionNode> = {};
 		for (const [name, node] of Object.entries(this.options)) {
-			serialized[name] = { ...node, _zodtype: z.toJSONSchema(node._zodtype) };
+			serialized[name] = node;
+			// @ts-expect-error
+			delete serialized[name]["_zodtype"];
 		}
 		return serialized;
 	}
 	build() {
 		return {
 			...super.build(),
-			seedType: z.toJSONSchema(this.seedType),
+			// seedType: z.toJSONSchema(this.seedType),
 			options: this.serializeOptions()
 		};
 	}

@@ -4,6 +4,7 @@ import { type LucideIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
+import { MascotIcon } from "@/app/(main)/cpn/MascotIcon";
 import {
 	Sidebar,
 	SidebarGroup,
@@ -15,7 +16,6 @@ import {
 	SidebarMenuItem,
 	SidebarProvider
 } from "@/shadcn/ui/sidebar";
-import { MascotIcon } from "./MascotIcon";
 
 type NavGroup = {
 	name: string;
