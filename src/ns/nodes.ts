@@ -1,14 +1,54 @@
 import z from "zod";
+import type { Context } from "./context";
 import { NSError } from "./error";
 import { executeNS } from "./execute";
 import { functionRegistry } from "./functions";
-import { createComplexNodeParser, createSimpleNodeParser } from "./helpers";
 
 /*
 	NSNode (NS = Node System)
 	> NSSimpleNode // number | string | null | boolean (??)[]
 	> NSComplexNode // { _nstype: "xxxxx", ... }
  */
+
+export function createSimpleNodeParser<Schema extends z.ZodType>({
+	schema,
+	execute
+}: {
+	schema: Schema;
+	execute: (node: z.infer<Schema>, ctx: Context) => unknown;
+}) {
+	return {
+		schema: schema,
+		execute
+	};
+}
+
+export type NSBaseComplexNode<NSType extends string, NSKey extends string> = { _nstype: NSType } & {
+	[key in NSKey]: unknown;
+};
+
+export function createComplexNodeParser<
+	T extends string,
+	P extends string,
+	Schema = z.ZodType<NSBaseComplexNode<T, P>>
+>({
+	nstype,
+	props,
+	execute
+}: {
+	nstype: T;
+	props: P[];
+	execute: (node: z.infer<Schema>, ctx: Context) => unknown;
+}) {
+	return {
+		id: nstype,
+		schema: z.object({
+			_nstype: z.literal(nstype),
+			...props.reduce((acc, prop) => ({ ...acc, [prop]: z.unknown().default(null) }), {})
+		}) as Schema,
+		execute
+	};
+}
 
 export const NSSimpleNodeParsers = [
 	createSimpleNodeParser({
@@ -89,3 +129,8 @@ export const NSComplexNodeParsers = [
 ] as const;
 
 export const NSMinimumComplexNodeSchema = z.object({ _nstype: z.string() });
+export const NSNode = z.union([
+	...NSSimpleNodeParsers.map((n) => n.schema),
+	...NSComplexNodeParsers.map((n) => n.schema)
+]);
+export type NSNode = z.infer<typeof NSNode>;

@@ -52,9 +52,9 @@ export const basicComparisonFunction = $({
 export const otherFunctions = [
 	$({
 		id: "concatTrim",
-		inputs: z.array(z.string()),
+		inputs: z.array(z.union([z.string(), z.number()])),
 		output: z.string(),
-		execute: (...strs) => strs.map((str) => str.trim()).join(" ")
+		execute: (...strs) => strs.map((str) => `${str}`.trim()).join(" ")
 	})
 	// ...
 ] as const;

@@ -2,7 +2,7 @@ import { Context } from "./context";
 import { NSError } from "./error";
 import { NSComplexNodeParsers, NSMinimumComplexNodeSchema, NSSimpleNodeParsers } from "./nodes";
 
-export function executeNS(node: unknown, ctx = new Context(node)): unknown {
+export function executeNS(node: unknown, ctx = new Context()): unknown {
 	for (const simpleParser of NSSimpleNodeParsers) {
 		const parsedNode = simpleParser.schema.safeParse(node);
 		if (!parsedNode.success) continue;
