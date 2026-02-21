@@ -1,5 +1,8 @@
 If you wish to contribute, please name your commits like so for consistency.
 
+# Testing
+If you wish to play around with all the back-end code (especially the node system). You're invited to create a `playground` folder inside `src/` so the `npm run play` command work. As the name suggests, it's a private playground you can write anything on & is already `.gitignore`'d.
+
 # Specific
 ### Use these whenever you can
 - `♻️ re:` = Refactoring
