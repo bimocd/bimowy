@@ -1,48 +1,19 @@
-import type z from "zod";
 import { Context } from "./context";
-import { NSCompositeNodeSchemas as NSCNS, type NSNode } from "./nodes";
+import { NSError } from "./error";
+import { NSComplexNodeParsers, NSMinimumComplexNodeSchema, NSSimpleNodeParsers } from "./nodes";
 
-// Parser
-const $ = <Schema extends z.ZodType>({
-	schemas,
-	execute
-}: {
-	schemas: Schema[];
-	execute: (node: z.infer<Schema>, ctx: Context) => unknown;
-}) => ({ schemas, execute });
-
-const parserRegistry = [
-	$({
-		schemas: [NSCNS.NSListNodeSchema],
-		execute: (nodes, ctx) => nodes.map((node) => executeNS(node, ctx))
-	}),
-	$({
-		schemas: [NSCNS.NSPrimitiveNodeSchema],
-		execute: (node) => node
-	}),
-	$({
-		schemas: [NSCNS.NSIfNodeSchema],
-		execute: (node, ctx) =>
-			executeNS(node.if, ctx) ? executeNS(node.yes, ctx) : executeNS(node.no, ctx)
-	}),
-	$({
-		schemas: [NSCNS.NSVarGetNodeSchema],
-		execute: (node, ctx) => ctx.getVar(executeNS(node.id, ctx) as string)
-	}),
-	$({
-		schemas: [NSCNS.NSVarSetNodeSchema],
-		execute: (node, ctx) =>
-			ctx.setVar(executeNS(node.id, ctx) as string, executeNS(node.value, ctx))
-	})
-] as const;
-
-export function executeNS(node: NSNode, ctx = new Context()): unknown {
-	for (const parser of parserRegistry) {
-		for (const schema of parser.schemas) {
-			const result = schema.safeParse(node);
-			if (!result.success) continue;
-			// @ts-expect-error
-			return parser.execute(result.data, ctx);
-		}
+export function executeNS(node: unknown, ctx = new Context(node)): unknown {
+	for (const simpleParser of NSSimpleNodeParsers) {
+		const parsedNode = simpleParser.schema.safeParse(node);
+		if (!parsedNode.success) continue;
+		// @ts-expect-error
+		return simpleParser.execute(parsedNode.data, ctx);
 	}
+	const minimumNode = NSMinimumComplexNodeSchema.safeParse(node);
+	if (!minimumNode.success) throw new NSError("Unknown Node", node);
+
+	const complexParser = NSComplexNodeParsers.find((c) => c.id === minimumNode.data._nstype);
+	if (!complexParser) throw new NSError("Unknown Node Type", node);
+	// @ts-expect-error
+	return complexParser.execute(node, ctx);
 }

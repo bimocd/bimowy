@@ -1,49 +1,15 @@
 import assert from "node:assert";
-import test, { suite } from "node:test";
+import test from "node:test";
 import { executeNS } from "@/hns-BETA/execute";
-import type { NSIfNode } from "@/hns-BETA/nodes";
+import { $ } from "@/hns-BETA/helpers";
 
-suite("Node System", () => {
-	test("PrimitiveNode & ListNode", () => {
-		const primitiveExamples = [
-			"123",
-			123,
-			9,
-			0,
-			1e7,
-			-1e7,
-			Math.random(),
-			"ok",
-			["1234,54", 293, 1e7, false, true],
-			false,
-			true
-		];
-
-		for (const primitive of primitiveExamples) {
-			const executed = executeNS(primitive);
-			assert.deepEqual(executed, primitive);
-		}
-	});
-	test("IfNode", () => {
-		const ifNodes = [
-			{ _nstype: "if", if: false, yes: 0, no: 1 },
-			{ _nstype: "if", if: true, yes: 1, no: 0 },
-			{
-				_nstype: "if",
-				if: true,
-				no: 0,
-				yes: {
-					_nstype: "if",
-					if: false,
-					yes: 0,
-					no: 1
-				}
-			}
-		] as NSIfNode[];
-
-		for (const ifNode of ifNodes) {
-			const res = executeNS(ifNode);
-			assert.deepEqual(res, 1);
-		}
-	});
+test("Node System", () => {
+	const prgm1 = $.prgm([
+		$.var.set("a_age", 15),
+		$.var.set("b_age", 24),
+		$.var.set("is_b_major", $.fn("compare", [">=", $.var.get("a_age"), 18])),
+		$.var.set("is_a_major", $.fn("compare", [">=", $.var.get("b_age"), 18])),
+		$.return([$.var.get("is_a_major"), $.var.get("is_b_major")])
+	]);
+	return assert.deepStrictEqual(executeNS(prgm1), [true, false]);
 });
