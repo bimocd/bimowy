@@ -1,30 +1,31 @@
 import type {
 	NSFunctionCallNode,
 	NSIfNode,
+	NSNode,
 	NSProgramNode,
 	NSVarGetNode,
 	NSVarSetNode
 } from "./nodes";
 
 export const $ = {
-	return: (value: unknown) => ({ _nstype: "return", value }),
-	if: (cond: unknown, { yes, no }: { yes: unknown; no: unknown }): NSIfNode => ({
+	return: (value: NSNode) => ({ _nstype: "return", value }),
+	if: (cond: NSNode, { yes, no }: { yes: NSNode; no: NSNode }): NSIfNode => ({
 		_nstype: "if",
 		if: cond,
 		yes,
 		no
 	}),
-	prgm: (items: unknown): NSProgramNode => ({ _nstype: "program", items }),
-	varSet: (id: unknown, value: unknown): NSVarSetNode => ({
+	prgm: (items: NSNode): NSProgramNode => ({ _nstype: "program", items }),
+	varSet: (id: NSNode, value: NSNode): NSVarSetNode => ({
 		_nstype: "var-set",
 		id,
 		value
 	}),
-	varGet: (id: unknown): NSVarGetNode => ({
+	varGet: (id: NSNode): NSVarGetNode => ({
 		_nstype: "var-get",
 		id
 	}),
-	fn: (id: unknown, args: unknown): NSFunctionCallNode => ({
+	fn: (id: NSNode, args: NSNode): NSFunctionCallNode => ({
 		_nstype: "function-call",
 		id,
 		args
