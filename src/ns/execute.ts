@@ -1,9 +1,9 @@
 import { Context } from "./context";
 import { NSError } from "./error";
-import { NSComplexNodeParsers, NSMinimumComplexNodeSchema, NSSimpleNodeParsers } from "./nodes";
+import { NSComplexNodesData, NSMinimumComplexNodeSchema, NSSimpleNodesData } from "./nodes";
 
 export function executeNS(node: unknown, ctx = new Context()): unknown {
-	for (const simpleParser of NSSimpleNodeParsers) {
+	for (const simpleParser of NSSimpleNodesData) {
 		const parsedNode = simpleParser.schema.safeParse(node);
 		if (!parsedNode.success) continue;
 		// @ts-expect-error
@@ -12,7 +12,7 @@ export function executeNS(node: unknown, ctx = new Context()): unknown {
 	const minimumNode = NSMinimumComplexNodeSchema.safeParse(node);
 	if (!minimumNode.success) throw new NSError("Unknown Node", node);
 
-	const complexParser = NSComplexNodeParsers.find((c) => c.id === minimumNode.data._nstype);
+	const complexParser = NSComplexNodesData.find((c) => c.id === minimumNode.data._nstype);
 	if (!complexParser) throw new NSError("Unknown Node Type", node);
 	// @ts-expect-error
 	return complexParser.execute(node, ctx);
