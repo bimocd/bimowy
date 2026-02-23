@@ -16,19 +16,21 @@ const emojis = {
 	delete: "🗑️ "
 } as const;
 
-type Emoji = (typeof emojis)[keyof typeof emojis];
+type Emoji = (typeof emojis)[keyof typeof emojis] | (string & {});
 
 export function log(emoji: Emoji, message: unknown, level: number = 0) {
 	const now = new Date();
+
 	const formattedNow =
 		`${String(now.getMonth() + 1).padStart(2, "0")}` +
 		`/${String(now.getDate()).padStart(2, "0")}` +
 		` ${String(now.getHours()).padStart(2, "0")}` +
 		`:${String(now.getMinutes()).padStart(2, "0")}` +
 		`:${String(now.getSeconds()).padStart(2, "0")}`;
+
 	const correctMessage =
 		typeof message === "string"
 			? message
-			: inspect(message, { colors: true, numericSeparator: true });
+			: inspect(message, { colors: true, numericSeparator: true, depth: Infinity });
 	console.log(`[${formattedNow}]${" ".repeat(level + 1)}${emoji} ${correctMessage}`);
 }

@@ -51,3 +51,4 @@ src/db/prisma-generated
 **/TODO.md
 src/playground/
 src/app/test/
+.vscode/

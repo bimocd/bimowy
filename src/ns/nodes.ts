@@ -38,7 +38,7 @@ export function createComplexNodeParser<
 	props,
 	execute
 }: {
-	nstype: NSNodeID;
+	nstype: T;
 	props: P[];
 	execute: (node: z.infer<Schema>, ctx: Context) => unknown;
 }) {
@@ -81,6 +81,18 @@ export type NSArrayNode = z.infer<typeof NSArrayNodeData.schema>;
 export const NSIfNodeData = createComplexNodeParser({
 	nstype: "if",
 	props: ["if", "yes", "no"],
+	// checks: [
+	// 	{
+	// 		code: "IF_BOOLEAN",
+	// 		check: (node) => isSameType(z.boolean(), diagnose(node.if))
+	// 	},
+	// 	{
+	// 		code: "YES_AND_NO_SAME_TYPE",
+	// 		check: (node) => {
+	// 			return isSameType(diagnose(node.yes), diagnose(node.no));
+	// 		}
+	// 	}
+	// ],
 	execute: (node, ctx) =>
 		executeNS(node.if, ctx) ? executeNS(node.yes, ctx) : executeNS(node.no, ctx)
 });
