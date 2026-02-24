@@ -1,8 +1,10 @@
 import z from "zod";
-import type { Context } from "./context";
+import { isSameType } from "zod-compare";
+import type { RuntimeContext, ScantimeContext } from "./context";
 import { NSError } from "./error";
 import { executeNS } from "./execute";
 import { functionRegistry } from "./functions";
+import { type NSDiagnostic, type NSScan, scanNS } from "./scan";
 
 /*
 	NSNode (NS = Node System)
@@ -12,14 +14,17 @@ import { functionRegistry } from "./functions";
 
 export function createSimpleNodeParser<Schema extends z.ZodType>({
 	schema,
-	execute
+	execute,
+	scan = () => ({ schema: z.never(), notes: [] })
 }: {
 	schema: Schema;
-	execute: (node: z.infer<Schema>, ctx: Context) => unknown;
+	execute: (node: z.infer<Schema>, ctx: RuntimeContext) => unknown;
+	scan?: (node: z.infer<Schema>, ctx: ScantimeContext) => NSScan;
 }) {
 	return {
 		schema: schema,
-		execute
+		execute,
+		scan
 	};
 }
 
@@ -36,14 +41,17 @@ export function createComplexNodeParser<
 >({
 	nstype,
 	props,
-	execute
+	execute,
+	scan = () => ({ schema: z.never(), notes: [] })
 }: {
 	nstype: T;
 	props: P[];
-	execute: (node: z.infer<Schema>, ctx: Context) => unknown;
+	execute: (node: z.infer<Schema>, ctx: RuntimeContext) => unknown;
+	scan?: (node: z.infer<Schema>, ctx: ScantimeContext) => NSScan;
 }) {
 	return {
 		id: nstype,
+		scan,
 		schema: z.object({
 			_nstype: z.literal(nstype),
 			...props.reduce((acc, prop) => ({ ...acc, [prop]: z.unknown().default(null) }), {})
@@ -68,13 +76,36 @@ export type NSNodeID = z.infer<typeof NSNodeIDSchema>;
 
 export const NSPrimitiveNodeData = createSimpleNodeParser({
 	schema: z.union([z.string(), z.number(), z.boolean(), z.null()]),
-	execute: (node) => node
+	execute: (node) => node,
+	scan(node) {
+		const notes: NSDiagnostic[] = [];
+		if (node === null) return { schema: z.null(), notes };
+		const type_of = typeof node;
+		if (type_of === "string" || type_of === "number" || type_of === "boolean")
+			return {
+				notes,
+				schema: {
+					string: z.string(),
+					number: z.number(),
+					boolean: z.boolean()
+				}[type_of]
+			};
+		return { schema: z.never(), notes };
+	}
 });
 export type NSPrimitiveNode = z.infer<typeof NSPrimitiveNodeData.schema>;
 
 export const NSArrayNodeData = createSimpleNodeParser({
 	schema: z.array(z.unknown()),
-	execute: (nodes, ctx) => nodes.map((node) => executeNS(node, ctx))
+	execute: (nodes, ctx) => nodes.map((node) => executeNS(node, ctx)),
+	scan: (node, ctx) => {
+		const scans = node.map((n) => scanNS(n, ctx));
+		const schemas = scans.map((s) => s.schema);
+		const notes = scans.map((s) => s.notes);
+		const totalSchema =
+			schemas.length > 0 ? z.tuple(schemas as [z.ZodType, ...z.ZodType[]]) : z.array(z.never());
+		return { notes: notes.flat(), schema: totalSchema };
+	}
 });
 export type NSArrayNode = z.infer<typeof NSArrayNodeData.schema>;
 
@@ -94,7 +125,32 @@ export const NSIfNodeData = createComplexNodeParser({
 	// 	}
 	// ],
 	execute: (node, ctx) =>
-		executeNS(node.if, ctx) ? executeNS(node.yes, ctx) : executeNS(node.no, ctx)
+		executeNS(node.if, ctx) ? executeNS(node.yes, ctx) : executeNS(node.no, ctx),
+	scan(node, ctx) {
+		const scannedIf = scanNS(node.if, ctx);
+		const parsedIf = [true, false].every((bool) => scannedIf.schema.safeParse(bool).success);
+		if (!parsedIf)
+			return {
+				schema: z.never(),
+				notes: [
+					{
+						level: "error",
+						code: "IF_NOT_BOOLEAN",
+						message: "If node condition does not execute to a boolean",
+						extra: node
+					}
+				]
+			};
+		const scannedYes = scanNS(node.yes, ctx);
+		const scannedNo = scanNS(node.no, ctx);
+		const NoAndYesSchema = isSameType(scannedYes.schema, scannedNo.schema) // Simplification when possible.
+			? scannedYes.schema
+			: z.intersection(scannedYes.schema, scannedNo.schema);
+		return {
+			schema: NoAndYesSchema,
+			notes: [...scannedIf.notes, ...scannedYes.notes, ...scannedNo.notes]
+		};
+	}
 });
 export type NSIfNode = z.infer<typeof NSIfNodeData.schema>;
 
@@ -102,6 +158,10 @@ export const NSVarGetNodeData = createComplexNodeParser({
 	nstype: "var-get",
 	props: ["id"],
 	execute: (node, ctx) => ctx.getVar(executeNS(node.id, ctx) as string)
+	// scan(node, ctx) {
+	// 	const id = scan(node.id)
+	// 	ctx.getVar(node.id)
+	// } // Can't do this part yet bc "id" needs to be more specific.
 });
 export type NSVarGetNode = z.infer<typeof NSVarGetNodeData.schema>;
 
@@ -136,6 +196,23 @@ export const NSProgramNodeData = createComplexNodeParser({
 		}
 		return lastResult;
 	}
+	// scan(node, ctx) {
+	// 	const notes = [];
+	// 	const instructions = scanNS(node.items, ctx);
+	// 	const NSMiniReturnNodeSchema = z.object({
+	// 		_nstype: z.literal("return"),
+	// 		value: z.unknown()
+	// 	});
+
+	// 	let lastResult: unknown = null;
+	// 	for (const instruction of instructions.schema) {
+	// 		lastResult = instruction;
+	// 		const parsedNode = NSMiniReturnNodeSchema.safeParse(instruction);
+	// 		if (parsedNode.success) return parsedNode.data.value;
+	// 	}
+	// 	return lastResult;
+
+	// }
 });
 export type NSProgramNode = z.infer<typeof NSProgramNodeData.schema>;
 
@@ -170,6 +247,7 @@ export const NSComplexNodesData = [
 	NSProgramNodeData,
 	NSFunctionCallNodeData
 ];
+export const NSNodeData = [...NSSimpleNodesData, ...NSComplexNodesData];
 export const NSSimpleNodeSchema = z.union(NSSimpleNodesData.map((n) => n.schema));
 export const NSComplexNodeSchema = z.union(NSComplexNodesData.map((n) => n.schema));
 

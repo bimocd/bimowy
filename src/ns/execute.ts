@@ -1,8 +1,8 @@
-import { Context } from "./context";
+import { RuntimeContext } from "./context";
 import { NSError } from "./error";
 import { NSComplexNodesData, NSMinimumComplexNodeSchema, NSSimpleNodesData } from "./nodes";
 
-export function executeNS(node: unknown, ctx = new Context()): unknown {
+export function executeNS(node: unknown, ctx = new RuntimeContext()): unknown {
 	for (const simpleParser of NSSimpleNodesData) {
 		const parsedNode = simpleParser.schema.safeParse(node);
 		if (!parsedNode.success) continue;
