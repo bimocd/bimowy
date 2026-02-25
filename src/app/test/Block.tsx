@@ -1,5 +1,5 @@
 import { useDraggable } from "@dnd-kit/react";
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 const RL = 0.3; // Left Radius
 const RB = 0.1; // Bump & Hole radius
@@ -10,7 +10,9 @@ const BW = 0.3; // Bump/Hole width
 const colors = {
 	red: "bg-red-500",
 	blue: "bg-blue-500",
-	yellow: "bg-amber-500"
+	yellow: "bg-amber-600",
+	green: "bg-green-600",
+	purple: "bg-purple-600"
 };
 
 export type BlockProps = {
@@ -24,6 +26,7 @@ type BlockItem = { type: "text"; text: string } | { type: "number-input" };
 export function Block({ items, color, id }: BlockProps) {
 	const refClip = useRef<HTMLDivElement>(null);
 	const { ref: refDrag } = useDraggable({ id });
+	const [isClipped, setIsClipped] = useState(false);
 
 	function remToPx(rem: number) {
 		return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -32,13 +35,11 @@ export function Block({ items, color, id }: BlockProps) {
 	useLayoutEffect(() => {
 		const el = refClip.current;
 		if (!el) return;
-		function updateCut() {
-			if (!el) return;
-			const { width: w, height: h } = el.getBoundingClientRect();
-			const [rl, rb, o, rr, bw] = [RL, RB, O, RR, BW].map(remToPx);
+		const { width: w, height: h } = el.getBoundingClientRect();
+		const [rl, rb, o, rr, bw] = [RL, RB, O, RR, BW].map(remToPx);
 
-			const path = `
-        M 0,${rl + rb * 2}
+		const path = `
+				M 0,${rl + rb * 2}
 
         q 0,${-rl} ${rl},${-rl}
         l ${o},0
@@ -67,9 +68,8 @@ export function Block({ items, color, id }: BlockProps) {
         Z
       `.replace(/\s+/g, " ");
 
-			el.style.clipPath = `path("${path}")`;
-		}
-		updateCut();
+		el.style.clipPath = `path("${path}")`;
+		setIsClipped(true);
 	}, []);
 
 	return (
@@ -78,7 +78,9 @@ export function Block({ items, color, id }: BlockProps) {
 				refClip.current = element;
 				refDrag(element);
 			}}
-			className={`relative w-fit select-none cursor-pointer
+			className={`
+				${isClipped ? "opacity-100" : "opacity-0"}
+				relative w-fit select-none cursor-pointer
         pl-1.5 py-2 p-2.5 leading-4
 				inline-flex gap-1 items-center
         text-white ${colors[color]}
@@ -90,7 +92,7 @@ export function Block({ items, color, id }: BlockProps) {
 				) : (
 					<input
 						key={i}
-						className={`leading-4 size-5 bg-background rounded-sm
+						className={`size-5 bg-background rounded-sm
 							focus:border-red-500/50 focus:outline-none
 						flex place-items-center`}
 					/>

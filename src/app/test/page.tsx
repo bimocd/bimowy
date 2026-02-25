@@ -9,7 +9,7 @@ export default function TestPage() {
 					{ id: "attack", color: "red", items: [{ type: "text", text: "Attack" }] },
 					{
 						id: "turn-r",
-						color: "yellow",
+						color: "purple",
 						items: [{ type: "text", text: "Turn right" }]
 					},
 					{
@@ -25,6 +25,11 @@ export default function TestPage() {
 							{ type: "number-input" },
 							{ type: "text", text: "pixels" }
 						]
+					},
+					{
+						id: "grass",
+						color: "green",
+						items: [{ type: "text", text: "Touch grass" }]
 					}
 				]}
 			/>
