@@ -50,5 +50,5 @@ src/db/prisma-generated
 # personal
 **/TODO.md
 src/playground/
-src/app/test/
+# src/app/test/
 .vscode/
