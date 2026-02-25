@@ -6,9 +6,26 @@ export default function TestPage() {
 		<div className="select-none">
 			<BlockGroup
 				blocks={[
-					{ title: "Walk", id: "walk", color: "blue" },
-					{ title: "Attack", id: "attack", color: "red" },
-					{ title: "Turn around", id: "turn", color: "yellow" }
+					{ id: "attack", color: "red", items: [{ type: "text", text: "Attack" }] },
+					{
+						id: "turn-r",
+						color: "yellow",
+						items: [{ type: "text", text: "Turn right" }]
+					},
+					{
+						id: "cheer",
+						color: "yellow",
+						items: [{ type: "text", text: "Cheer" }]
+					},
+					{
+						id: "walk",
+						color: "blue",
+						items: [
+							{ type: "text", text: "Walk" },
+							{ type: "number-input" },
+							{ type: "text", text: "pixels" }
+						]
+					}
 				]}
 			/>
 		</div>

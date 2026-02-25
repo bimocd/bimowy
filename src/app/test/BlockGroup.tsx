@@ -4,7 +4,7 @@ export function BlockGroup({ blocks }: { blocks: BlockProps[] }) {
 	return (
 		<div className="flex flex-col">
 			{blocks.map((block) => (
-				<Block key={block.title} {...block} />
+				<Block key={block.id} {...block} />
 			))}
 		</div>
 	);

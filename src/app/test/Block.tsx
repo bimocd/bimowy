@@ -15,13 +15,14 @@ const colors = {
 
 export type BlockProps = {
 	id: string;
-	title: string;
+	items: BlockItem[];
 	color: keyof typeof colors;
 };
 
-export function Block({ title, color, id }: BlockProps) {
-	const refClip = useRef<HTMLDivElement>(null);
+type BlockItem = { type: "text"; text: string } | { type: "number-input" };
 
+export function Block({ items, color, id }: BlockProps) {
+	const refClip = useRef<HTMLDivElement>(null);
 	const { ref: refDrag } = useDraggable({ id });
 
 	function remToPx(rem: number) {
@@ -78,11 +79,23 @@ export function Block({ title, color, id }: BlockProps) {
 				refDrag(element);
 			}}
 			className={`relative w-fit select-none cursor-pointer
-        pl-1.5 p-2.5 leading-4
+        pl-1.5 py-2 p-2.5 leading-4
+				inline-flex gap-1 items-center
         text-white ${colors[color]}
 				transition-transform duration-75 hover:scale-105`}
 		>
-			{title}
+			{items.map((item, i) =>
+				item.type === "text" ? (
+					item.text
+				) : (
+					<input
+						key={i}
+						className={`leading-4 size-5 bg-background rounded-sm
+							focus:border-red-500/50 focus:outline-none
+						flex place-items-center`}
+					/>
+				)
+			)}
 		</div>
 	);
 }
