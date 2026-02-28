@@ -18,7 +18,7 @@ const emojis = {
 
 type Emoji = (typeof emojis)[keyof typeof emojis] | (string & {});
 
-export function log(emoji: Emoji, message: unknown, level: number = 0) {
+export function echo(emoji: Emoji, message: unknown, level: number = 0) {
 	const now = new Date();
 
 	const formattedNow =
@@ -32,5 +32,6 @@ export function log(emoji: Emoji, message: unknown, level: number = 0) {
 		typeof message === "string"
 			? message
 			: inspect(message, { colors: true, numericSeparator: true, depth: Infinity });
+
 	console.log(`[${formattedNow}]${" ".repeat(level + 1)}${emoji} ${correctMessage}`);
 }

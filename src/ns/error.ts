@@ -1,8 +1,8 @@
-import { inspect } from "node:util";
+import { echo } from "@/utils/echo";
 
 export class NSError extends Error {
 	constructor(message: string, extra: unknown) {
-		console.error(inspect(extra, { colors: true, depth: Infinity }));
+		echo("💥", extra);
 		super(message);
 	}
 }

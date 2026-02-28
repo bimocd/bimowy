@@ -3,12 +3,13 @@ import type {
 	NSIfNode,
 	NSNode,
 	NSProgramNode,
+	NSReturnNode,
 	NSVarGetNode,
 	NSVarSetNode
 } from "./nodes";
 
 export const $ = {
-	return: (value: NSNode) => ({ _nstype: "return", value }),
+	return: (value: NSNode): NSReturnNode => ({ _nstype: "return", value }),
 	if: (cond: NSNode, { yes, no }: { yes: NSNode; no: NSNode }): NSIfNode => ({
 		_nstype: "if",
 		if: cond,

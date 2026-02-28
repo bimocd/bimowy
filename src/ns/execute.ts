@@ -12,7 +12,7 @@ export function executeNS(node: unknown, ctx = new RuntimeContext()): unknown {
 	const minimumNode = NSMinimumComplexNodeSchema.safeParse(node);
 	if (!minimumNode.success) throw new NSError("Unknown Node", node);
 
-	const complexParser = NSComplexNodesData.find((c) => c.id === minimumNode.data._nstype);
+	const complexParser = NSComplexNodesData.find((c) => c.nstype === minimumNode.data._nstype);
 	if (!complexParser) throw new NSError("Unknown Node Type", node);
 	// @ts-expect-error
 	return complexParser.execute(node, ctx);

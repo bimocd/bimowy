@@ -1,1 +1,2 @@
-import "./ns.test";
+import "./execute-ns.test";
+import "./subset.test";

@@ -1,64 +1,11 @@
 import z from "zod";
-import { isSameType } from "zod-compare";
-import type { RuntimeContext, ScantimeContext } from "./context";
 import { NSError } from "./error";
 import { executeNS } from "./execute";
 import { functionRegistry } from "./functions";
-import { type NSDiagnostic, type NSScan, scanNS } from "./scan";
-
-/*
-	NSNode (NS = Node System)
-	> NSSimpleNode // number | string | null | boolean (??)[]
-	> NSComplexNode // { _nstype: "xxxxx", ... }
- */
-
-export function createSimpleNodeParser<Schema extends z.ZodType>({
-	schema,
-	execute,
-	scan = () => ({ schema: z.never(), notes: [] })
-}: {
-	schema: Schema;
-	execute: (node: z.infer<Schema>, ctx: RuntimeContext) => unknown;
-	scan?: (node: z.infer<Schema>, ctx: ScantimeContext) => NSScan;
-}) {
-	return {
-		schema: schema,
-		execute,
-		scan
-	};
-}
-
-export type NSBaseComplexNode<NSType extends NSNodeID, NSKey extends string> = {
-	_nstype: NSType;
-} & {
-	[key in NSKey]: unknown;
-};
-
-export function createComplexNodeParser<
-	T extends NSNodeID,
-	P extends string,
-	Schema = z.ZodType<NSBaseComplexNode<T, P>>
->({
-	nstype,
-	props,
-	execute,
-	scan = () => ({ schema: z.never(), notes: [] })
-}: {
-	nstype: T;
-	props: P[];
-	execute: (node: z.infer<Schema>, ctx: RuntimeContext) => unknown;
-	scan?: (node: z.infer<Schema>, ctx: ScantimeContext) => NSScan;
-}) {
-	return {
-		id: nstype,
-		scan,
-		schema: z.object({
-			_nstype: z.literal(nstype),
-			...props.reduce((acc, prop) => ({ ...acc, [prop]: z.unknown().default(null) }), {})
-		}) as Schema,
-		execute
-	};
-}
+import { createComplexNodeParser, createSimpleNodeParser } from "./nodes.util";
+import { type NSDiagnostic, scanNS } from "./scan";
+import { isSchemaSubset } from "./subset";
+import { areSelfSubset } from "./subset.util";
 
 // --
 
@@ -80,17 +27,10 @@ export const NSPrimitiveNodeData = createSimpleNodeParser({
 	scan(node) {
 		const notes: NSDiagnostic[] = [];
 		if (node === null) return { schema: z.null(), notes };
-		const type_of = typeof node;
-		if (type_of === "string" || type_of === "number" || type_of === "boolean")
-			return {
-				notes,
-				schema: {
-					string: z.string(),
-					number: z.number(),
-					boolean: z.boolean()
-				}[type_of]
-			};
-		return { schema: z.never(), notes };
+		return {
+			notes,
+			schema: z.literal(node)
+		};
 	}
 });
 export type NSPrimitiveNode = z.infer<typeof NSPrimitiveNodeData.schema>;
@@ -127,8 +67,9 @@ export const NSIfNodeData = createComplexNodeParser({
 	execute: (node, ctx) =>
 		executeNS(node.if, ctx) ? executeNS(node.yes, ctx) : executeNS(node.no, ctx),
 	scan(node, ctx) {
+		// should use .xor() ?
 		const scannedIf = scanNS(node.if, ctx);
-		const parsedIf = [true, false].every((bool) => scannedIf.schema.safeParse(bool).success);
+		const parsedIf = isSchemaSubset(z.boolean(), scannedIf.schema);
 		if (!parsedIf)
 			return {
 				schema: z.never(),
@@ -143,7 +84,7 @@ export const NSIfNodeData = createComplexNodeParser({
 			};
 		const scannedYes = scanNS(node.yes, ctx);
 		const scannedNo = scanNS(node.no, ctx);
-		const NoAndYesSchema = isSameType(scannedYes.schema, scannedNo.schema) // Simplification when possible.
+		const NoAndYesSchema = areSelfSubset(scannedYes.schema, scannedNo.schema) // Simplification when possible.
 			? scannedYes.schema
 			: z.intersection(scannedYes.schema, scannedNo.schema);
 		return {
